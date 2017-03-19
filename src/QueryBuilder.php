@@ -32,10 +32,10 @@ class QueryBuilder
             $search = explode(' ', request()->search['value']);
 
             foreach ($search as $argument) {
-                $this->query->where(function ($query) use ($argument) {
+                $this->query->where(function () use ($argument) {
                     foreach (request()->columns as $column) {
                         if ($column['searchable'] == 'true') {
-                            $query->orWhere($column['name'], 'LIKE', '%'.$argument.'%');
+                            $this->query->orWhere($column['name'], 'LIKE', '%'.$argument.'%');
                         }
                     }
                 });
@@ -51,11 +51,11 @@ class QueryBuilder
             return $this;
         }
 
-        $this->query->where(function ($query) {
+        $this->query->where(function () {
             foreach ((array) json_decode(request()->extraFilters) as $table => $values) {
                 foreach ((array) $values as $column => $value) {
                     if (!is_object($value) && $value != null && $value != '') {
-                        $query->where($table.'.'.$column, '=', $value);
+                        $this->query->where($table.'.'.$column, '=', $value);
                     }
                 }
             }
@@ -70,7 +70,7 @@ class QueryBuilder
             return $this;
         }
 
-        $this->query->where(function ($query) {
+        $this->query->where(function () {
             foreach ((array) json_decode(request()->intervalFilters) as $table => $intervalObject) {
                 foreach ((array) $intervalObject as $column => $value) {
                     $this->setMinLimit($table, $column, $value)
