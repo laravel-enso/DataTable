@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelEnso\DataTable;
+namespace LaravelEnso\DataTable\App\Classes;
 
 class QueryBuilder
 {

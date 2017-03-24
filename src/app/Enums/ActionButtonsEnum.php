@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelEnso\DataTable\Enums;
+namespace LaravelEnso\DataTable\App\Enums;
 
 use LaravelEnso\Helpers\Classes\AbstractEnum;
 

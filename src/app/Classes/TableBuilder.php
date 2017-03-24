@@ -1,9 +1,9 @@
 <?php
 
-namespace LaravelEnso\DataTable;
+namespace LaravelEnso\DataTable\App\Classes;
 
-use LaravelEnso\DataTable\Abstracts\TableStructure;
-use LaravelEnso\DataTable\Enums\ActionButtonsEnum;
+use LaravelEnso\DataTable\App\Classes\Abstracts\TableStructure;
+use LaravelEnso\DataTable\App\Enums\ActionButtonsEnum;
 
 class TableBuilder
 {
