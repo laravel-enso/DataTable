@@ -183,7 +183,7 @@
                     dom: 'lrftip',
                     pageLength: 10,
                     //see 'Note 5' above
-                    language: {"sUrl": "/libs/datatables.lang/" + Preferences.lang + ".json"},
+                    language: {"sUrl": "/libs/datatables-lang/" + Preferences.lang + ".json"},
                     //see 'Note 5' above
                     stateSave: Preferences.dtStateSave,
                     lengthChange: true,
