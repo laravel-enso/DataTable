@@ -1,10 +1,10 @@
 <?php
 
-namespace LaravelEnso\DataTable\App\Traits;
+namespace LaravelEnso\DataTable\app\Traits;
 
-use LaravelEnso\DataTable\App\Classes\QueryBuilder;
-use LaravelEnso\DataTable\App\Classes\TableBuilder;
-use LaravelEnso\DataTable\App\Classes\TableInit;
+use LaravelEnso\DataTable\app\Classes\QueryBuilder;
+use LaravelEnso\DataTable\app\Classes\TableBuilder;
+use LaravelEnso\DataTable\app\Classes\TableInit;
 
 trait DataTable
 {

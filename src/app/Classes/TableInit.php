@@ -1,8 +1,8 @@
 <?php
 
-namespace LaravelEnso\DataTable\App\Classes;
+namespace LaravelEnso\DataTable\app\Classes;
 
-use LaravelEnso\DataTable\App\Classes\Abstracts\TableStructure;
+use LaravelEnso\DataTable\app\Classes\Abstracts\TableStructure;
 
 class TableInit
 {

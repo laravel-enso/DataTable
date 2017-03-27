@@ -1,8 +1,8 @@
 <?php
 
-namespace LaravelEnso\DataTable\App\Traits;
+namespace LaravelEnso\DataTable\app\Traits;
 
-use LaravelEnso\DataTable\App\Classes\TableEditor;
+use LaravelEnso\DataTable\app\Classes\TableEditor;
 
 trait DataTableEditor
 {

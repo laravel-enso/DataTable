@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelEnso\DataTable\App\Classes\Abstracts;
+namespace LaravelEnso\DataTable\app\Classes\Abstracts;
 
 use LaravelEnso\Helpers\Classes\AbstractObject;
 

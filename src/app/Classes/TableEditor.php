@@ -1,8 +1,8 @@
 <?php
 
-namespace LaravelEnso\DataTable\App\Classes;
+namespace LaravelEnso\DataTable\app\Classes;
 
-use LaravelEnso\DataTable\App\Classes\Abstracts\TableEditorConfig;
+use LaravelEnso\DataTable\app\Classes\Abstracts\TableEditorConfig;
 
 class TableEditor
 {
