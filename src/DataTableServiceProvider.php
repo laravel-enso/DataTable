@@ -15,7 +15,7 @@ class DataTableServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/app/resources/assets/js/components' => resource_path('assets/js/vendor/laravel-enso/components'),
-        ], 'table-component');
+        ], 'datatable-component');
     }
 
     /**

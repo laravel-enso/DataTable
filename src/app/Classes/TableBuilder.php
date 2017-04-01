@@ -23,8 +23,7 @@ class TableBuilder
     public function getResponse()
     {
         return [
-
-            'draw'            => request()->draw,
+            'draw'            => request('draw'),
             'recordsTotal'    => $this->queryBuilder->recordsTotal,
             'recordsFiltered' => $this->queryBuilder->recordsFiltered,
             'data'            => $this->queryBuilder->data,
@@ -83,7 +82,6 @@ class TableBuilder
         if (isset($this->structure['enumMappings'])) {
             foreach ($this->structure['enumMappings'] as $column => $enumClass) {
                 $enum = new $enumClass();
-
                 $dataFromEnum[$column] = $enum->getData();
             }
         }

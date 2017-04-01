@@ -44,7 +44,6 @@ class TableInit
 
         foreach ($responsivePriority as $column) {
             $this->structure['columns'][$column]['responsivePriority'] = $priority;
-
             $priority++;
         }
 
@@ -111,7 +110,6 @@ class TableInit
         if (isset($this->structure['totals'])) {
             $tmp = array_flip($this->structure['totals']);
             $tmp = $this->incrementColumnsKeys($tmp);
-
             $this->structure['totals'] = array_flip($tmp);
         }
 

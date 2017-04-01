@@ -16,7 +16,6 @@ class TableEditor
     public function __construct(TableEditorConfig $config)
     {
         $this->validations = $config->getEditableValidations();
-
         $this->model = $config->editableModel;
         $this->rowId = $this->getEditableModelId();
         $this->property = $this->getEditableProperty();
@@ -34,7 +33,6 @@ class TableEditor
         $model->save();
 
         $this->response = [
-
             'data'    => [$this->property => $this->value],
             'message' => __('Operation was successfull'),
         ];

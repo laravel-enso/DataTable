@@ -9,7 +9,6 @@ class ActionButtonsEnum extends AbstractEnum
     public function __construct(String $route)
     {
         $this->data = [
-
             'show'     => request()->user()->hasAccessTo($route.'.show') ?: false,
             'edit'     => request()->user()->hasAccessTo($route.'.edit') ?: false,
             'download' => request()->user()->hasAccessTo($route.'.download') ?: false,

@@ -109,9 +109,7 @@
 <script>
 
     export default {
-
         props: {
-
             source: {
                 type: String,
                 required: true
@@ -138,14 +136,11 @@
             }
         },
         computed: {
-
             hasTotals: function() {
-
                 return Object.keys(this.tableOptions.ajax.data.totals).length;
             }
         },
         data: function (self = this) {
-
             return {
                 showModal: false,
                 deleteRoute: null,
@@ -170,8 +165,7 @@
                     data: 'DT_RowId',
                     name: this.source + '.id',
                     render: function(data, type, row, meta) {
-
-                        var actionButtons = self.dtHandle.context[0].json.actionButtons;
+                        let actionButtons = self.dtHandle.context[0].json.actionButtons;
                         return self.buildActionButtons(actionButtons, data);
                     },
                     responsivePriority: 1,
@@ -198,11 +192,9 @@
                         data: {
                             totals: [],
                             extraFilters: function() {
-
                                 return JSON.stringify(self.extraFilters);
                             },
                             intervalFilters: function() {
-
                                 return JSON.stringify(self.intervalFilters);
                             },
                             customParams: function () {
@@ -215,35 +207,28 @@
                     columnDefs: [],
                     columns: [],
                     drawCallback: function () {
-
-                        var api = this.api();
-                        var totals = self.dtHandle.context[0].json.totals;
+                        let api = this.api();
+                        let totals = self.dtHandle.context[0].json.totals;
 
                         Object.keys(totals).forEach(function(key) {
-
                             self.drawColumnTotal(api, key, totals[key]);
                         });
 
                         $('table .delete-model').off('click').on('click', function() {
-
                             self.deleteRoute = $(this).data('route');
                             self.showModal = true;
                         });
 
                         /* attaches emit events for custom buttons */
-                        var actionButtons = self.dtHandle.context[0].json.actionButtons;
+                        let actionButtons = self.dtHandle.context[0].json.actionButtons;
 
                         if(actionButtons.custom instanceof Array) {
-
-                            for(var i=0; i<actionButtons.custom.length; i++) {
-
-                                var elem = actionButtons.custom[i];
+                            for(let i=0; i<actionButtons.custom.length; i++) {
+                                let elem = actionButtons.custom[i];
 
                                 $('table .' + elem.cssSelectorClass).off('click').on('click', function() {
-
-                                    var id = $(this).data('id'); //id for self event so we know what we act on
-                                    var event = $(this).data('event'); //type of event
-
+                                    let id = $(this).data('id'); //id for self event so we know what we act on
+                                    let event = $(this).data('event'); //type of event
                                     eventHub.$emit(event, id);
                                 });
                             }
@@ -279,12 +264,9 @@
             }
         },
         methods: {
-
             initTable: function() {
-
                 axios.get(this.source + '/initTable').then((response) => {
-
-                    var self = this;
+                    let self = this;
                     this.tableOptions.columns = response.data.columns;
                     this.buildEditorFields();
                     this.tableClass = response.data.tableClass;
@@ -298,7 +280,6 @@
                 }).then(() => {
 
                     if (this.hasEditor) {
-
                         this.initEditor();
                     };
 
@@ -307,41 +288,31 @@
                 });
             },
             buildEditorFields: function(columns) {
-
-                var self = this;
+                let self = this;
 
                 this.tableOptions.columns.forEach(function(record) {
-
                     self.editorOptions.fields.push({name: record.name});
                 });
             },
             computeCrtNo: function(data) {
-
                 if (data.hasOwnProperty('crtNo')) {
-
                     this.tableOptions.columns.unshift(this.firstColumn);
                     this.header.unshift(data.crtNo);
                 }
             },
             computeActionButtons: function(data) {
-
                 if (data.hasOwnProperty('actionButtons')) {
-
                     this.tableOptions.columns.push(this.lastColumn);
                     this.header.push(data.actionButtons);
                 }
             },
             computeRender: function(data) {
-
                 if (data.hasOwnProperty('render')) {
-
-                    var renderFunction,
+                    let renderFunction,
                         self = this;
 
                     data.render.forEach(function(columnIndex) {
-
                         renderFunction = function(data, type, row, meta) {
-
                             return self.$parent.customRender(self.tableOptions.columns[columnIndex].data, data, type, row, meta);
                         };
 
@@ -351,15 +322,13 @@
             },
             addProcessingListener: function() {
 
-                var self = this;
+                let self = this;
 
                 this.dtHandle.on( 'processing.dt', function ( e, settings, processing ) {
-
                     self.updateLoadingState(processing);
                 });
             },
             initEditor: function() {
-
                 this.dtEditorHandle = new $.fn.dataTable.Editor(this.editorOptions);
                 this.addClickListener();
                 this.addSelectOnFocusListener();
@@ -367,79 +336,61 @@
                 this.addPostSubmitListener();
             },
             addClickListener: function() {
-
-                var self = this;
+                let self = this;
 
                 $('#table-' + this._uid).on( 'click', 'tbody tr td.editable', function (e) {
-
                     self.editedCellValue = self.dtHandle.cell(this).data();
                     self.dtEditorHandle.inline(this);
                 });
             },
             addSelectOnFocusListener: function () {
-
-                var self = this;
+                let self = this;
 
                 $( 'input', this.dtEditorHandle.node() ).on( 'focus', function () {
-
                     $(this).val(self.editedCellValue);
                     this.select();
                 });
             },
             addBlurListener: function() {
-
-                var self = this;
+                let self = this;
 
                 $( 'input', this.dtEditorHandle.node() ).on( 'blur', function () {
-
                     self.editedCellValue = null;
                 });
             },
             addPostSubmitListener: function() {
-
-                var self = this;
+                let self = this;
 
                 this.dtEditorHandle.on( 'postSubmit', function ( e, msg ) {
-
                     if(msg.hasOwnProperty("error")) {
-
-                        toastr["error"](msg.error);
+                        toastr.error(msg.error);
                     } else {
-
-                        toastr["success"](msg.message);
+                        toastr.success(msg.message);
                     }
                 });
             },
             updateLoadingState: function(processing) {
-
                 this.loading = processing;
 
                 if (processing) {
-
                     NProgress.start();
                 } else {
-
                     NProgress.done();
                 }
             },
             drawColumnTotal: function(api, column, total, dec = 2, char = '') {
-
                 $(api.table().column(column).footer()).html('<b>' + this.numberFormat(parseFloat(total).toFixed(dec)) + char + '</b>');
             },
             buildActionButtons: function(actions, data) {
-
-                var buttons = '<span style="display: inline-flex">';
-
+                let buttons = '<span style="display: inline-flex">';
                 buttons += actions.show ? '<a class="btn btn-xs btn-success margin-left-xs" href="' + this.source + '/' + data + '"><i class="fa fa-eye"></i></a>' : '';
                 buttons += actions.edit ? '<a class="btn btn-xs btn-warning margin-left-xs" href="' + this.source + '/' + data + '/edit"><i class="fa fa-pencil-square-o"></i></a>' : '';
                 buttons += actions.delete ? '<button class="btn btn-xs btn-danger margin-left-xs delete-model" data-route="' + this.source + '/' + data + '"><i class="fa fa-trash-o"></i></button>' : '';
                 buttons += actions.download ? '<a class="btn btn-xs btn-success margin-left-xs" href="' + this.source + '/' + 'download/' + data + '"><i class="fa fa-cloud-download"></i></a>' : '';
 
                 if (actions.custom instanceof Array) {
-
-                    for(var i = 0; i < actions.custom.length; i++) {
-
-                        var elem = actions.custom[i];
+                    for(let i = 0; i < actions.custom.length; i++) {
+                        let elem = actions.custom[i];
                         buttons += '<a class="margin-left-xs ' + elem.cssSelectorClass + '"data-id="' + data + '" data-event="' + elem.event + '"><i class="btn btn-xs ' + elem.cssClass + '"></i></a>';
                     }
                 }
@@ -449,43 +400,34 @@
                 return buttons;
             },
             getData: function() {
-
                 if (!this.dtHandle) {
-
                     this.initTable();
                 } else if (!this.is_collapsed) {
-
-                    var info = this.dtHandle.page.info();
+                    let info = this.dtHandle.page.info();
                     this.dtHandle.ajax.reload();
                     this.dtHandle.page(info.page).draw('page');
                 }
             },
             deleteModel: function() {
-
                 this.showModal = false;
-                var self = this;
+                let self = this;
 
                 axios.delete(this.deleteRoute).then(function(response) {
-
                     self.dtHandle.ajax.reload();
                     toastr[response.data.level](response.data.message);
                 }).catch(function (error) {
-
                     toastr[error.response.data.level](error.response.data.message);
                 });
             },
             resize: function() {
-
                 if (this.is_collapsed) {
-
                     return false;
                 }
 
                 this.dtHandle.columns.adjust();
             },
             numberFormat: function(value) {
-
-                var x = value.split('.'),
+                let x = value.split('.'),
                     x1 = x[0],
                     x2 = x.length > 1 ? '.' + x[1] : '',
                     rgx = /(\d+)(\d{3})/;
@@ -493,7 +435,6 @@
                 value += '';
 
                 while (rgx.test(x1)) {
-
                     x1 = x1.replace(rgx, '$1' + ',' + '$2');
                 }
 
@@ -503,7 +444,6 @@
         mounted: function() {
 
             if (!this.is_collapsed) {
-
                 this.initTable();
             }
         }
@@ -514,7 +454,6 @@
 <style>
 
     .DTE_Field_Input input {
-
         height: 28px;
     }
 
