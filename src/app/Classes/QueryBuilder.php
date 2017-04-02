@@ -2,6 +2,8 @@
 
 namespace LaravelEnso\DataTable\app\Classes;
 
+use Carbon\Carbon;
+
 class QueryBuilder
 {
     public $query;
@@ -32,10 +34,10 @@ class QueryBuilder
             $search = explode(' ', request()->search['value']);
 
             foreach ($search as $argument) {
-                $this->query->where(function () use ($argument) {
+                $this->query->where(function ($query) use ($argument) {
                     foreach (request()->columns as $column) {
                         if ($column['searchable'] == 'true') {
-                            $this->query->orWhere($column['name'], 'LIKE', '%'.$argument.'%');
+                            $query->orWhere($column['name'], 'LIKE', '%'.$argument.'%');
                         }
                     }
                 });
@@ -51,11 +53,11 @@ class QueryBuilder
             return $this;
         }
 
-        $this->query->where(function () {
+        $this->query->where(function ($query) {
             foreach ((array) json_decode(request()->extraFilters) as $table => $values) {
                 foreach ((array) $values as $column => $value) {
                     if (!is_object($value) && $value != null && $value != '') {
-                        $this->query->where($table.'.'.$column, '=', $value);
+                        $query->where($table.'.'.$column, '=', $value);
                     }
                 }
             }
@@ -110,7 +112,7 @@ class QueryBuilder
 
     private function getFormattedDate(String $date, String $dbDateFormat)
     {
-        $date = new \Date($date);
+        $date = new Carbon($date);
 
         return $date->format($dbDateFormat);
     }
