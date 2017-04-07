@@ -383,19 +383,30 @@
             },
             buildActionButtons: function(actions, data) {
                 let buttons = '<span style="display: inline-flex">';
-                buttons += actions.show ? '<a class="btn btn-xs btn-success margin-left-xs" href="' + this.source + '/' + data + '"><i class="fa fa-eye"></i></a>' : '';
-                buttons += actions.edit ? '<a class="btn btn-xs btn-warning margin-left-xs" href="' + this.source + '/' + data + '/edit"><i class="fa fa-pencil-square-o"></i></a>' : '';
-                buttons += actions.delete ? '<button class="btn btn-xs btn-danger margin-left-xs delete-model" data-route="' + this.source + '/' + data + '"><i class="fa fa-trash-o"></i></button>' : '';
-                buttons += actions.download ? '<a class="btn btn-xs btn-success margin-left-xs" href="' + this.source + '/' + 'download/' + data + '"><i class="fa fa-cloud-download"></i></a>' : '';
+                buttons += this.getCustomActionButtons(actions, data);
+                buttons += this.getStandardActionButtons(actions, data);
+                buttons += '</span>';
+
+                return buttons;
+            },
+            getCustomActionButtons: function(actions, data) {
+                let buttons = '';
 
                 if (actions.custom instanceof Array) {
                     for(let i = 0; i < actions.custom.length; i++) {
-                        let elem = actions.custom[i];
-                        buttons += '<a class="margin-left-xs ' + elem.cssSelectorClass + '"data-id="' + data + '" data-event="' + elem.event + '"><i class="btn btn-xs ' + elem.cssClass + '"></i></a>';
+                        let button = actions.custom[i];
+                        buttons += '<a class="margin-left-xs ' + button.cssSelectorClass + '"data-id="' + data + '" data-event="' + button.event + '"><i class="btn btn-xs ' + button.cssClass + '"></i></a>';
                     }
                 }
 
-                buttons += '</span>';
+                return buttons;
+            },
+            getStandardActionButtons: function(actions, data) {
+                let buttons = '';
+                buttons += actions.show ? '<a class="btn btn-xs btn-success margin-left-xs" href="' + this.source + '/' + data + '"><i class="fa fa-eye"></i></a>' : '';
+                buttons += actions.edit ? '<a class="btn btn-xs btn-warning margin-left-xs" href="' + this.source + '/' + data + '/edit"><i class="fa fa-pencil-square-o"></i></a>' : '';
+                buttons += actions.download ? '<a class="btn btn-xs btn-success margin-left-xs" href="' + this.source + '/' + 'download/' + data + '"><i class="fa fa-cloud-download"></i></a>' : '';
+                buttons += actions.delete ? '<button class="btn btn-xs btn-danger margin-left-xs delete-model" data-route="' + this.source + '/' + data + '"><i class="fa fa-trash-o"></i></button>' : '';
 
                 return buttons;
             },
