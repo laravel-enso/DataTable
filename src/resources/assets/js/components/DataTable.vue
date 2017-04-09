@@ -426,8 +426,10 @@
                 axios.delete(this.deleteRoute).then(function(response) {
                     self.dtHandle.ajax.reload();
                     toastr[response.data.level](response.data.message);
-                }).catch(function (error) {
-                    toastr[error.response.data.level](error.response.data.message);
+                }).catch((error) => {
+                    if (error.response.data.level) {
+                        toastr[error.response.data.level](error.response.data.code + ' Error: ' + error.response.data.message);
+                    }
                 });
             },
             resize: function() {
