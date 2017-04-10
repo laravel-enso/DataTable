@@ -428,7 +428,7 @@
                     toastr[response.data.level](response.data.message);
                 }).catch((error) => {
                     if (error.response.data.level) {
-                        toastr[error.response.data.level](error.response.data.code + ' Error: ' + error.response.data.message);
+                        toastr[error.response.data.level](error.response.data.message);
                     }
                 });
             },
