@@ -210,9 +210,11 @@
                         let api = this.api();
                         let totals = self.dtHandle.context[0].json.totals;
 
-                        Object.keys(totals).forEach(function(key) {
-                            self.drawColumnTotal(api, key, totals[key]);
-                        });
+                        if (this.hasTotals) {
+                            Object.keys(totals).forEach(function(key) {
+                                self.drawColumnTotal(api, key, totals[key]);
+                            });
+                        }
 
                         $('table .delete-model').off('click').on('click', function() {
                             self.deleteRoute = $(this).data('route');
