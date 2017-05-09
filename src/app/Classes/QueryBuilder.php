@@ -15,14 +15,14 @@ class QueryBuilder
     public function __construct($queryBuilder)
     {
         $this->query = $queryBuilder;
-        $this->recordsTotal = $this->query->count();
+        $this->recordsTotal = $this->query->get()->count();
 
         $this->applyFilters()
              ->applyExtraFilters()
              ->applyIntervalFilters()
              ->applySortOrder();
 
-        $this->recordsFiltered = $this->query->count();
+        $this->recordsFiltered = $this->query->get()->count();
         $this->totals = $this->getTotals();
         $this->applyLimit();
         $this->data = $this->query->get();
