@@ -108,7 +108,7 @@ class TableInit
     {
         $totals = [];
 
-        foreach ($this->data['totals'] as $key => $column) {
+        foreach ($this->data['totals'] as $column) {
             $field = $this->data['columns'][$column]['name'];
             $totals[$column] = $field;
         }
@@ -134,13 +134,6 @@ class TableInit
         }
 
         return $this;
-    }
-
-    private function getEditableLabel($index)
-    {
-        $labelArray = explode('.', $this->data['columns'][$index]['name']);
-
-        return end($labelArray);
     }
 
     private function computeCrtNo()

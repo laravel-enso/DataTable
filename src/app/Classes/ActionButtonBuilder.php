@@ -6,7 +6,6 @@ use LaravelEnso\DataTable\app\Enums\ActionButtonsEnum;
 
 class ActionButtonBuilder
 {
-    private $actionButtons;
     private $route;
 
     public function __construct(array $data)
