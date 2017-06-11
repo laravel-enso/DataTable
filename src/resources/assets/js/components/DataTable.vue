@@ -341,6 +341,10 @@
 
         mounted() {
             this.initTable();
+        },
+
+        beforeDestroy() {
+            this.dtHandle.destroy();
         }
     };
 
