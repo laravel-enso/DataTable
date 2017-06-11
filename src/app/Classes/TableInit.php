@@ -29,7 +29,6 @@ class TableInit
             ->setActionButtons();
 
         unset($this->data['enumMappings']);
-        unset($this->data['customActionButtons']);
     }
 
     private function setHeader()
@@ -158,5 +157,6 @@ class TableInit
         }
 
         $this->data['actionButtons'] = (new ActionButtonBuilder($this->data))->getData();
+        unset($this->data['customActionButtons']);
     }
 }

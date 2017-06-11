@@ -6,11 +6,6 @@ use Illuminate\Support\ServiceProvider;
 
 class DataTableServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap the application services.
-     *
-     * @return void
-     */
     public function boot()
     {
         $this->publishes([
@@ -30,11 +25,6 @@ class DataTableServiceProvider extends ServiceProvider
         ], 'update');
     }
 
-    /**
-     * Register the application services.
-     *
-     * @return void
-     */
     public function register()
     {
         //

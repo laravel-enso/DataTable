@@ -14,7 +14,7 @@ class ClassName extends TableStructure
             /* current number for each line, with the header name
              * If given, it will be appended as the first column of the table
              */
-            'crtNo'         => 'app.crtNo',
+            'crtNo' => 'app.crtNo',
             /* column for buttons with available actions. Used for both standard
              * actions - create, view, edit, delete - and custom actions.
              * Note: the buttons for standard actions are added automatically depending
@@ -28,17 +28,17 @@ class ClassName extends TableStructure
              * route is OPTIONAL, and if given, it will be checked for permission i.e. if the user doesn't have
              * the necessary permission, that specific button is not drawn
              */
-            'customActionButtons'     => [
-                ['cssSelectorClass'=>'exampleClass', 'cssClass' => 'btn-success fa fa-info-circle', 'event'=>'customEvent', 'route' => 'route.getData'],
+            'customActionButtons' => [
+                ['class' => 'btn-success fa fa-info-circle', 'event'=>'custom-event', 'route' => 'route.getData'],
             ],
             /* columns where custom rendering is applied
              * Note: a 'customRender' method needs to exist in the parent vue instance
              */
-            'render'        => [columnIndex],
+            'render' => [columnIndex],
             /* column number where the total value is displayed
              * and the table's column name used in the query, to compute the total
              */
-            'totals'        => [columnIndex => 'attributeName'],
+            'totals' => [columnIndexArray],
             /* computed responsive priority will be 1 for first column
              * and will increment with one for each consecutive column
              */
@@ -56,15 +56,15 @@ class ClassName extends TableStructure
             'editable' => [columnIndexArray],
             /* if none is given, by default, 'lfrtip' is used.
              * See datatables.net documentation */
-            'dom' => 'lBfrtip',
+            'dom' => 'lfrtip',
             /* table header alignment. The dt-head-* class is used,
              * i.e. dt-head-center in this example  */
-            'headerAlign'        => 'left center right',
+            'headerAlign' => 'left center right',
             /* table body alignment. The dt-body-center class is used in this example
              */
-            'bodyAlign'        => 'left center right',
+            'bodyAlign' => 'left center right',
             /* the class of the table element */
-            'tableClass'         => 'table display compact',
+            'tableClass' => 'table display compact',
             /* list of columns whose values should be displayed translated.
              * Note: in order to work it needs a CustomEnum class
              */
