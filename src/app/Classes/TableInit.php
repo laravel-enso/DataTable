@@ -2,151 +2,166 @@
 
 namespace LaravelEnso\DataTable\app\Classes;
 
-use LaravelEnso\DataTable\app\Classes\Abstracts\TableStructure;
+use LaravelEnso\DataTable\app\Classes\TableStructure;
 
 class TableInit
 {
-    private $structure;
+    private $data;
 
     public function __construct(TableStructure $tableStructure)
     {
-        $this->structure = $tableStructure->data;
-
-        $this->computeHeader()
-             ->computeResponsivePriority()
-             ->computeNotSearchable()
-             ->computeNotSortable()
-             ->computeEditable()
-             ->computeCrtNo()
-             ->computeStyling();
+        $this->data = $tableStructure->getData();
+        $this->run();
     }
 
-    private function computeHeader()
+    public function getData()
     {
-        $this->structure['header'] = array_column($this->structure['columns'], 'label');
+        return $this->data;
+    }
 
-        foreach ($this->structure['columns'] as &$value) {
-            unset($value['label']);
+    private function run()
+    {
+        $this->setHeader()
+            ->setResponsivePriority()
+            ->setNotSearchable()
+            ->setNotSortable()
+            ->computeTotals()
+            ->setEditable()
+            ->computeCrtNo()
+            ->setActionButtons();
+
+        unset($this->data['enumMappings']);
+        unset($this->data['customActionButtons']);
+    }
+
+    private function setHeader()
+    {
+        $this->data['header'] = [];
+
+        foreach ($this->data['columns'] as &$value) {
+            $this->data['header'][] = array_shift($value);
         }
 
         return $this;
     }
 
-    private function computeResponsivePriority()
+    private function setResponsivePriority()
     {
-        if (!isset($this->structure['responsivePriority']) || !is_array($this->structure['responsivePriority'])) {
+        if (!isset($this->data['responsivePriority'])) {
             return $this;
         }
 
-        $responsivePriority = $this->structure['responsivePriority'];
+        $this->setSecondaryPriorityColumns();
+        $this->setPrimaryPriorityColumns();
+        unset($this->data['responsivePriority']);
 
+        return $this;
+    }
+
+    private function setSecondaryPriorityColumns()
+    {
+        $priority = count($this->data['responsivePriority']) + 1;
+
+        foreach ($this->data['columns'] as &$column) {
+            $column['responsivePriority'] = $priority;
+        }
+    }
+
+    private function setPrimaryPriorityColumns()
+    {
         $priority = 1;
 
-        foreach ($responsivePriority as $column) {
-            $this->structure['columns'][$column]['responsivePriority'] = $priority;
-            $priority++;
+        foreach ($this->data['responsivePriority'] as &$column) {
+            $this->data['columns'][$column]['responsivePriority'] = $priority++;
+        }
+    }
+
+    private function setNotSearchable()
+    {
+        if (!isset($this->data['notSearchable'])) {
+            return $this;
         }
 
-        unset($this->structure['responsivePriority']);
+        foreach ($this->data['notSearchable'] as $column) {
+            $this->data['columns'][$column]['searchable'] = false;
+        }
+
+        unset($this->data['notSearchable']);
 
         return $this;
     }
 
-    private function computeNotSearchable()
+    private function setNotSortable()
     {
-        if (!isset($this->structure['notSearchable']) || !is_array($this->structure['notSearchable'])) {
+        if (!isset($this->data['notSortable'])) {
             return $this;
         }
 
-        $notSearchableArray = $this->structure['notSearchable'];
-
-        foreach ($notSearchableArray as $column) {
-            $this->structure['columns'][$column]['searchable'] = false;
+        foreach ($this->data['notSortable'] as $column) {
+            $this->data['columns'][$column]['sortable'] = false;
         }
 
-        unset($this->structure['notSearchable']);
+        unset($this->data['notSortable']);
 
         return $this;
     }
 
-    private function computeNotSortable()
+    private function computeTotals()
     {
-        if (!isset($this->structure['notSortable']) || !is_array($this->structure['notSortable'])) {
-            return $this;
+        $totals = [];
+
+        foreach ($this->data['totals'] as $key => $column) {
+            $field = $this->data['columns'][$column]['name'];
+            $totals[$column] = $field;
         }
 
-        $notSortableArray = $this->structure['notSortable'];
-
-        foreach ($notSortableArray as $column) {
-            $this->structure['columns'][$column]['sortable'] = false;
-        }
-        unset($this->structure['notSortable']);
+        $this->data['totals'] = $totals;
 
         return $this;
     }
 
-    private function computeEditable()
+    private function setEditable()
     {
-        if (!isset($this->structure['editable']) || !is_array($this->structure['editable'])) {
+        if (!isset($this->data['editable'])) {
             return $this;
         }
 
-        $editableArray = $this->structure['editable'];
+        foreach ($this->data['editable'] as $key => $column) {
+            $this->data['columns'][$column]['class'] = trim(
+                (isset($this->data['columns'][$column]['class']) ? $this->data['columns'][$column]['class'] : '').' editable'
+            );
 
-        foreach ($editableArray as $column) {
-            $this->structure['columns'][$column]['class'] = (isset($this->structure['columns'][$column]['class']) ? $this->structure['columns'][$column]['class'] : '').' editable';
-            $this->structure['columns'][$column]['editField'] = $this->structure['columns'][$column]['name'];
+            $this->data['columns'][$column]['editField'] = $this->data['columns'][$column]['name'];
+            $this->data['editable'][$key] = ['name' => $this->data['columns'][$column]['name']];
         }
 
         return $this;
+    }
+
+    private function getEditableLabel($index)
+    {
+        $labelArray = explode('.', $this->data['columns'][$index]['name']);
+
+        return end($labelArray);
     }
 
     private function computeCrtNo()
     {
-        if (!isset($this->structure['crtNo'])) {
+        if (!isset($this->data['crtNo'])) {
             return $this;
         }
 
-        if (isset($this->structure['totals'])) {
-            $tmp = array_flip($this->structure['totals']);
-            $tmp = $this->incrementColumnsKeys($tmp);
-            $this->structure['totals'] = array_flip($tmp);
-        }
-
-        if (isset($this->structure['render'])) {
-            $this->structure['render'] = $this->incrementColumnsKeys($this->structure['render']);
-        }
+        $this->data = (new CrtNoComputor($this->data))->getData();
 
         return $this;
     }
 
-    private function incrementColumnsKeys($array)
+    private function setActionButtons()
     {
-        foreach ($array as $key => $value) {
-            $array[$key] = $value + 1;
+        if (!isset($this->data['actionButtons'])) {
+            return $this;
         }
 
-        return $array;
-    }
-
-    private function computeStyling()
-    {
-        if (!isset($this->structure['headerAlign']) && (!isset($this->structure['bodyAlign']))) {
-            return false;
-        }
-
-        $class = isset($this->structure['headerAlign']) ? ' dt-head-'.$this->structure['headerAlign'] : '';
-        $class .= isset($this->structure['bodyAlign']) ? ' dt-body-'.$this->structure['bodyAlign'] : '';
-
-        foreach (array_keys($this->structure['columns']) as $key) {
-            $this->structure['columns'][$key]['class'] = (isset($this->structure['columns'][$key]['class']) ? $this->structure['columns'][$key]['class'] : '').$class;
-        }
-
-        return $this;
-    }
-
-    public function getResponse()
-    {
-        return $this->structure;
+        $this->data['actionButtons'] = (new ActionButtonBuilder($this->data))->getData();
     }
 }

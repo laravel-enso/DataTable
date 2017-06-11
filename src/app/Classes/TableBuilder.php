@@ -2,72 +2,37 @@
 
 namespace LaravelEnso\DataTable\app\Classes;
 
-use LaravelEnso\DataTable\app\Classes\Abstracts\TableStructure;
-use LaravelEnso\DataTable\app\Enums\ActionButtonsEnum;
+use LaravelEnso\DataTable\app\Classes\TableStructure;
 
 class TableBuilder
 {
     private $structure;
-    private $actionButtons;
+    private $queryBuilder;
+    private $data;
 
     public function __construct(TableStructure $tableStructure, QueryBuilder $queryBuilder)
     {
-        $this->structure = $tableStructure->data;
+        $this->structure = $tableStructure->getData();
         $this->queryBuilder = $queryBuilder;
-
-        $this->computeActionButtons()
-             ->computeCustomActionButtons()
-             ->computeEnums();
+        $this->data = $queryBuilder->getData();
+        $this->computeEnums();
     }
 
-    public function getResponse()
+    public function getTableData()
     {
         return [
             'draw'            => request('draw'),
-            'recordsTotal'    => $this->queryBuilder->recordsTotal,
-            'recordsFiltered' => $this->queryBuilder->recordsFiltered,
-            'data'            => $this->queryBuilder->data,
-            'totals'          => $this->queryBuilder->totals,
-            'actionButtons'   => $this->actionButtons,
+            'recordsTotal'    => $this->queryBuilder->getTotalRecords(),
+            'recordsFiltered' => $this->queryBuilder->getFilteredRecords(),
+            'totals'          => $this->queryBuilder->getTotals(),
+            'data'            => $this->data,
         ];
-    }
-
-    private function computeActionButtons()
-    {
-        $routeArray = explode('.', request()->route()->getName());
-        array_pop($routeArray);
-        $route = implode('.', $routeArray);
-        $actionButtons = new ActionButtonsEnum($route);
-        $this->actionButtons = $actionButtons->getData();
-
-        return $this;
-    }
-
-    private function computeCustomActionButtons()
-    {
-        if (!isset($this->structure['customActionButtons'])) {
-            return $this;
-        }
-
-        $this->actionButtons['custom'] = [];
-
-        foreach ($this->structure['customActionButtons'] as $customButton) {
-            if (isset($customButton['route']) && !request()->user()->hasAccessTo($customButton['route'])) {
-                continue;
-            }
-
-            $this->actionButtons['custom'][] = $customButton;
-        }
-
-        return $this;
     }
 
     private function computeEnums()
     {
-        $dataFromEnums = $this->getDataFromEnums();
-
-        foreach ($this->queryBuilder->data as &$value) {
-            foreach ($dataFromEnums as $key => $data) {
+        foreach ($this->data as &$value) {
+            foreach ($this->getDataFromEnums() as $key => $data) {
                 $value->$key = $data[$value->$key];
             }
         }
@@ -79,11 +44,13 @@ class TableBuilder
     {
         $dataFromEnum = [];
 
-        if (isset($this->structure['enumMappings'])) {
-            foreach ($this->structure['enumMappings'] as $column => $enumClass) {
-                $enum = new $enumClass();
-                $dataFromEnum[$column] = $enum->getData();
-            }
+        if (!isset($this->structure['enumMappings'])) {
+            return $dataFromEnum;
+        }
+
+        foreach ($this->structure['enumMappings'] as $column => $enumClass) {
+            $enum = new $enumClass();
+            $dataFromEnum[$column] = $enum->getData();
         }
 
         return $dataFromEnum;

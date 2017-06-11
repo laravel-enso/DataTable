@@ -3,60 +3,92 @@
 namespace LaravelEnso\DataTable\app\Classes;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 
 class QueryBuilder
 {
-    public $query;
-    public $recordsTotal;
-    public $recordsFiltered;
-    public $totals;
-    public $data;
+    private $query;
+    private $totalRecords;
+    private $filteredRecords;
+    private $totals;
+    private $data;
 
-    public function __construct($queryBuilder)
+    public function __construct(Builder $query)
     {
-        $this->query = $queryBuilder;
-        $this->recordsTotal = $this->query->get()->count();
+        $this->query = $query;
+        $this->build();
+    }
+
+    public function getTotalRecords()
+    {
+        return $this->totalRecords;
+    }
+
+    public function getFilteredRecords()
+    {
+        return $this->filteredRecords;
+    }
+
+    public function getTotals()
+    {
+        return $this->totals;
+    }
+
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    private function build()
+    {
+        $this->totalRecords = $this->query->count();
 
         $this->applyFilters()
              ->applyExtraFilters()
              ->applyIntervalFilters()
              ->applySortOrder();
 
-        $this->recordsFiltered = $this->query->get()->count();
-        $this->totals = $this->getTotals();
-        $this->applyLimit();
+        $this->filteredRecords = $this->hasFilters() ? $this->query->count() : $this->totalRecords;
+
+        $this->setTotals()
+            ->applyLimit();
+
         $this->data = $this->query->get();
     }
 
     private function applyFilters()
     {
-        if (request()->search['value']) {
-            $search = explode(' ', request()->search['value']);
-
-            foreach ($search as $argument) {
-                $this->query->where(function ($query) use ($argument) {
-                    foreach (request()->columns as $column) {
-                        if ($column['searchable'] == 'true') {
-                            $query->orWhere($column['name'], 'LIKE', '%'.$argument.'%');
-                        }
-                    }
-                });
-            }
+        if (!request('search')['value']) {
+            return $this;
         }
+
+        $arguments = collect(explode(' ', request()->search['value']));
+
+        $arguments->each(function($argument) {
+            $this->query->where(function ($query) use ($argument) {
+                foreach (request('columns') as $column) {
+                    if ($column['searchable'] == 'true') {
+                        $query->orWhere($column['name'], 'LIKE', '%'.$argument.'%');
+                    }
+                }
+            });
+        });
 
         return $this;
     }
 
     private function applyExtraFilters()
     {
-        if (!request()->has('extraFilters')) {
+        $extraFilters = (array) json_decode(request('extraFilters'));
+
+        if (!count($extraFilters)) {
             return $this;
         }
 
-        $this->query->where(function ($query) {
-            foreach ((array) json_decode(request()->extraFilters) as $table => $values) {
+        $this->query->where(function ($query) use ($extraFilters) {
+            foreach ($extraFilters as $table => $values) {
                 foreach ((array) $values as $column => $value) {
-                    if (!is_object($value) && $value != null && $value != '') {
+                    if ($value !== null && $value !== '') {
                         $query->where($table.'.'.$column, '=', $value);
                     }
                 }
@@ -68,12 +100,14 @@ class QueryBuilder
 
     private function applyIntervalFilters()
     {
-        if (!request()->has('intervalFilters')) {
+        $intervalFilters = (array) json_decode(request('intervalFilters'));
+
+        if (!count($intervalFilters)) {
             return $this;
         }
 
-        $this->query->where(function () {
-            foreach ((array) json_decode(request()->intervalFilters) as $table => $intervalObject) {
+        $this->query->where(function () use ($intervalFilters) {
+            foreach ($intervalFilters as $table => $intervalObject) {
                 foreach ((array) $intervalObject as $column => $value) {
                     $this->setMinLimit($table, $column, $value)
                          ->setMaxLimit($table, $column, $value);
@@ -119,8 +153,8 @@ class QueryBuilder
 
     public function applySortOrder()
     {
-        if (!empty(request()->order)) {
-            foreach (request()->order as $order) {
+        if (!empty(request('order'))) {
+            foreach (request('order') as $order) {
                 $this->query->orderBy(request()->columns[$order['column']]['name'], $order['dir']);
             }
         }
@@ -128,19 +162,21 @@ class QueryBuilder
         return $this;
     }
 
-    public function getTotals()
+    public function setTotals()
     {
-        if (!request()->totals) {
-            return false;
+        $totals = (array) json_decode(request('totals'));
+
+        if (!count($totals)) {
+            return $this;
         }
 
-        $totals = [];
+        $this->totals = [];
 
-        foreach (request()->totals as $key => $value) {
-            $totals[$key] = $this->query->sum($value);
+        foreach ($totals as $key => $column) {
+            $this->totals[$key] = $this->query->sum($column);
         }
 
-        return $totals;
+        return $this;
     }
 
     private function applyLimit()
@@ -148,5 +184,12 @@ class QueryBuilder
         $this->query->skip(request()->start)->take(request()->length);
 
         return $this;
+    }
+
+    private function hasFilters()
+    {
+        return request('search')['value']
+            || !count(request('extraFilters'))
+            || !count(request('intervalFilters'));
     }
 }

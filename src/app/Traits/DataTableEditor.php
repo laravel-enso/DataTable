@@ -8,9 +8,7 @@ trait DataTableEditor
 {
     public function setTableData()
     {
-        $config = new $this->tableEditorConfigClass();
-        $editor = new TableEditor($config);
-        $editor->setData();
+        $editor = new TableEditor($this->editableModel, $this->validationClass);
 
         return $editor->getResponse();
     }

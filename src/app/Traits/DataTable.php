@@ -10,16 +10,15 @@ trait DataTable
 {
     public function initTable()
     {
-        $structure = new $this->tableStructureClass();
-        $table = new TableInit($structure);
+        $init = new TableInit(new $this->tableStructureClass());
 
-        return $table->getResponse();
+        return $init->getData();
     }
 
     public function getTableData()
     {
         $builder = new TableBuilder(new $this->tableStructureClass(), new QueryBuilder($this->getTableQuery()));
 
-        return $builder->getResponse();
+        return $builder->getTableData();
     }
 }
