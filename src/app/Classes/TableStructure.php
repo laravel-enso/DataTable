@@ -10,6 +10,6 @@ abstract class TableStructure extends AbstractObject
 
     public function getData()
     {
-    	return $this->data;
+        return $this->data;
     }
 }

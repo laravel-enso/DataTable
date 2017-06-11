@@ -64,7 +64,7 @@ class QueryBuilder
 
         $arguments = collect(explode(' ', request()->search['value']));
 
-        $arguments->each(function($argument) {
+        $arguments->each(function ($argument) {
             $this->query->where(function ($query) use ($argument) {
                 foreach (request('columns') as $column) {
                     if ($column['searchable'] == 'true') {

@@ -20,7 +20,7 @@ class CrtNoComputor
     private function run()
     {
         $this->increaseTotalsIndex();
-            $this->increaseRenderIndex();
+        $this->increaseRenderIndex();
     }
 
     private function increaseTotalsIndex()
@@ -47,7 +47,7 @@ class CrtNoComputor
 
     private function increaseColumnIndex($array)
     {
-        return array_map(function($index) {
+        return array_map(function ($index) {
             return ++$index;
         }, $array);
     }

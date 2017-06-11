@@ -8,7 +8,6 @@ use App\Utils\DataTable\Abstracts\TableStructure;
 
 class ClassName extends TableStructure
 {
-
     public function __construct()
     {
         $this->data = [
@@ -30,31 +29,31 @@ class ClassName extends TableStructure
              * the necessary permission, that specific button is not drawn
              */
             'customActionButtons'     => [
-                [ 'cssSelectorClass'=>'exampleClass', 'cssClass' => 'btn-success fa fa-info-circle', 'event'=>'customEvent', 'route' => 'route.getData' ]
+                ['cssSelectorClass'=>'exampleClass', 'cssClass' => 'btn-success fa fa-info-circle', 'event'=>'customEvent', 'route' => 'route.getData'],
             ],
             /* columns where custom rendering is applied
              * Note: a 'customRender' method needs to exist in the parent vue instance
              */
-            'render'        => [ columnIndex ],
+            'render'        => [columnIndex],
             /* column number where the total value is displayed
              * and the table's column name used in the query, to compute the total
              */
-            'totals'        => [ columnIndex => 'attributeName' ],
+            'totals'        => [columnIndex => 'attributeName'],
             /* computed responsive priority will be 1 for first column
              * and will increment with one for each consecutive column
              */
-            'responsivePriority' => [ columnIndexArray ],
+            'responsivePriority' => [columnIndexArray],
             /* list of columns that are not searchable,
              * such as columns that are translated */
-            'notSearchable' => [ columnIndexArray ],
+            'notSearchable' => [columnIndexArray],
             /* list of columns that you don't want to be sortable */
-            'notSortable' => [ columnIndexArray ],
+            'notSortable' => [columnIndexArray],
             /* list of editable columns
              * Note:  the  parameter is needed, and
              * only attributes of this model are editable i.e. you can't
              * edit attributes of 'joined' models/tables
              */
-            'editable' => [ columnIndexArray ],
+            'editable' => [columnIndexArray],
             /* if none is given, by default, 'lfrtip' is used.
              * See datatables.net documentation */
             'dom' => 'lBfrtip',
@@ -77,11 +76,11 @@ class ClassName extends TableStructure
             'columns' => [
                 0 => [
                     'label' => 'labelName',
-                    'data' => 'attributeName',
-                    'name' => 'attributeSource',
+                    'data'  => 'attributeName',
+                    'name'  => 'attributeSource',
                     'class' => 'className',
                 ],
-            ]
+            ],
         ];
     }
 }

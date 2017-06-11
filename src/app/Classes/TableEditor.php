@@ -2,7 +2,6 @@
 
 namespace LaravelEnso\DataTable\app\Classes;
 
-use LaravelEnso\DataTable\app\Classes\Abstracts\TableEditorConfig;
 use LaravelEnso\Helpers\Classes\Object;
 
 class TableEditor extends Object
@@ -36,13 +35,14 @@ class TableEditor extends Object
 
     private function setProperty()
     {
-        $this->property =  key(request('data')[$this->modelId]);
+        $this->property = key(request('data')[$this->modelId]);
     }
 
     private function setValue()
     {
-        $this->value =  request('data')[$this->modelId][$this->property];
+        $this->value = request('data')[$this->modelId][$this->property];
     }
+
     private function updateModel()
     {
         $this->validate();
@@ -56,7 +56,7 @@ class TableEditor extends Object
 
     private function validate()
     {
-        $rules = (new $this->validationClass)->rules()[$this->property];
+        $rules = (new $this->validationClass())->rules()[$this->property];
         $validator = \Validator::make([$this->property => $this->value], [$this->property => $rules]);
 
         if ($validator->fails()) {

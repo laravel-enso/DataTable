@@ -2,8 +2,6 @@
 
 namespace LaravelEnso\DataTable\app\Classes;
 
-use LaravelEnso\DataTable\app\Classes\TableStructure;
-
 class TableBuilder
 {
     private $structure;
