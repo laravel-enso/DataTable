@@ -106,6 +106,10 @@ class TableInit
 
     private function computeTotals()
     {
+        if (!isset($this->data['totals'])) {
+            return $this;
+        }
+
         $totals = [];
 
         foreach ($this->data['totals'] as $column) {

@@ -2,9 +2,7 @@
 
 namespace LaravelEnso\DataTable\app\Classes;
 
-use LaravelEnso\Helpers\Classes\Object;
-
-class TableEditor extends Object
+class TableEditor
 {
     private $model;
     private $validationClass;

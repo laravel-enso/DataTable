@@ -125,7 +125,6 @@ class QueryBuilder
         }
 
         $min = isset($value->dbDateFormat) ? $this->getFormattedDate($value->min, $value->dbDateFormat) : $value->min;
-
         $this->query->where($table.'.'.$column, '>=', $min);
 
         return $this;
@@ -138,7 +137,6 @@ class QueryBuilder
         }
 
         $max = isset($value->dbDateFormat) ? $this->getFormattedDate($value->max, $value->dbDateFormat) : $value->max;
-
         $this->query->where($table.'.'.$column, '<=', $max);
 
         return $this;
