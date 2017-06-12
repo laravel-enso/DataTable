@@ -173,6 +173,10 @@
             initTable() {
                 axios.get(this.source + '/initTable').then(response => {
                     this.processInitData(response.data);
+                }).catch(error => {
+                    if (error.response.data.level) {
+                        toastr[error.response.data.level](error.response.data.message);
+                    }
                 }).then(() => {
                     this.mountDataTable();
                 });
@@ -317,7 +321,6 @@
                 + (this.actionButtons.standard.delete ? '<a class="btn btn-xs btn-danger margin-left-xs delete-model" data-route="' + this.source + '/' + data + '"><i class="fa fa-trash-o"><i class=""></i></a>' : '');
             },
             getData: _.debounce(function() {
-                console.log('getdata');
                 if (!this.dtHandle) {
                     return this.initTable();
                 }
