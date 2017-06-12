@@ -18,7 +18,7 @@ soon.
 
 3. Publish the sample structure class with `php artisan vendor:publish --tag=datatable-structure`.
 
-4. Include the vue-component in your app.js.
+4. Include the vue component in your app.js.
 
 5. Run gulp.
 

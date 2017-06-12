@@ -79,15 +79,15 @@ class QueryBuilder
 
     private function applyExtraFilters()
     {
-        $extraFilters = (array) json_decode(request('extraFilters'));
+        $extraFilters = json_decode(request('extraFilters'));
 
-        if (!count($extraFilters)) {
+        if (empty((array) $extraFilters)) {
             return $this;
         }
 
         $this->query->where(function ($query) use ($extraFilters) {
             foreach ($extraFilters as $table => $values) {
-                foreach ((array) $values as $column => $value) {
+                foreach ($values as $column => $value) {
                     if ($value !== null && $value !== '') {
                         $query->where($table.'.'.$column, '=', $value);
                     }
@@ -100,15 +100,15 @@ class QueryBuilder
 
     private function applyIntervalFilters()
     {
-        $intervalFilters = (array) json_decode(request('intervalFilters'));
+        $intervalFilters = json_decode(request('intervalFilters'));
 
-        if (!count($intervalFilters)) {
+        if (empty((array) $intervalFilters)) {
             return $this;
         }
 
         $this->query->where(function () use ($intervalFilters) {
             foreach ($intervalFilters as $table => $intervalObject) {
-                foreach ((array) $intervalObject as $column => $value) {
+                foreach ($intervalObject as $column => $value) {
                     $this->setMinLimit($table, $column, $value)
                          ->setMaxLimit($table, $column, $value);
                 }
@@ -151,10 +151,12 @@ class QueryBuilder
 
     public function applySortOrder()
     {
-        if (!empty(request('order'))) {
-            foreach (request('order') as $order) {
-                $this->query->orderBy(request()->columns[$order['column']]['name'], $order['dir']);
-            }
+        if (empty(request('order'))) {
+            return $this;
+        }
+
+        foreach (request('order') as $order) {
+            $this->query->orderBy(request()->columns[$order['column']]['name'], $order['dir']);
         }
 
         return $this;
@@ -162,9 +164,9 @@ class QueryBuilder
 
     public function setTotals()
     {
-        $totals = (array) json_decode(request('totals'));
+        $totals = json_decode(request('totals'));
 
-        if (!count($totals)) {
+        if (empty((array) $totals)) {
             return $this;
         }
 
@@ -187,7 +189,7 @@ class QueryBuilder
     private function hasFilters()
     {
         return request('search')['value']
-            || !count(request('extraFilters'))
-            || !count(request('intervalFilters'));
+            || request('extraFilters')
+            || request('intervalFilters');
     }
 }
