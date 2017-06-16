@@ -174,9 +174,7 @@
                 axios.get(this.source + '/initTable').then(response => {
                     this.processInitData(response.data);
                 }).catch(error => {
-                    if (error.response.data.level) {
-                        toastr[error.response.data.level](error.response.data.message);
-                    }
+                    this.reportEnsoException(error);
                 }).then(() => {
                     this.mountDataTable();
                 });
@@ -209,18 +207,19 @@
                 }
             },
             computeRender(data) {
-                if (data.render) {
-                    let renderFunction,
-                        self = this;
-
-                    data.render.forEach(index => {
-                        renderFunction = (data, type, row, meta) => {
-                            return self.$parent.customRender(self.tableOptions.columns[index].data, data, type, row, meta);
-                        };
-
-                        self.tableOptions.columns[index] = Object.assign({}, { render: renderFunction }, self.tableOptions.columns[index]);
-                    });
+                if (!data.render) {
+                    return false;
                 }
+
+                let self = this;
+
+                data.render.forEach(index => {
+                    let renderFunction = (data, type, row, meta) => {
+                        return self.$parent.customRender(self.tableOptions.columns[index].data, data, type, row, meta);
+                    };
+
+                    self.$set(self.tableOptions.columns[index], 'render', renderFunction);
+                });
             },
             computeEditor(data) {
                 let self = this;
@@ -335,9 +334,7 @@
                     this.dtHandle.ajax.reload();
                     toastr.success(response.data.message);
                 }).catch(error => {
-                    if (error.response.data.level) {
-                        toastr[error.response.data.level](error.response.data.message);
-                    }
+                    this.reportEnsoException(error);
                 });
             }
         },
