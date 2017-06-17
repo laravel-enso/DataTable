@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="box-body table-responsive">
-            <table :id="'table-' + _uid" :class="tableClass"
+            <table :id="tableId" :class="tableClass"
                 width="100%">
                 <thead>
                     <tr>
@@ -58,6 +58,10 @@
                 type: String,
                 required: true
             },
+            id: {
+                type: String,
+                default: null
+            },
             headerClass: {
                 type: String,
                 default: 'primary'
@@ -76,6 +80,9 @@
         computed: {
             hasTotals() {
                 return Object.keys(this.totals).length > 0;
+            },
+            tableId() {
+                return this.id || 'table-' + this._uid;
             }
         },
 
@@ -93,7 +100,7 @@
                 bodyAlign: null,
                 tableClass: null,
                 deleteRoute: null,
-                editedCellValue: null,
+                editedCell: {},
                 firstColumn: {
                     render(data, type, row, meta) {
                         return meta.settings._iDisplayStart + meta.row + 1;
@@ -148,7 +155,7 @@
                         url: this.source + '/setTableData',
                         headers: { 'X-CSRF-TOKEN': Laravel.csrfToken },
                     },
-                    table: '#table-' + this._uid,
+                    table: this.id || '#table-' + this._uid,
                     fields: []
                 }
             }
@@ -223,6 +230,7 @@
             },
             computeEditor(data) {
                 let self = this;
+
                 this.hasEditor = data.editable && data.editable.length > 0;
                 if (!this.hasEditor) {
                     return false;
@@ -237,7 +245,7 @@
                     this.initEditor();
                 };
 
-                this.dtHandle = $('#table-' + this._uid).DataTable(this.tableOptions);
+                this.dtHandle = $('#' + this.tableId).DataTable(this.tableOptions);
                 this.addProcessingListener();
             },
             addProcessingListener() {
@@ -252,13 +260,17 @@
                 this.addClickListener();
                 this.addSelectOnFocusListener();
                 this.addBlurListener();
+                this.addPreSubmitListener();
                 this.addPostSubmitListener();
             },
             addClickListener() {
                 let self = this;
 
-                $('#table-' + this._uid).on('click', 'tbody tr td.editable', function() {
-                    self.editedCellValue = self.dtHandle.cell(this).data();
+                $('#' + this.tableId).on('click', 'tbody tr td.editable', function() {
+                    self.editedCell.value = self.dtHandle.cell(this).data();
+                    let index = self.dtHandle.cell(this).index().column;
+                    self.editedCell.id = this.parentNode.id;
+                    self.editedCell.column = self.tableOptions.columns[index].data;
                     self.dtEditorHandle.inline(this);
                 });
             },
@@ -266,7 +278,7 @@
                 let self = this;
 
                 $('input', this.dtEditorHandle.node()).on('focus', function() {
-                    $(this).val(self.editedCellValue);
+                    $(this).val(self.editedCell.value);
                     this.select();
                 });
             },
@@ -275,11 +287,29 @@
 
                 $('input', this.dtEditorHandle.node()).on('blur', function() {
                     $('div.DTE_Field_InputControl').removeClass('has-error');
-                    self.editedCellValue = null;
+                    self.editedCell = {};
+                });
+            },
+            addPreSubmitListener() {
+                let self = this;
+
+                this.dtEditorHandle.on('preSubmit', function(event, payload, action) {
+                    for (let table in payload.data[self.editedCell.id]) {
+                        for (let property in payload.data[self.editedCell.id][table]) {
+                            if (property !== self.editedCell.column) {
+                                delete payload.data[self.editedCell.id][table][property];
+                            }
+                        }
+                    }
                 });
             },
             addPostSubmitListener() {
                 this.dtEditorHandle.on('postSubmit', function(event, response) {
+                    if (!response) {
+                        toastr.error("Something went wrong");
+                        throw 500;
+                    }
+
                     if (response.level) {
                         $('div.DTE_Field_InputControl').addClass('has-error');
                         return toastr[response.level](response.message);

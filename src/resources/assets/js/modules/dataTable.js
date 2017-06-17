@@ -8,9 +8,7 @@ $.extend(true, $.fn.dataTable.defaults, {
     pagingType: "full_numbers",
     filter: true,
     stateDuration: 60 * 60 * 24 * 90,
-    order: [],
-    searchDelay: 1000,
-    initComplete: function(settings, json) {
+    initComplete(settings, json) {
         initBootstrapSelect('.dataTables_length select', '60px', false);
     },
     responsive: true,
