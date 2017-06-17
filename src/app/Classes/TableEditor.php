@@ -93,20 +93,28 @@ class TableEditor
 
     private function validateValue()
     {
-        $rules = (new $this->validationClass())->rules()[$this->property];
+        $rules = $this->validationClass ? (new $this->validationClass())->rules()[$this->property] : '';
 
+        if (is_array($rules)) {
+            $rules = $this->excludeModelIdFromUnique($rules);
+        }
+
+        $validator = \Validator::make([$this->property => $this->value], [$this->property => $rules]);
+
+        if ($validator->fails()) {
+            throw new \EnsoException($this->getValidatorErrors($validator), 'warning');
+        }
+    }
+
+    private function excludeModelIdFromUnique(array $rules)
+    {
         foreach ($rules as &$rule) {
             if (is_object($rule) && ($rule instanceof Unique)) {
                 $rule = $rule->ignore($this->modelId);
             }
         }
 
-        $validator = \Validator::make([$this->property => $this->value], [$this->property => $rules]);
-
-        if ($validator->fails()) {
-            $message = $this->getValidatorErrors($validator);
-            throw new \EnsoException($message, 'warning');
-        }
+        return $rules;
     }
 
     private function getValidatorErrors($validator)
