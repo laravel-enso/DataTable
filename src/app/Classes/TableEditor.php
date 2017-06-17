@@ -53,9 +53,9 @@ class TableEditor
     {
         $this->property = key(request('data')[$this->modelId][$this->table]);
 
-        if (!in_array($this->property, (new $this->model)->getFillable())) {
-            throw new \EnsoException(__("Seems like the")." '".$this->property."' ".__("property defined in the 'TableStructure' class under
-                the 'name' attribute for the editable column, does not exist in the fillable array for the")." '".$this->model."' ".__("model"), 'warning');
+        if (!in_array($this->property, (new $this->model())->getFillable())) {
+            throw new \EnsoException(__('Seems like the')." '".$this->property."' ".__("property defined in the 'TableStructure' class under
+                the 'name' attribute for the editable column, does not exist in the fillable array for the")." '".$this->model."' ".__('model'), 'warning');
         }
 
         return $this;
@@ -80,11 +80,11 @@ class TableEditor
 
     private function validateTable()
     {
-        $modelTable = (new $this->model)->getTable();
+        $modelTable = (new $this->model())->getTable();
 
         if ($this->table !== $modelTable) {
-            throw new \EnsoException(__("The model")." '".$this->model."' ".__("has")." '".$modelTable
-                ."' ".__("as default table instead of the given")." '".$this->table."' "
+            throw new \EnsoException(__('The model')." '".$this->model."' ".__('has')." '".$modelTable
+                ."' ".__('as default table instead of the given')." '".$this->table."' "
                 .__("defined in the 'name' attribute from the 'TableStructure' class"), 'warning');
         }
 
