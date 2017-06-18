@@ -394,4 +394,109 @@
         color: #00776c;
     }
 
+    div.DTE_Inline div.DTE_Inline_Field div.DTE_Field input,
+    div.DTE_Inline div.DTE_Inline_Buttons div.DTE_Field input {
+        width: 100%;
+        text-align: center;
+    }
+
+    table .editable {
+        cursor: pointer;
+    }
+
+    table.dataTable thead th {
+        background-color: #405665;
+        color: white;
+    }
+
+    table.dataTable thead th,
+    table.dataTable tfoot th {
+        font-weight: normal;
+    }
+
+    table.dataTable thead th {
+        position: relative;
+        background-image: none !important;
+    }
+
+    table.dataTable tfoot td {
+        background-color: #405665;
+        color: white;
+    }
+
+    table.dataTable tfoot td {
+        position: relative;
+        background-image: none !important;
+    }
+
+    table.dataTable thead th.sorting:after,
+    table.dataTable thead th.sorting_asc:after,
+    table.dataTable thead th.sorting_desc:after {
+        position: absolute;
+        top: calc(50% - 8.17px);
+        right: 3px;
+        display: block;
+        font-family: FontAwesome;
+    }
+
+    table.dataTable thead th.sorting:after {
+        content: "\f0dc";
+        color: #ddd;
+        font-size: 0.8em;
+        padding-top: 0.12em;
+    }
+
+    table.dataTable thead th.sorting_asc:after {
+        content: "\f0de";
+    }
+
+    table.dataTable thead th.sorting_desc:after {
+        content: "\f0dd";
+    }
+
+    /* datatables-responsive control button */
+    table.dataTable.dtr-column > tbody > tr > td.control,
+    table.dataTable.dtr-column > tbody > tr > th.control {
+        position: relative;
+        cursor: pointer;
+    }
+
+    table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before,
+    table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
+        color: inherit;
+        background-color:inherit;
+        font-family: "FontAwesome";
+        content: '\f0fe';
+        box-shadow: none;
+    }
+
+    table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child:before,
+    table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child:before {
+        background-color: inherit;
+        font-family: "FontAwesome";
+        content: '\f146';
+    }
+
+    table > tbody > tr.selected {
+        font-weight: bold;
+    }
+
+    div.dataTables_filter input {
+        border: 1px solid #ddd;
+    }
+
+    div.dataTables_filter label,
+    div.dataTables_length label {
+        font-weight: 400;
+    }
+
+    .dt-length .dataTables_length {
+        margin-right: 4px;
+    }
+
+    div.dataTables_length > label > div.bootstrap-select > button.btn.dropdown-toggle.btn-default {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+
 </style>
