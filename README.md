@@ -39,7 +39,7 @@ soon.
 8. In the controller you must define a method for the query builder like this:
 
 ```
-public static function getTableQuery()
+public function getTableQuery()
 {
     return Model::select(\DB::raw('id as DT_RowId, attribute1, ..., attributeN'));
 }
