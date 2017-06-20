@@ -6,10 +6,6 @@
 
 DataTable builder for DataTable.net library with server-side processing. Includes a vue component.
 
-### Demo
-
-soon.
-
 ### Installation Steps
 
 1. Add `LaravelEnso\DataTable\DataServiceProvider::class` to `config/app.php`. (included if you use LaravelEnso/core)

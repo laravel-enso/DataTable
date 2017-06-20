@@ -34,9 +34,8 @@ class ClassName extends TableStructure
             /* columns where custom rendering is applied
              * Note: a 'customRender' method needs to exist in the parent vue instance
              */
-            'render' => [columnIndex],
+            'render' => [columnIndexArray],
             /* column number where the total value is displayed
-             * and the table's column name used in the query, to compute the total
              */
             'totals' => [columnIndexArray],
             /* computed responsive priority will be 1 for first column

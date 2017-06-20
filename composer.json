@@ -1,7 +1,7 @@
 {
     "name": "laravel-enso/datatable",
     "description": "DataTable builder for DataTable.net jQuery library",
-    "type": "library",
+    "type": "dependency",
     "license": "MIT",
     "authors": [
         {
