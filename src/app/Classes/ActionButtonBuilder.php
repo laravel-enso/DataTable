@@ -2,7 +2,7 @@
 
 namespace LaravelEnso\DataTable\app\Classes;
 
-use LaravelEnso\DataTable\app\Enums\ActionButtonsEnum;
+use LaravelEnso\DataTable\app\Enums\ActionButtons;
 
 class ActionButtonBuilder
 {
@@ -40,7 +40,7 @@ class ActionButtonBuilder
         $label = $this->data['actionButtons'];
         $this->data['actionButtons'] = [];
         $this->data['actionButtons']['label'] = $label;
-        $this->data['actionButtons']['standard'] = (new ActionButtonsEnum($this->route))->getData();
+        $this->data['actionButtons']['standard'] = (new ActionButtons($this->route))->getData();
 
         return $this;
     }

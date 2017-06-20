@@ -4,7 +4,7 @@ namespace LaravelEnso\DataTable\app\Enums;
 
 use LaravelEnso\Helpers\Classes\AbstractEnum;
 
-class ActionButtonsEnum extends AbstractEnum
+class ActionButtons extends AbstractEnum
 {
     public function __construct(String $route)
     {
