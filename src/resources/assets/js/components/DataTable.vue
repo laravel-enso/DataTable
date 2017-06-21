@@ -499,4 +499,14 @@
         border: 1px solid #ddd;
     }
 
+    .table > thead > tr > th {
+        border-top: 1.2px solid #111 !important;
+        border-bottom: 1.2px solid #111 !important;
+    }
+
+    .table > tfoot > tr > td {
+        border-top: 1.2px solid #111 !important;
+        border-bottom: 1.2px solid #111 !important;
+    }
+
 </style>
