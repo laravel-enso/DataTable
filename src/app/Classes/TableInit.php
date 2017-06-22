@@ -26,7 +26,8 @@ class TableInit
             ->computeTotals()
             ->setEditable()
             ->computeCrtNo()
-            ->setActionButtons();
+            ->setActionButtons()
+            ->setLanguage();
 
         unset($this->data['enumMappings']);
     }
@@ -158,5 +159,14 @@ class TableInit
 
         $this->data['actionButtons'] = (new ActionButtonBuilder($this->data))->getData();
         unset($this->data['customActionButtons']);
+
+        return $this;
+    }
+
+    private function setLanguage()
+    {
+        $this->data['language'] = \File::exists(resource_path('dt-lang/'.app()->getLocale().'.json'))
+            ? json_decode(\File::get(resource_path('dt-lang/'.app()->getLocale().'.json')))
+            : null;
     }
 }

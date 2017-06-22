@@ -17,6 +17,10 @@ class DataTableServiceProvider extends ServiceProvider
         ], 'datatable-options');
 
         $this->publishes([
+            __DIR__.'/resources/dt-lang' => resource_path('dt-lang'),
+        ], 'datatable-lang');
+
+        $this->publishes([
             __DIR__.'/resources/DataTable' => app_path('DataTable'),
         ], 'datatable-class');
 
