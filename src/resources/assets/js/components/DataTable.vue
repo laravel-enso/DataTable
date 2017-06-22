@@ -7,8 +7,11 @@
                 <slot name="data-table-title"></slot>
             </h3>
             <div class="box-tools pull-right">
-                <button type="button"
-                    class="btn btn-box-tool btn-sm"
+                <button class="btn btn-box-tool btn-sm" @click="toggleCompact()">
+                    <i class="fa fa fa-expand fa-rotate-135" v-if="compact"></i>
+                    <i class="fa fa fa-compress fa-rotate-135" v-else></i>
+                </button>
+                <button class="btn btn-box-tool btn-sm"
                     @click="getData()">
                     <i class="fa fa-refresh"></i>
                 </button>
@@ -19,7 +22,7 @@
             </div>
         </div>
         <div class="box-body table-responsive">
-            <table :id="tableId" :class="tableClass"
+            <table :id="tableId" class="table display" :class="tableClass"
                 width="100%">
                 <thead>
                     <tr>
@@ -83,6 +86,9 @@
             },
             tableId() {
                 return this.id || 'table-' + this._uid;
+            },
+            settingsKey() {
+                return 'DataTables_' + this.tableId + '_' + this.source +'_settings';
             }
         },
 
@@ -101,6 +107,7 @@
                 tableClass: null,
                 deleteRoute: null,
                 editedCell: {},
+                compact: false,
                 firstColumn: {
                     render(data, type, row, meta) {
                         return meta.settings._iDisplayStart + meta.row + 1;
@@ -119,8 +126,11 @@
                     orderable: false,
                 },
                 tableOptions: {
-                    dom: 'lfrtip',
+                    dom: 'lBfrtip',
                     columns: [],
+                    buttons: [
+                        'copy', 'colvis'
+                    ],
                     ajax: {
                         url: this.source + '/getTableData',
                         type: 'GET',
@@ -196,10 +206,12 @@
                 this.computeEditor(data);
             },
             setStyle(data) {
-                this.tableClass = data.tableClass;
+                this.tableClass = data.tableClass || null;
                 this.headerAlign = data.headerAlign;
                 this.bodyAlign = data.bodyAlign;
                 this.tableOptions.dom = data.dom || this.tableOptions.dom;
+                let settings = Store.user.preferences.global.dtStateSave ? JSON.parse(localStorage.getItem(this.settingsKey)) : null;
+                this.compact = settings ? settings.compact : false;
             },
             computeExtraColumns(data) {
                 if (data.actionButtons) {
@@ -246,6 +258,11 @@
                 };
 
                 this.dtHandle = $('#' + this.tableId).DataTable(this.tableOptions);
+
+                if (this.compact) {
+                    $('#' + this.tableId).toggleClass('compact');
+                }
+
                 this.addProcessingListener();
             },
             addProcessingListener() {
@@ -366,6 +383,13 @@
                 }).catch(error => {
                     this.reportEnsoException(error);
                 });
+            },
+            toggleCompact() {
+                this.compact = !this.compact;
+                $('#' + this.tableId).toggleClass('compact');
+                if (Store.user.preferences.global.dtStateSave) {
+                    localStorage.setItem(this.settingsKey, JSON.stringify({'compact': this.compact}));
+                }
             }
         },
 
@@ -490,23 +514,13 @@
         font-weight: 400;
     }
 
-    .dt-length .dataTables_length {
+    div.dataTables_length {
         margin-right: 4px;
     }
 
     div.dataTables_length > label > div.bootstrap-select > button.btn.dropdown-toggle.btn-default {
         box-shadow: none;
         border: 1px solid #ddd;
-    }
-
-    .table > thead > tr > th {
-        border-top: 1.2px solid #111 !important;
-        border-bottom: 1.2px solid #111 !important;
-    }
-
-    .table > tfoot > tr > td {
-        border-top: 1.2px solid #111 !important;
-        border-bottom: 1.2px solid #111 !important;
     }
 
 </style>

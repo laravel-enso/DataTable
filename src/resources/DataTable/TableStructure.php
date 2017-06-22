@@ -53,17 +53,17 @@ class ClassName extends TableStructure
              * edit attributes of 'joined' models/tables
              */
             'editable' => [columnIndexArray],
-            /* if none is given, by default, 'lfrtip' is used.
+            /* if none is given, by default, 'lBfrtip' is used.
              * See datatables.net documentation */
-            'dom' => 'lfrtip',
+            'dom' => 'lBfrtip',
             /* table header alignment. The dt-head-* class is used,
              * i.e. dt-head-center in this example  */
             'headerAlign' => 'left center right',
             /* table body alignment. The dt-body-center class is used in this example
              */
             'bodyAlign' => 'left center right',
-            /* the class of the table element */
-            'tableClass' => 'table display compact',
+            /* custom class for the <table> element */
+            'tableClass' => '',
             /* list of columns whose values should be displayed translated.
              * Note: in order to work it needs a CustomEnum class
              */
