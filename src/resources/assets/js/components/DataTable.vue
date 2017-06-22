@@ -7,9 +7,16 @@
                 <slot name="data-table-title"></slot>
             </h3>
             <div class="box-tools pull-right">
-                <button class="btn btn-box-tool btn-sm" @click="toggleCompact()">
-                    <i class="fa fa fa-expand fa-rotate-135" v-if="compact"></i>
-                    <i class="fa fa fa-compress fa-rotate-135" v-else></i>
+                <button class="btn btn-box-tool btn-sm" @click="clearState()">
+                    <i class="fa fa-undo"></i>
+                </button>
+                <button class="btn btn-box-tool btn-sm" @click="toggleDisplayClass()">
+                    <i class="fa fa-th-list" v-if="classes.display"></i>
+                    <i class="fa fa-bars" v-else></i>
+                </button>
+                <button class="btn btn-box-tool btn-sm" @click="toggleCompactClass()">
+                    <i class="fa fa-th-large" v-if="classes.compact"></i>
+                    <i class="fa fa-th" v-else></i>
                 </button>
                 <button class="btn btn-box-tool btn-sm"
                     @click="getData()">
@@ -107,7 +114,10 @@
                 tableClass: null,
                 deleteRoute: null,
                 editedCell: {},
-                compact: false,
+                classes: {
+                    compact: false,
+                    display: false,
+                },
                 firstColumn: {
                     render(data, type, row, meta) {
                         return meta.settings._iDisplayStart + meta.row + 1;
@@ -126,11 +136,7 @@
                     orderable: false,
                 },
                 tableOptions: {
-                    dom: 'lBfrtip',
-                    columns: [],
-                    buttons: [
-                        'copy', 'colvis'
-                    ],
+                    dom: 'Bfrtip',
                     ajax: {
                         url: this.source + '/getTableData',
                         type: 'GET',
@@ -197,6 +203,7 @@
                 });
             },
             processInitData(data) {
+                this.getSettings();
                 this.setStyle(data);
                 this.header = data.header;
                 this.tableOptions.columns = data.columns;
@@ -205,13 +212,18 @@
                 this.computeRender(data);
                 this.computeEditor(data);
             },
+            getSettings() {
+                let settings = Store.user.preferences.global.dtStateSave && localStorage.hasOwnProperty(this.settingsKey)
+                    ? JSON.parse(localStorage.getItem(this.settingsKey))
+                    : null;
+                this.classes = settings ? settings : this.classes;
+            },
             setStyle(data) {
                 this.tableClass = data.tableClass || null;
                 this.headerAlign = data.headerAlign;
                 this.bodyAlign = data.bodyAlign;
                 this.tableOptions.dom = data.dom || this.tableOptions.dom;
-                let settings = Store.user.preferences.global.dtStateSave ? JSON.parse(localStorage.getItem(this.settingsKey)) : null;
-                this.compact = settings ? settings.compact : false;
+                this.tableOptions.language = data.language || null;
             },
             computeExtraColumns(data) {
                 if (data.actionButtons) {
@@ -258,12 +270,17 @@
                 };
 
                 this.dtHandle = $('#' + this.tableId).DataTable(this.tableOptions);
-
-                if (this.compact) {
+                this.toggleClasses();
+                this.addProcessingListener();
+            },
+            toggleClasses() {
+                if (this.classes.compact) {
                     $('#' + this.tableId).toggleClass('compact');
                 }
 
-                this.addProcessingListener();
+                if (this.classes.display) {
+                    $('#' + this.tableId).toggleClass('display');
+                }
             },
             addProcessingListener() {
                 let self = this;
@@ -384,12 +401,27 @@
                     this.reportEnsoException(error);
                 });
             },
-            toggleCompact() {
-                this.compact = !this.compact;
+            toggleCompactClass() {
+                this.classes.compact = !this.classes.compact;
                 $('#' + this.tableId).toggleClass('compact');
                 if (Store.user.preferences.global.dtStateSave) {
-                    localStorage.setItem(this.settingsKey, JSON.stringify({'compact': this.compact}));
+                    localStorage.setItem(this.settingsKey, JSON.stringify(this.classes));
                 }
+            },
+            toggleDisplayClass() {
+                this.classes.display = !this.classes.display;
+                $('#' + this.tableId).toggleClass('display');
+                if (Store.user.preferences.global.dtStateSave) {
+                    localStorage.setItem(this.settingsKey, JSON.stringify(this.classes));
+                }
+            },
+            clearState() {
+                if (localStorage.hasOwnProperty(this.settingsKey)) {
+                    localStorage.removeItem(this.settingsKey)
+                }
+
+                this.dtHandle.state.clear();
+                window.location.reload();
             }
         },
 
@@ -521,6 +553,10 @@
     div.dataTables_length > label > div.bootstrap-select > button.btn.dropdown-toggle.btn-default {
         box-shadow: none;
         border: 1px solid #ddd;
+    }
+
+    div.dt-button-collection {
+        width: auto;
     }
 
 </style>

@@ -1,20 +1,18 @@
 $.extend(true, $.fn.dataTable.defaults, {
-    dom: 'lBrftip',
-    language: {"sUrl": "/libs/datatables-lang/" + Store.user.preferences.global.lang + ".json"},
+    dom: 'Brftip',
     stateSave: Store.user.preferences.global.dtStateSave,
-    lengthChange: true,
     lengthMenu: [10, 15, 20, 25, 30],
     autoWidth: true,
     pagingType: "full_numbers",
     filter: true,
     stateDuration: 60 * 60 * 24 * 90,
     order: [],
+    colReorder: true,
     buttons: [
-        'copy', 'colvis'
+        { extend: 'pageLength', className: "blahblah" },
+        { extend: 'colvis', text: '<i class="fa fa-eye"></i>'},
+        { extend: 'copy', text:'<i class="fa fa-clipboard"></i>'},
     ],
-    initComplete(settings, json) {
-        initBootstrapSelect('.dataTables_length select', '60px', false);
-    },
     responsive: true,
     serverSide: true,
 });
