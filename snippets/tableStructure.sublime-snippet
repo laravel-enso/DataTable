@@ -1,0 +1,90 @@
+<snippet>
+    <content><![CDATA[
+namespace ${1:Namespace};
+
+use LaravelEnso\DataTable\app\Classes\TableStructure;
+
+class ${2:Class} extends TableStructure
+{
+
+    public function __construct()
+    {
+        \$this->data = [
+            ${3:${4:/* current number for each line, with the header name
+             * If given, it will be appended as the first column of the table
+             */}
+            'crtNo'         => '${5:app.crtNo}',}
+            ${6:${7:/* column for buttons with available actions. Used for both standard
+             * actions - create, view, edit, delete - and custom actions.
+             * Note: the buttons for standard actions are added automatically depending
+             * on permissions and do not need to be specified here or elsewhere.
+             */}
+            'actionButtons' => '${8:app.actions}',}
+            ${9:${10:/* list of action buttons for custom actions
+             * cssSelectorClass is used for adding the button event listener
+             * cssClass is used for styling the custom button
+             * event is the event triggered by the button
+             * route is OPTIONAL, and if given, it will be checked for permission i.e. if the user doesn't have
+             * the necessary permission, that specific button is not drawn
+             */}
+            'customActionButtons'     => [
+                [ 'cssClass' => '${11:btn-success fa fa-info-circle}', 'event'=>'${12:custom-event}'${13:, 'route' => '${14:route.getData}'} ]
+            ],}
+            ${15:${16:/* columns where custom rendering is applied
+             * Note: a 'customRender' method needs to exist in the parent vue instance
+             */}
+            'render'        => [ ${17:columnIndexArray} ],}
+            ${18:${19:/* column number where the total value is displayed
+             * and the table's column name used in the query, to compute the total
+             */}
+            'totals'        => [ ${20:columnIndexArray} ],}
+            ${21:${22:/* computed responsive priority will be 1 for first column
+             * and will increment with one for each consecutive column
+             */}
+            'responsivePriority' => [ ${23:columnIndexArray} ],}
+            ${24:${25:/* list of columns that are not searchable,
+             * such as columns that are translated */}
+            'notSearchable' => [ ${26:columnIndexArray} ],}
+            ${27:${28:/* list of columns that you don't want to be sortable */}
+            'notSortable' => [ ${29:columnIndexArray} ],}
+            ${30:${31:/* list of editable columns
+             * Note:  the $editableModel parameter is needed, and
+             * only attributes of this model are editable i.e. you can't
+             * edit attributes of 'joined' models/tables
+             */}
+            'editable' => [ ${32:columnIndexArray} ],}
+            ${33:${34:/* if none is given, by default, 'Bfrtip' is used.
+             * See datatables.net documentation */}
+            'dom' => '${35:Bfrtip}',}
+            ${36:/* table header alignment. The dt-head-* class is used,
+             * i.e. dt-head-center in this example  */}
+            'headerAlign'        => '${37:left} ${38:center} ${39:right}',
+            ${40:/* table body alignment. The dt-body-center class is used in this example
+             */}
+            'bodyAlign'        => '${41:left} ${42:center} ${43:right}',
+            ${44:${45:/* custom classes for the <table> element */}
+            'tableClass'         => '${46:custom-class}',}
+            ${47:${48:/* array of columns whose values should be displayed translated.
+            * Note: in order to work it needs a ColumnEnum class
+             */}
+            'enumMappings' => [
+                '${49:status}' => '${50:StatusesEnum}',
+            ],}
+            ${51:/* configuration of the columns to be displayed
+             */}
+            'columns' => [
+                0 => [
+                    'label' => '${52:labelName}',
+                    'data' => '${53:attributeName}',
+                    'name' => '${54:attributeSource}',
+                    ${55:'class' => '${56:className}',}
+                ],
+            ]
+        ];
+    }
+}]]></content>
+    <!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+    <tabTrigger>tableStructure</tabTrigger>
+    <!-- Optional: Set a scope to limit where the snippet will trigger -->
+    <scope>source.php</scope>
+</snippet>
