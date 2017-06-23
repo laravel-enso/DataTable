@@ -29,7 +29,10 @@
             </div>
         </div>
         <div class="box-body table-responsive">
-            <table :id="tableId" class="table display" :class="tableClass"
+            <table
+                :id="tableId"
+                class="table display"
+                :class="tableClass"
                 width="100%">
                 <thead>
                     <tr>
@@ -147,23 +150,16 @@
                             customParams () { return JSON.stringify(self.customParams); }
                         }
                     },
-                    drawCallback () {
+                    drawCallback() {
+                        self.toggleClasses();
+
                         for (let index in self.totals) {
                             self.drawColumnTotal(this.api(), index, self.dtHandle.context[0].json.totals[index]);
                         }
 
-                        $('table .delete-model').off('click').on('click', event => {
-                            self.deleteRoute = $(event.currentTarget).data('route');
-                            self.showModal = true;
+                        $('#' + self.tableId).on('draw.dt', function () {
+                            self.addPostDrawListeners();
                         });
-
-                        if(self.actionButtons.custom) {
-                            self.actionButtons.custom.forEach(button => {
-                                $('table a.' + button.event.toLowerCase()).off('click').on('click', function() {
-                                    self.$emit($(this).data('event'), $(this).data('id'));
-                                });
-                            });
-                        }
                     },
                 },
                 editorOptions: {
@@ -270,17 +266,7 @@
                 };
 
                 this.dtHandle = $('#' + this.tableId).DataTable(this.tableOptions);
-                this.toggleClasses();
                 this.addProcessingListener();
-            },
-            toggleClasses() {
-                if (this.classes.compact) {
-                    $('#' + this.tableId).toggleClass('compact');
-                }
-
-                if (this.classes.display) {
-                    $('#' + this.tableId).toggleClass('display');
-                }
             },
             addProcessingListener() {
                 let self = this;
@@ -288,6 +274,22 @@
                 this.dtHandle.on('processing.dt', (e, settings, processing) => {
                     self.updateLoadingState(processing);
                 });
+            },
+            addPostDrawListeners() {
+                let self = this;
+
+                $('table a.delete-model').off('click').on('click', function(event) {
+                    self.deleteRoute = $(event.currentTarget).data('route');
+                    self.showModal = true;
+                });
+
+                if(self.actionButtons.custom) {
+                    self.actionButtons.custom.forEach(button => {
+                        $('table a.' + button.event.toLowerCase()).off('click').on('click', function() {
+                            self.$emit($(this).data('event'), $(this).data('id'));
+                        });
+                    });
+                }
             },
             initEditor() {
                 this.dtEditorHandle = new $.fn.dataTable.Editor(this.editorOptions);
@@ -400,6 +402,15 @@
                 }).catch(error => {
                     this.reportEnsoException(error);
                 });
+            },
+            toggleClasses() {
+                if (this.classes.compact) {
+                    $('#' + this.tableId).toggleClass('compact');
+                }
+
+                if (this.classes.display) {
+                    $('#' + this.tableId).toggleClass('display');
+                }
             },
             toggleCompactClass() {
                 this.classes.compact = !this.classes.compact;

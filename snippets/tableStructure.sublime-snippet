@@ -20,15 +20,14 @@ class ${2:Class} extends TableStructure
              * on permissions and do not need to be specified here or elsewhere.
              */}
             'actionButtons' => '${8:app.actions}',}
-            ${9:${10:/* list of action buttons for custom actions
-             * cssSelectorClass is used for adding the button event listener
-             * cssClass is used for styling the custom button
+            ${9:${10:/* list of icon action buttons for custom actions
+             * class is used for styling the custom button icon
              * event is the event triggered by the button
              * route is OPTIONAL, and if given, it will be checked for permission i.e. if the user doesn't have
              * the necessary permission, that specific button is not drawn
              */}
             'customActionButtons'     => [
-                [ 'cssClass' => '${11:btn-success fa fa-info-circle}', 'event'=>'${12:custom-event}'${13:, 'route' => '${14:route.getData}'} ]
+                [ 'class' => '${11:btn-success fa fa-info-circle}', 'event'=>'${12:custom-event}'${13:, 'route' => '${14:route.getData}'} ]
             ],}
             ${15:${16:/* columns where custom rendering is applied
              * Note: a 'customRender' method needs to exist in the parent vue instance
