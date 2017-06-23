@@ -54,7 +54,7 @@ class ActionButtonBuilder
         }
 
         foreach ($this->data['customActionButtons'] as $customButton) {
-            if (isset($customButton['route']) && !request()->user()->hasAccessTo($customButton['route'])) {
+            if (isset($customButton['route']) && !request()->user()->can('access-route', $customButton['route'])) {
                 continue;
             }
 

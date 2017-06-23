@@ -9,10 +9,10 @@ class ActionButtons extends AbstractEnum
     public function __construct(String $route)
     {
         $this->data = [
-            'show'     => request()->user()->hasAccessTo($route.'.show') ?: false,
-            'edit'     => request()->user()->hasAccessTo($route.'.edit') ?: false,
-            'delete'   => request()->user()->hasAccessTo($route.'.destroy') ?: false,
-            'download' => request()->user()->hasAccessTo($route.'.download') ?: false,
+            'show'     => request()->user()->can('access-route', $route.'.show') ?: false,
+            'edit'     => request()->user()->can('access-route', $route.'.edit') ?: false,
+            'delete'   => request()->user()->can('access-route', $route.'.destroy') ?: false,
+            'download' => request()->user()->can('access-route', $route.'.download') ?: false,
         ];
     }
 }
