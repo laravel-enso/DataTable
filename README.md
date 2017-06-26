@@ -4,11 +4,11 @@
 [![Total Downloads](https://poser.pugx.org/laravel-enso/datatable/downloads)](https://packagist.org/packages/laravel-enso/datatable)
 [![Latest Stable Version](https://poser.pugx.org/laravel-enso/datatable/version)](https://packagist.org/packages/laravel-enso/datatable)
 
-DataTable builder for DataTable.net library with server-side processing. Includes a vue component.
+DataTable package for the DataTable.net library with server-side processing. Includes a VueJS component.
 
 ### Installation Steps
 
-1. Add `LaravelEnso\DataTable\DataServiceProvider::class` to `config/app.php`. (included if you use LaravelEnso/core)
+1. Add `LaravelEnso\DataTable\DataServiceProvider::class` to `config/app.php`.
 
 2. Publish the vue component with `php artisan vendor:publish --tag=datatable-component`.
 
@@ -16,42 +16,44 @@ DataTable builder for DataTable.net library with server-side processing. Include
 
 4. Include the vue component in your app.js.
 
-5. Run gulp.
+5. Run `gulp` / `npm run dev`.
 
-6. In your blade add:
+6. In your blade page add:
 
-```
-<data-table source="/indexRoute">
-    <span slot="data-table-title">{{ __("Title") }}</span>
-    <span slot="data-table-totals">{{ __("Totals") }}</span>
-    @include('laravel-enso/core::partials.modal')
-</data-table>
-```
+    ```
+    <data-table source="/myRoute">
+        <span slot="data-table-title">{{ __("Title") }}</span>
+        <span slot="data-table-totals">{{ __("Totals") }}</span>
+        @include('laravel-enso/core::partials.modal')
+    </data-table>
+    ```
 
-7. In your controller add `use DataTable` trait. This adds in your controller two helper methods that will manage the builder:
+7. In your controller add `use DataTable` to include the trait. This adds to your controller two helper methods that will manage the builder:
 	- initTable
 	- getTableData
 
-8. In the controller you must define a method for the query builder like this:
+8. In the controller you must define a method for the query builder, such as:
 
-```
-public function getTableQuery()
-{
-    return Model::select(\DB::raw('id as DT_RowId, attribute1, ..., attributeN'));
-}
-```
+    ```
+    public function getTableQuery()
+    {
+        return MyModel::select(\DB::raw('id as DT_RowId, attribute1, ..., attributeN'));
+    }
+    ```
 
-9. Also in the controller add `protected $tableStructureClass = TableStructure::class`.
+9. Also in the controller add `protected $tableStructureClass = MyTableStructure::class` which should be the class describing the structure of the table rendered in your page 
 
-10. In your routes files add two routes for the helper methods, and name them `indexRoute.initTable` and `indexRoute.getTableData`.
+10. In your routes files add two routes for the helper methods, and name them `myRoute.initTable` and `myRoute.getTableData`.
 
 11. Configure the table from the structure class.
 
-12. Enjoy if you still have the mood :)
+### Note
+- You may clone and/or install the [laravel-enso/enso](https://github.com/laravel-enso/Enso) package where you'll find working examples for using the component
+- In the snippets folder you'll find a sublime snippet for quickly creating a stub table-structure class
 
 ### Options
 
-	`source` - required, must reference the controllers index route.
+	`source` - required, must reference the controllers base route, where both initTable & getTableData endpoints exist
 	`header-class` - header class for the box element: info (default option) / default / primary / warning / danger / default
 	`extra-filters` - reactive option array of the following format:
 		extraFilters: {
@@ -82,6 +84,15 @@ public function getTableQuery()
 	}
 
 	Note: 'dbDateFormat' is REQUIRED if the filter values are dates. The given format has to match the database date format
+
+### Can publish
+- `php artisan vendor:publish --tag=datatable-component` - the VueJS component file
+- `php artisan vendor:publish --tag=datatable-options` - the json options file
+- `php artisan vendor:publish --tag=datatable-lang` - the default lang files
+- `php artisan vendor:publish --tag=datatable-class` - the abstract TableStructure class that must be extended when creating specific structures
+- `php artisan vendor:publish --tag=update` - a common alias for when wanting to update the VueJS components, 
+once a newer version is released.
+
 
 ### Contributions
 
