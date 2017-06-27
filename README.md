@@ -6,6 +6,24 @@
 
 DataTable package for the [DataTables.net](https://datatables.net/) library with server-side processing and a VueJS component.
 
+### Details
+Supports:
+- searching in all the columns of the table (you can also choose to exclude some columns)
+- hiding of columns
+- reordering of columns
+- sorting on any column (you can also choose to exclude some columns)
+- totals
+- user configurable pagination
+- reloading of data
+- visual aides, directly from the interface, such as displaying a table as compact and adding alternate row coloring
+- inline editing of values<sup>1</sup> <sup>2</sup>
+- custom rendering of data in columns
+and more
+
+<sup>1</sup> requires the purchase of the DataTables.net Editor library, as it's a commercial feature
+
+<sup>2</sup> there are some limitations when editing aggregated data
+
 ### Installation
 
 1. Add `LaravelEnso\DataTable\DataServiceProvider::class` to `config/app.php`.
