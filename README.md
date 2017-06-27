@@ -4,9 +4,9 @@
 [![Total Downloads](https://poser.pugx.org/laravel-enso/datatable/downloads)](https://packagist.org/packages/laravel-enso/datatable)
 [![Latest Stable Version](https://poser.pugx.org/laravel-enso/datatable/version)](https://packagist.org/packages/laravel-enso/datatable)
 
-DataTable package for the DataTable.net library with server-side processing. Includes a VueJS component.
+DataTable package for the [DataTables.net](https://datatables.net/) library with server-side processing and a VueJS component.
 
-### Installation Steps
+### Installation
 
 1. Add `LaravelEnso\DataTable\DataServiceProvider::class` to `config/app.php`.
 
@@ -47,8 +47,9 @@ DataTable package for the DataTable.net library with server-side processing. Inc
 
 11. Configure the table from the structure class.
 
-### Note
-- You may clone and/or install the [laravel-enso/enso](https://github.com/laravel-enso/Enso) package where you'll find working examples for using the component
+### Notes
+
+- You may clone and/or install the [Laravel Enso](https://github.com/laravel-enso/Enso) package where you'll find working examples for using the component
 - In the snippets folder you'll find a sublime snippet for quickly creating a stub table-structure class
 
 ### Options
@@ -85,12 +86,13 @@ DataTable package for the DataTable.net library with server-side processing. Inc
 
 	Note: 'dbDateFormat' is REQUIRED if the filter values are dates. The given format has to match the database date format
 
-### Can publish
+### Publishes
+
 - `php artisan vendor:publish --tag=datatable-component` - the VueJS component file
 - `php artisan vendor:publish --tag=datatable-options` - the json options file
 - `php artisan vendor:publish --tag=datatable-lang` - the default lang files
 - `php artisan vendor:publish --tag=datatable-class` - the abstract TableStructure class that must be extended when creating specific structures
-- `php artisan vendor:publish --tag=update` - a common alias for when wanting to update the VueJS components, 
+- `php artisan vendor:publish --tag=enso-update` - a common alias for when wanting to update the VueJS component, 
 once a newer version is released.
 
 
