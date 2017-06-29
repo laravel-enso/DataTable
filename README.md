@@ -6,6 +6,10 @@
 
 DataTable package for the [DataTables.net](https://datatables.net/) library with server-side processing and a VueJS component.
 
+
+![Screenshot](https://laravel-enso.github.io/datatable/screenshots/Selection_001.png)
+
+
 ### Details
 Supports:
 - searching in all the columns of the table (you can also choose to exclude some columns)
