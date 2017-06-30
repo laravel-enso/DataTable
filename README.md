@@ -6,9 +6,8 @@
 
 DataTable package for the [DataTables.net](https://datatables.net/) library with server-side processing and a VueJS component.
 
-
-![Screenshot](https://laravel-enso.github.io/datatable/screenshots/Selection_001.png)
-
+[![Watch the demo](https://laravel-enso.github.io/datatable/screenshots/Selection_001.png)](https://laravel-enso.github.io/datatable/videos/demo_01.webm)
+<sup>click on the photo to view short a demo</sup>  
 
 ### Details
 Supports:
