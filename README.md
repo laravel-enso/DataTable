@@ -22,6 +22,7 @@ Supports:
 - visual aides, directly from the interface, such as displaying a table as compact and adding alternate row coloring
 - inline editing of values<sup>1</sup> <sup>2</sup>
 - custom rendering of data in columns
+- automatic display of show/edit/delete buttons based on available permissions
 and more
 
 <sup>1</sup> requires the purchase of the DataTables.net Editor library, as it's a commercial feature
@@ -62,51 +63,67 @@ and more
         return MyModel::select(\DB::raw('id as DT_RowId, attribute1, ..., attributeN'));
     }
     ```
+    
+    Note it should return a QueryBuilder object and not a collection of results.
 
-9. Also in the controller add `protected $tableStructureClass = MyTableStructure::class` which should be the class describing the structure of the table rendered in your page 
+9. Also in the controller add `protected $tableStructureClass = MyTableStructure::class` which should be the fully qualified class name describing the structure of the table rendered in your page 
 
 10. In your routes files add two routes for the helper methods, and name them `myRoute.initTable` and `myRoute.getTableData`.
 
 11. Configure the table from the structure class.
-
-### Notes
-
-- You may clone and/or install the [Laravel Enso](https://github.com/laravel-enso/Enso) package where you'll find working examples for using the component
-- In the snippets folder you'll find a sublime snippet for quickly creating a stub table-structure class
 
 ### Options
 
 	`source` - required, must reference the controllers base route, where both initTable & getTableData endpoints exist
 	`header-class` - header class for the box element: info (default option) / default / primary / warning / danger / default
 	`extra-filters` - reactive option array of the following format:
-		extraFilters: {
+		"extraFilters": {
 	        "table": {
 	            "field_1" : '',
 	            "field_2" : '',
 	        }
 	    }
     `params` -
-	    customParams: {
-            orders: {
+	    "customParams": {
+            "orders": {
                 dispatched: ''
             }
         }
     'interval-filters' -
-    "intervalFilters": {
-	   "table":{
-	      "created_at": {
-	         "min":"value",
-	         "max":"value",
-	         "dbDateFormat": "Y-m-d"
-	      },
-	      "amount": {
-	      	"min": 0,
-	      	"max": 1000
-	      }
-	   }
-	}
+        "intervalFilters": {
+           "table":{
+              "created_at": {
+                 "min":"value",
+                 "max":"value",
+                 "dbDateFormat": "Y-m-d"
+              },
+              "amount": {
+                "min": 0,
+                "max": 1000
+              }
+           }
+        }
 
 	Note: 'dbDateFormat' is REQUIRED if the filter values are dates. The given format has to match the database date format
+
+### TableStructure
+  - `crtNo` - the label for the current number column
+  - `actionButtons` - the label for the current number column
+  - `headerAlign` & `bodyAlign` - type of alignment for the text in cells, eg. 'center'
+  - `tableClass` - the table classes, eg. 'table display'
+  - `notSearchable` - simple array w/ the column indexes that are **NOT** searchable using the component search
+  - `enumMappings`- KV array, where key is the column name, and value is the Enum class name used for translation. These enums contain the translations for the flag-type values in your table, which you want to be presented in a more human friendly way, i.e. `Active`/`Inactive` instead of 0 / 1.
+  - `columns` - array of arrays. Each inner array contains:
+     - `label` - table column header label 
+     - `data` - the alias of data in query result, eg. 'owner'
+     - `name` - the table column used when searching, eg. 'owner.name'
+
+### Notes
+
+- You may clone and/or install the [Laravel Enso](https://github.com/laravel-enso/Enso) package where you'll find working examples for using the component
+- In the snippets folder you'll find a sublime snippet for quickly creating a stub table-structure class
+
+
 
 ### Publishes
 
