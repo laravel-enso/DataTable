@@ -1,9 +1,11 @@
+<!--h--> 
 # Data Table
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ee67de45d1f14dbd98eb72c8cf972902)](https://www.codacy.com/app/laravel-enso/DataTable?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=laravel-enso/DataTable&amp;utm_campaign=Badge_Grade)
 [![StyleCI](https://styleci.io/repos/85495802/shield?branch=master)](https://styleci.io/repos/85495802)
 [![License](https://poser.pugx.org/laravel-enso/datatable/license)](https://https://packagist.org/packages/laravel-enso/datatable)
 [![Total Downloads](https://poser.pugx.org/laravel-enso/datatable/downloads)](https://packagist.org/packages/laravel-enso/datatable)
 [![Latest Stable Version](https://poser.pugx.org/laravel-enso/datatable/version)](https://packagist.org/packages/laravel-enso/datatable)
+<!--/h-->
 
 DataTable package for the [DataTables.net](https://datatables.net/) library with server-side processing and a VueJS component.
 
@@ -74,37 +76,41 @@ and more
 
 ### Options
 
-	`source` - required, must reference the controllers base route, where both initTable & getTableData endpoints exist
-	`header-class` - header class for the box element: info (default option) / default / primary / warning / danger / default
-	`extra-filters` - reactive option array of the following format:
-		"extraFilters": {
-	        "table": {
-	            "field_1" : '',
-	            "field_2" : '',
-	        }
-	    }
-    `params` -
-	    "customParams": {
-            "orders": {
-                dispatched: ''
-            }
+- `source` - required, must reference the controllers base route, where both initTable & getTableData endpoints exist
+- `header-class` - header class for the box element: info (default option) / default / primary / warning / danger / default
+- `extra-filters` - reactive option array of the following format:
+    ```
+    "extraFilters": {
+        "table": {
+            "field_1" : '',
+            "field_2" : '',
         }
-    'interval-filters' -
-        "intervalFilters": {
-           "table":{
-              "created_at": {
-                 "min":"value",
-                 "max":"value",
-                 "dbDateFormat": "Y-m-d"
-              },
-              "amount": {
-                "min": 0,
-                "max": 1000
-              }
-           }
+    }
+    ```
+- `params` -
+    ```
+    "customParams": {
+        "orders": {
+            dispatched: ''
         }
-
-	Note: 'dbDateFormat' is REQUIRED if the filter values are dates. The given format has to match the database date format
+    }
+    ```
+- 'interval-filters' - where `dbDateFormat` is REQUIRED if the filter values are dates. The given format has to match the database date format
+    ```
+    "intervalFilters": {
+       "table":{
+          "created_at": {
+             "min":"value",
+             "max":"value",
+             "dbDateFormat": "Y-m-d"
+          },
+          "amount": {
+            "min": 0,
+            "max": 1000
+          }
+       }
+    }
+    ```
 
 ### TableStructure
   - `crtNo` - the label for the current number column
@@ -134,7 +140,12 @@ and more
 - `php artisan vendor:publish --tag=enso-update` - a common alias for when wanting to update the VueJS component, 
 once a newer version is released.
 
-
+<!--h-->
 ### Contributions
 
-...are welcome
+are welcome. Pull requests are great, but issues are good too.
+
+### License
+
+This package is released under the MIT license.
+<!--/h-->
