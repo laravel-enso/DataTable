@@ -33,7 +33,7 @@ and more
 
 ### Installation
 
-1. Add `LaravelEnso\DataTable\DataServiceProvider::class` to `config/app.php`.
+1. Add `LaravelEnso\DataTable\DataTableServiceProvider::class` to `config/app.php`.
 
 2. Publish the vue component with `php artisan vendor:publish --tag=datatable-component`.
 
