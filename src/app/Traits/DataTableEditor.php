@@ -9,9 +9,9 @@ trait DataTableEditor
     public function setTableData()
     {
         return (new TableEditor(
-        	$this->editableModel,
-        	$this->validationClass,
-        	request()->get('data')
+            $this->editableModel,
+            $this->validationClass,
+            request()->get('data')
         ))->getResponse();
     }
 }

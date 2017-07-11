@@ -1,5 +1,5 @@
 <?php
 
-	return [
-		'excelRowLimit' => 1000
-	];
+    return [
+        'excelRowLimit' => 1000,
+    ];

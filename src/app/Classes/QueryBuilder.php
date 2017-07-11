@@ -70,7 +70,7 @@ class QueryBuilder
             $this->query->where(function ($query) use ($argument) {
                 foreach ($this->params['columns'] as $column) {
                     if ($column['searchable'] == 'true') {
-                        $query->orWhere($column['name'], 'LIKE', '%' . $argument . '%');
+                        $query->orWhere($column['name'], 'LIKE', '%'.$argument.'%');
                     }
                 }
             });
@@ -91,7 +91,7 @@ class QueryBuilder
             foreach ($extraFilters as $table => $values) {
                 foreach ($values as $column => $value) {
                     if ($value !== null && $value !== '') {
-                        $query->where($table . '.' . $column, '=', $value);
+                        $query->where($table.'.'.$column, '=', $value);
                     }
                 }
             }
@@ -127,7 +127,7 @@ class QueryBuilder
         }
 
         $min = isset($value->dbDateFormat) ? $this->getFormattedDate($value->min, $value->dbDateFormat) : (int) $value->min;
-        $this->query->where($table . '.' . $column, '>=', $min);
+        $this->query->where($table.'.'.$column, '>=', $min);
 
         return $this;
     }
@@ -139,7 +139,7 @@ class QueryBuilder
         }
 
         $max = isset($value->dbDateFormat) ? $this->getFormattedDate($value->max, $value->dbDateFormat) : (int) $value->max;
-        $this->query->where($table . '.' . $column, '<=', $max);
+        $this->query->where($table.'.'.$column, '<=', $max);
 
         return $this;
     }

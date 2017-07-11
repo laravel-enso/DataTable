@@ -6,24 +6,24 @@ use Illuminate\Database\Eloquent\Collection;
 
 class EnumComputor
 {
-	private $data;
-	private $enumMappings;
+    private $data;
+    private $enumMappings;
 
-	public function __construct(Collection $data, array $enumMappings)
-	{
-		$this->data = $data;
-		$this->enumMappings = $enumMappings;
-	}
-
-	public function run()
-	{
-		$this->computeEnums();
-	}
-
-	private function computeEnums()
+    public function __construct(Collection $data, array $enumMappings)
     {
-        $this->data->each(function($value) {
-        	foreach ($this->getDataFromEnums() as $key => $data) {
+        $this->data = $data;
+        $this->enumMappings = $enumMappings;
+    }
+
+    public function run()
+    {
+        $this->computeEnums();
+    }
+
+    private function computeEnums()
+    {
+        $this->data->each(function ($value) {
+            foreach ($this->getDataFromEnums() as $key => $data) {
                 $value->$key = $data[$value->$key];
             }
         });

@@ -3,7 +3,6 @@
 namespace LaravelEnso\DataTable\app\Classes;
 
 use Illuminate\Database\Eloquent\Builder;
-use LaravelEnso\DataTable\app\Classes\QueryBuilder;
 use LaravelEnso\Helpers\Classes\Object;
 
 class TableBuilder
@@ -25,22 +24,22 @@ class TableBuilder
     public function getTableData()
     {
         return [
-            'draw' => $this->params['draw'],
-            'recordsTotal' => $this->queryBuilder->getTotalRecords(),
+            'draw'            => $this->params['draw'],
+            'recordsTotal'    => $this->queryBuilder->getTotalRecords(),
             'recordsFiltered' => $this->queryBuilder->getFilteredRecords(),
-            'totals' => $this->queryBuilder->getTotals(),
-            'data' => $this->data,
+            'totals'          => $this->queryBuilder->getTotals(),
+            'data'            => $this->data,
         ];
     }
 
     public function getExcelData()
     {
         return new Object([
-            'header' => $this->structure['columns'],
-            'recordsTotal' => $this->queryBuilder->getTotalRecords(),
+            'header'          => $this->structure['columns'],
+            'recordsTotal'    => $this->queryBuilder->getTotalRecords(),
             'recordsFiltered' => $this->queryBuilder->getFilteredRecords(),
-            'totals' => $this->queryBuilder->getTotals(),
-            'records' => $this->data,
+            'totals'          => $this->queryBuilder->getTotals(),
+            'records'         => $this->data,
         ]);
     }
 

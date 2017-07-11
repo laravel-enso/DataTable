@@ -25,7 +25,7 @@ class TableExportJob implements ShouldQueue
         $this->user = $user;
         $this->data = $data;
         $this->fileName = __('Report');
-        $this->fullPathFile = config('laravel-enso.paths.exports') . DIRECTORY_SEPARATOR . $this->fileName . '.xlsx';
+        $this->fullPathFile = config('laravel-enso.paths.exports').DIRECTORY_SEPARATOR.$this->fileName.'.xlsx';
     }
 
     public function handle()
@@ -37,7 +37,7 @@ class TableExportJob implements ShouldQueue
 
     private function sendReport()
     {
-        $this->user->notify(new TableExportNotification(storage_path('app' . DIRECTORY_SEPARATOR . $this->fullPathFile)));
+        $this->user->notify(new TableExportNotification(storage_path('app'.DIRECTORY_SEPARATOR.$this->fullPathFile)));
     }
 
     private function cleanUp()
