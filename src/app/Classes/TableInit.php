@@ -5,10 +5,12 @@ namespace LaravelEnso\DataTable\app\Classes;
 class TableInit
 {
     private $data;
+    private $route;
 
-    public function __construct(TableStructure $tableStructure)
+    public function __construct(TableStructure $tableStructure, string $route)
     {
         $this->data = $tableStructure->getData();
+        $this->route = $route;
         $this->run();
     }
 
@@ -153,12 +155,7 @@ class TableInit
 
     private function setActionButtons()
     {
-        if (!isset($this->data['actionButtons'])) {
-            return $this;
-        }
-
-        $this->data['actionButtons'] = (new ActionButtonBuilder($this->data))->getData();
-        unset($this->data['customActionButtons']);
+        $this->data = (new ActionButtonBuilder($this->data, $this->route))->getData();
 
         return $this;
     }

@@ -165,6 +165,7 @@
                         { extend: 'colvis', text: '<i class="fa fa-eye"></i>'},
                         { extend: 'copy', text:'<i class="fa fa-clipboard"></i>'},
                         {
+                            className: 'excel',
                             text: '<i class="fa fa-file-excel-o"></i>',
                             action() {
                                 self.exportExcel();
@@ -230,6 +231,7 @@
                 this.totals = data.totals || {};
                 this.computeRender(data);
                 this.computeEditor(data);
+                this.extraActionButtons = data.actionButtons.extra;
             },
             getSettings() {
                 let settings = Store.user.preferences.global.dtStateSave && localStorage.hasOwnProperty(this.settingsKey)
@@ -288,7 +290,13 @@
                 };
 
                 this.dtHandle = $('#' + this.tableId).DataTable(this.tableOptions);
+                this.setExtraActionButtons();
                 this.addProcessingListener();
+            },
+            setExtraActionButtons() {
+                if (!this.actionButtons.extra) {
+                    this.dtHandle.buttons(['.excel']).disable();
+                }
             },
             addProcessingListener() {
                 let self = this;

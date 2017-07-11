@@ -11,14 +11,14 @@ trait DataTable
 {
     public function initTable()
     {
-        return (
-            new TableInit(new $this->tableStructureClass())
-        )->getData();
+        return (new TableInit(
+            new $this->tableStructureClass(),
+            request()->route()->getName()
+        ))->getData();
     }
 
     public function getTableData()
     {
-        \Log::info(request()->all());
         return (new TableBuilder(
             new $this->tableStructureClass(),
             $this->getTableQuery(),
