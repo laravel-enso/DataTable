@@ -4,7 +4,7 @@
         <div class="box-header with-border">
             <h3 class="box-title">
                 <i class="fa fa-table"></i>
-                <slot name="data-table-title"></slot>
+                <slot name="data-table-title">{{ tableName }}</slot>
             </h3>
             <div class="box-tools pull-right">
                 <button class="btn btn-box-tool btn-sm" @click="clearState()">
@@ -81,12 +81,21 @@
             },
             extraFilters: {
                 type: Object,
+                default() {
+                    return {}
+                }
             },
             customParams: {
                 type: Object,
+                default() {
+                    return {}
+                }
             },
             intervalFilters: {
                 type: Object,
+                default() {
+                    return {}
+                }
             }
         },
 
@@ -104,6 +113,7 @@
 
         data (self = this) {
             return {
+                tableName: null,
                 showModal: false,
                 loading: false,
                 hasEditor: false,
@@ -147,9 +157,20 @@
                             totals() { return JSON.stringify(self.totals); },
                             extraFilters() { return JSON.stringify(self.extraFilters); },
                             intervalFilters() { return JSON.stringify(self.intervalFilters); },
-                            customParams () { return JSON.stringify(self.customParams); }
+                            customParams() { return JSON.stringify(self.customParams); }
                         }
                     },
+                    buttons: [
+                        { extend: 'pageLength' },
+                        { extend: 'colvis', text: '<i class="fa fa-eye"></i>'},
+                        { extend: 'copy', text:'<i class="fa fa-clipboard"></i>'},
+                        {
+                            text: '<i class="fa fa-file-excel-o"></i>',
+                            action() {
+                                self.exportExcel();
+                            }
+                        }
+                    ],
                     drawCallback() {
                         self.toggleClasses();
 
@@ -201,6 +222,8 @@
             processInitData(data) {
                 this.getSettings();
                 this.setStyle(data);
+                this.tableOptions.language = data.language || null;
+                this.tableName = data.tableName;
                 this.header = data.header;
                 this.tableOptions.columns = data.columns;
                 this.computeExtraColumns(data);
@@ -219,7 +242,6 @@
                 this.headerAlign = data.headerAlign;
                 this.bodyAlign = data.bodyAlign;
                 this.tableOptions.dom = data.dom || this.tableOptions.dom;
-                this.tableOptions.language = data.language || null;
             },
             computeExtraColumns(data) {
                 if (data.actionButtons) {
@@ -433,6 +455,24 @@
 
                 this.dtHandle.state.clear();
                 window.location.reload();
+            },
+            exportExcel() {
+                axios.get(this.source + '/exportExcel' , {params: this.getExportParams()}).then(response => {
+                    toastr.success(response.data.message);
+                }).catch(error => {
+                    this.reportEnsoException(error);
+                });
+            },
+            getExportParams() {
+                return {
+                    'recordsDisplay': this.dtHandle.page.info().recordsDisplay,
+                    'columns' : this.dtHandle.ajax.params().columns,
+                    'search': this.dtHandle.ajax.params().search,
+                    'totals': JSON.stringify(this.totals),
+                    'extraFilters': JSON.stringify(this.extraFilters),
+                    'intervalFilters': JSON.stringify(this.intervalFilters),
+                    'customParams': JSON.stringify(this.customParams)
+                }
             }
         },
 

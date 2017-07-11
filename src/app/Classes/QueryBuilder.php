@@ -8,15 +8,17 @@ use Illuminate\Database\Eloquent\Builder;
 class QueryBuilder
 {
     private $query;
+    private $params;
     private $totalRecords;
     private $filteredRecords;
     private $totals;
     private $data;
 
-    public function __construct(Builder $query)
+    public function __construct(Builder $query, array $params)
     {
         $this->query = $query;
-        $this->build();
+        $this->params = $params;
+        $this->run();
     }
 
     public function getTotalRecords()
@@ -39,14 +41,14 @@ class QueryBuilder
         return $this->data;
     }
 
-    private function build()
+    private function run()
     {
         $this->totalRecords = $this->query->count();
 
         $this->applyFilters()
-             ->applyExtraFilters()
-             ->applyIntervalFilters()
-             ->applySortOrder();
+            ->applyExtraFilters()
+            ->applyIntervalFilters()
+            ->applySortOrder();
 
         $this->filteredRecords = $this->hasFilters() ? $this->query->count() : $this->totalRecords;
 
@@ -58,17 +60,17 @@ class QueryBuilder
 
     private function applyFilters()
     {
-        if (!request('search')['value']) {
+        if (!$this->params['search']['value']) {
             return $this;
         }
 
-        $arguments = collect(explode(' ', request()->search['value']));
+        $arguments = collect(explode(' ', $this->params['search']['value']));
 
         $arguments->each(function ($argument) {
             $this->query->where(function ($query) use ($argument) {
-                foreach (request('columns') as $column) {
+                foreach ($this->params['columns'] as $column) {
                     if ($column['searchable'] == 'true') {
-                        $query->orWhere($column['name'], 'LIKE', '%'.$argument.'%');
+                        $query->orWhere($column['name'], 'LIKE', '%' . $argument . '%');
                     }
                 }
             });
@@ -79,7 +81,7 @@ class QueryBuilder
 
     private function applyExtraFilters()
     {
-        $extraFilters = json_decode(request('extraFilters'));
+        $extraFilters = json_decode($this->params['extraFilters']);
 
         if (empty((array) $extraFilters)) {
             return $this;
@@ -89,7 +91,7 @@ class QueryBuilder
             foreach ($extraFilters as $table => $values) {
                 foreach ($values as $column => $value) {
                     if ($value !== null && $value !== '') {
-                        $query->where($table.'.'.$column, '=', $value);
+                        $query->where($table . '.' . $column, '=', $value);
                     }
                 }
             }
@@ -100,7 +102,7 @@ class QueryBuilder
 
     private function applyIntervalFilters()
     {
-        $intervalFilters = json_decode(request('intervalFilters'));
+        $intervalFilters = json_decode($this->params['intervalFilters']);
 
         if (empty((array) $intervalFilters)) {
             return $this;
@@ -110,7 +112,7 @@ class QueryBuilder
             foreach ($intervalFilters as $table => $intervalObject) {
                 foreach ($intervalObject as $column => $value) {
                     $this->setMinLimit($table, $column, $value)
-                         ->setMaxLimit($table, $column, $value);
+                        ->setMaxLimit($table, $column, $value);
                 }
             }
         });
@@ -125,7 +127,7 @@ class QueryBuilder
         }
 
         $min = isset($value->dbDateFormat) ? $this->getFormattedDate($value->min, $value->dbDateFormat) : (int) $value->min;
-        $this->query->where($table.'.'.$column, '>=', $min);
+        $this->query->where($table . '.' . $column, '>=', $min);
 
         return $this;
     }
@@ -137,7 +139,7 @@ class QueryBuilder
         }
 
         $max = isset($value->dbDateFormat) ? $this->getFormattedDate($value->max, $value->dbDateFormat) : (int) $value->max;
-        $this->query->where($table.'.'.$column, '<=', $max);
+        $this->query->where($table . '.' . $column, '<=', $max);
 
         return $this;
     }
@@ -149,22 +151,22 @@ class QueryBuilder
         return $date->format($dbDateFormat);
     }
 
-    public function applySortOrder()
+    private function applySortOrder()
     {
-        if (empty(request('order'))) {
+        if (empty($this->params['order'])) {
             return $this;
         }
 
-        foreach (request('order') as $order) {
-            $this->query->orderBy(request()->columns[$order['column']]['name'], $order['dir']);
+        foreach ($this->params['order'] as $order) {
+            $this->query->orderBy($this->params['columns'][$order['column']]['name'], $order['dir']);
         }
 
         return $this;
     }
 
-    public function setTotals()
+    private function setTotals()
     {
-        $totals = json_decode(request('totals'));
+        $totals = json_decode($this->params['totals']);
 
         if (empty((array) $totals)) {
             return $this;
@@ -181,15 +183,15 @@ class QueryBuilder
 
     private function applyLimit()
     {
-        $this->query->skip(request()->start)->take(request()->length);
+        $this->query->skip($this->params['start'])->take($this->params['length']);
 
-        return $this;
+        return $this->query;
     }
 
     private function hasFilters()
     {
-        return request('search')['value']
-            || request('extraFilters')
-            || request('intervalFilters');
+        return $this->params['search']['value']
+        || $this->params['extraFilters']
+        || $this->params['intervalFilters'];
     }
 }

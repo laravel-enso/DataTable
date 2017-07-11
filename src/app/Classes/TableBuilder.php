@@ -2,55 +2,54 @@
 
 namespace LaravelEnso\DataTable\app\Classes;
 
+use Illuminate\Database\Eloquent\Builder;
+use LaravelEnso\DataTable\app\Classes\QueryBuilder;
+use LaravelEnso\Helpers\Classes\Object;
+
 class TableBuilder
 {
     private $structure;
     private $queryBuilder;
     private $data;
+    private $params;
 
-    public function __construct(TableStructure $tableStructure, QueryBuilder $queryBuilder)
+    public function __construct(TableStructure $tableStructure, Builder $query, array $params)
     {
         $this->structure = $tableStructure->getData();
-        $this->queryBuilder = $queryBuilder;
-        $this->data = $queryBuilder->getData();
+        $this->params = $params;
+        $this->queryBuilder = new QueryBuilder($query, $this->params);
+        $this->data = $this->queryBuilder->getData();
         $this->computeEnums();
     }
 
     public function getTableData()
     {
         return [
-            'draw'            => request('draw'),
-            'recordsTotal'    => $this->queryBuilder->getTotalRecords(),
+            'draw' => $this->params['draw'],
+            'recordsTotal' => $this->queryBuilder->getTotalRecords(),
             'recordsFiltered' => $this->queryBuilder->getFilteredRecords(),
-            'totals'          => $this->queryBuilder->getTotals(),
-            'data'            => $this->data,
+            'totals' => $this->queryBuilder->getTotals(),
+            'data' => $this->data,
         ];
+    }
+
+    public function getExcelData()
+    {
+        return new Object([
+            'header' => $this->structure['columns'],
+            'recordsTotal' => $this->queryBuilder->getTotalRecords(),
+            'recordsFiltered' => $this->queryBuilder->getFilteredRecords(),
+            'totals' => $this->queryBuilder->getTotals(),
+            'records' => $this->data,
+        ]);
     }
 
     private function computeEnums()
     {
-        foreach ($this->data as &$value) {
-            foreach ($this->getDataFromEnums() as $key => $data) {
-                $value->$key = $data[$value->$key];
-            }
-        }
-
-        return $this;
-    }
-
-    private function getDataFromEnums()
-    {
-        $dataFromEnum = [];
-
         if (!isset($this->structure['enumMappings'])) {
-            return $dataFromEnum;
+            return false;
         }
 
-        foreach ($this->structure['enumMappings'] as $column => $enumClass) {
-            $enum = new $enumClass();
-            $dataFromEnum[$column] = $enum->getData();
-        }
-
-        return $dataFromEnum;
+        (new EnumComputor($this->data, $this->structure['enumMappings']))->run();
     }
 }

@@ -13,13 +13,13 @@ class ${2:Class} extends TableStructure
             ${3:${4:/* current number for each line, with the header name
              * If given, it will be appended as the first column of the table
              */}
-            'crtNo'         => '${5:app.crtNo}',}
+            'crtNo'         => '${5:#}',}
             ${6:${7:/* column for buttons with available actions. Used for both standard
              * actions - create, view, edit, delete - and custom actions.
              * Note: the buttons for standard actions are added automatically depending
              * on permissions and do not need to be specified here or elsewhere.
              */}
-            'actionButtons' => '${8:app.actions}',}
+            'actionButtons' => '${8:Actions}',}
             ${9:${10:/* list of icon action buttons for custom actions
              * class is used for styling the custom button icon
              * event is the event triggered by the button

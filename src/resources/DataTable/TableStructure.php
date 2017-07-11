@@ -4,7 +4,7 @@ namespace App\DataTable;
 
 namespace TableStructure;
 
-use App\Utils\DataTable\Abstracts\TableStructure;
+use App\Utils\DataTable\TableStructure;
 
 class ClassName extends TableStructure
 {
@@ -14,16 +14,15 @@ class ClassName extends TableStructure
             /* current number for each line, with the header name
              * If given, it will be appended as the first column of the table
              */
-            'crtNo' => 'app.crtNo',
+            'crtNo' => __('#'),
             /* column for buttons with available actions. Used for both standard
              * actions - create, view, edit, delete - and custom actions.
              * Note: the buttons for standard actions are added automatically depending
              * on permissions and do not need to be specified here or elsewhere.
              */
-            'actionButtons' => 'app.actions',
+            'actionButtons' => __('Actions'),
             /* list of action buttons for custom actions
-             * cssSelectorClass is used for adding the button event listener
-             * cssClass is used for styling the custom button
+             * class is used for styling the custom button
              * event is the event triggered by the button
              * route is OPTIONAL, and if given, it will be checked for permission i.e. if the user doesn't have
              * the necessary permission, that specific button is not drawn
