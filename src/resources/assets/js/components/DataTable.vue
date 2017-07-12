@@ -127,6 +127,7 @@
                 tableClass: null,
                 deleteRoute: null,
                 editedCell: {},
+                customButtons: false,
                 classes: {
                     compact: false,
                     display: false,
@@ -231,7 +232,7 @@
                 this.totals = data.totals || {};
                 this.computeRender(data);
                 this.computeEditor(data);
-                this.extraActionButtons = data.actionButtons.extra;
+                this.customButtons = data.customButtons;
             },
             getSettings() {
                 let settings = Store.user.preferences.global.dtStateSave && localStorage.hasOwnProperty(this.settingsKey)
@@ -290,11 +291,11 @@
                 };
 
                 this.dtHandle = $('#' + this.tableId).DataTable(this.tableOptions);
-                this.setExtraActionButtons();
+                this.setCustomButtons();
                 this.addProcessingListener();
             },
-            setExtraActionButtons() {
-                if (!this.actionButtons.extra) {
+            setCustomButtons() {
+                if (!this.customButtons) {
                     this.dtHandle.buttons(['.excel']).disable();
                 }
             },

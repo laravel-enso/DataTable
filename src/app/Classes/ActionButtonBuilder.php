@@ -24,7 +24,7 @@ class ActionButtonBuilder
     {
         $this->setStandardActionButtons()
             ->setCustomActionButtons()
-            ->setExtraActionButtons();
+            ->setCustomButtons();
 
         unset($this->data['customActionButtons']);
     }
@@ -77,13 +77,9 @@ class ActionButtonBuilder
         return $this;
     }
 
-    private function setExtraActionButtons()
+    private function setCustomButtons()
     {
-        if (!isset($this->data['actionButtons'])) {
-            $this->data['actionButtons'] = [];
-        }
-
-        $this->data['actionButtons']['extra'] = request()->user()->can('access-route', $this->route.'.exportExcel')
+        $this->data['customButtons'] = request()->user()->can('access-route', $this->route.'.exportExcel')
             ? true : false;
     }
 }
