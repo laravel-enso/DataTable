@@ -35,7 +35,7 @@ class DataTableServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/resources/assets/js/components' => resource_path('assets/js/vendor/laravel-enso/components'),
-            __DIR__.'/resources/assets/js/modules' => resource_path('assets/js/vendor/laravel-enso/modules'),
+            __DIR__.'/resources/assets/js/modules'    => resource_path('assets/js/vendor/laravel-enso/modules'),
         ], 'enso-update');
 
         $this->mergeConfigFrom(__DIR__.'/config/datatable.php', 'datatable');
