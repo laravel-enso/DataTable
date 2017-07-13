@@ -17,14 +17,15 @@ Supports:
 - searching in all the columns of the table (you can also choose to exclude some columns)
 - hiding of columns
 - reordering of columns
-- sorting on any column (you can also choose to exclude some columns)
+- sorting on any column (you can also choose to exclude some columns within the configuration)
 - totals
 - user configurable pagination
 - reloading of data
 - visual aides, directly from the interface, such as displaying a table as compact and adding alternate row coloring
-- inline editing of values<sup>1</sup> <sup>2</sup>
 - custom rendering of data in columns
 - automatic display of show/edit/delete buttons based on available permissions
+- excel exporting of the table data, using current search filtering
+- inline editing of values<sup>1</sup> <sup>2</sup>
 and more
 
 <sup>1</sup> requires the purchase of the DataTables.net Editor library, as it's a commercial feature
@@ -70,7 +71,7 @@ and more
 
 9. Also in the controller add `protected $tableStructureClass = MyTableStructure::class` which should be the fully qualified class name describing the structure of the table rendered in your page
 
-10. In your routes files add two routes for the helper methods, and name them `myRoute.initTable` and `myRoute.getTableData`.
+10. In your routes files add three routes for the helper methods, and name them `myRoute.initTable`, `myRoute.getTableData` and optionally `myRoute.exportExcel` if you want the results exporting functionality.
 
 11. Configure the table from the structure class.
 
@@ -114,7 +115,7 @@ and more
 
 ### TableStructure
   - `crtNo` - the label for the current number column
-  - `actionButtons` - if it exists, it 
+  - `actionButtons` - if it exists, it generates the action buttons column with the proper buttons. The value of the parameter is the column label
   - `headerAlign` & `bodyAlign` - type of alignment for the text in cells, eg. 'center'
   - `tableClass` - the table classes, eg. 'table display'
   - `notSearchable` - simple array w/ the column indexes that are **NOT** searchable using the component search
