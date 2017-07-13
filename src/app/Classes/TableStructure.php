@@ -2,9 +2,7 @@
 
 namespace LaravelEnso\DataTable\app\Classes;
 
-use LaravelEnso\Helpers\Classes\AbstractObject;
-
-abstract class TableStructure extends AbstractObject
+abstract class TableStructure
 {
     protected $data;
 

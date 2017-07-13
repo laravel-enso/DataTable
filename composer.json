@@ -1,23 +1,41 @@
 {
     "name": "laravel-enso/datatable",
     "description": "DataTable package for the DataTables.net library with server-side processing and a VueJS component",
+    "keywords": [
+        "laravel-enso",
+        "datatable",
+        "data-table",
+        "datatables.net",
+        "data-table-server-side"
+    ],
+    "homepage": "https://github.com/laravel-enso/DataTable",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "Mishu",
-            "email": "mishu@xtelecom.ro"
+            "name": "Adrian Ocneanu",
+            "email": "aocneanu@gmail.com",
+            "homepage": "https://laravel-enso.com",
+            "role": "Developer"
         }
     ],
     "require": {
         "php": ">=7.1.0",
         "laravel/framework": "5.4.*",
         "laravel-enso/helpers": "1.1.*",
-        "nesbot/carbon": "^1.0"
+        "maatwebsite/excel": "^2.1"
     },
     "autoload": {
         "psr-4": {
             "LaravelEnso\\DataTable\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LaravelEnso\\DataTableServiceProvider"
+            ],
+            "aliases": {}
         }
     }
 }

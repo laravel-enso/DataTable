@@ -7,6 +7,7 @@ use Illuminate\Validation\Rules\Unique;
 class TableEditor
 {
     private $model;
+    private $params;
     private $table;
     private $validationClass;
     private $modelId;
@@ -14,9 +15,10 @@ class TableEditor
     private $value;
     private $response;
 
-    public function __construct(string $model, string $validationClass)
+    public function __construct(string $model, string $validationClass, array $params)
     {
         $this->model = $model;
+        $this->params = $params;
         $this->validationClass = $validationClass;
         $this->setModelId()
             ->setTable()
@@ -32,16 +34,16 @@ class TableEditor
 
     private function setModelId()
     {
-        $this->modelId = key(request('data'));
+        $this->modelId = key($this->params);
 
         return $this;
     }
 
     private function setTable()
     {
-        $this->table = key(request('data')[$this->modelId]);
+        $this->table = key($this->params[$this->modelId]);
 
-        if (!is_array(request('data')[$this->modelId][$this->table])) {
+        if (!is_array($this->params[$this->modelId][$this->table])) {
             throw new \EnsoException(__("You need to define in the 'TableStructure' class,
                 the 'name' attribute for the editable column with the form of 'table.column'"), 'warning');
         }
@@ -51,7 +53,7 @@ class TableEditor
 
     private function setProperty()
     {
-        $this->property = key(request('data')[$this->modelId][$this->table]);
+        $this->property = key($this->params[$this->modelId][$this->table]);
 
         if (!in_array($this->property, (new $this->model())->getFillable())) {
             throw new \EnsoException(__('Seems like the')." '".$this->property."' ".__("property defined in the 'TableStructure' class under
@@ -63,7 +65,7 @@ class TableEditor
 
     private function setValue()
     {
-        $this->value = request('data')[$this->modelId][$this->table][$this->property];
+        $this->value = $this->params[$this->modelId][$this->table][$this->property];
     }
 
     private function updateModel()
@@ -132,7 +134,7 @@ class TableEditor
     {
         $this->response = [
             'data'    => [$this->property => $this->value],
-            'message' => __('Operation was successfull'),
+            'message' => __('Operation was successful'),
         ];
     }
 }

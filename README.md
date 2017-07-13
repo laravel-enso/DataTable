@@ -1,4 +1,4 @@
-<!--h--> 
+<!--h-->
 # Data Table
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ee67de45d1f14dbd98eb72c8cf972902)](https://www.codacy.com/app/laravel-enso/DataTable?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=laravel-enso/DataTable&amp;utm_campaign=Badge_Grade)
 [![StyleCI](https://styleci.io/repos/85495802/shield?branch=master)](https://styleci.io/repos/85495802)
@@ -9,8 +9,8 @@
 
 DataTable package for the [DataTables.net](https://datatables.net/) library with server-side processing and a VueJS component.
 
-[![Watch the demo](https://laravel-enso.github.io/datatable/screenshots/Selection_001.png)](https://laravel-enso.github.io/datatable/videos/demo_01.webm)
-<sup>click on the photo to view a short demo in compatible browsers</sup>  
+[![Watch the demo](https://laravel-enso.github.io/datatable/screenshots/Selection_001_thumb.png)](https://laravel-enso.github.io/datatable/videos/demo_01.webm)
+<sup>click on the photo to view a short demo in compatible browsers</sup>
 
 ### Details
 Supports:
@@ -33,7 +33,7 @@ and more
 
 ### Installation
 
-1. Add `LaravelEnso\DataTable\DataServiceProvider::class` to `config/app.php`.
+1. Add `LaravelEnso\DataTable\DataTableServiceProvider::class` to `config/app.php`.
 
 2. Publish the vue component with `php artisan vendor:publish --tag=datatable-component`.
 
@@ -65,10 +65,10 @@ and more
         return MyModel::select(\DB::raw('id as DT_RowId, attribute1, ..., attributeN'));
     }
     ```
-    
+
     Note it should return a QueryBuilder object and not a collection of results.
 
-9. Also in the controller add `protected $tableStructureClass = MyTableStructure::class` which should be the fully qualified class name describing the structure of the table rendered in your page 
+9. Also in the controller add `protected $tableStructureClass = MyTableStructure::class` which should be the fully qualified class name describing the structure of the table rendered in your page
 
 10. In your routes files add two routes for the helper methods, and name them `myRoute.initTable` and `myRoute.getTableData`.
 
@@ -114,13 +114,13 @@ and more
 
 ### TableStructure
   - `crtNo` - the label for the current number column
-  - `actionButtons` - the label for the current number column
+  - `actionButtons` - if it exists, it 
   - `headerAlign` & `bodyAlign` - type of alignment for the text in cells, eg. 'center'
   - `tableClass` - the table classes, eg. 'table display'
   - `notSearchable` - simple array w/ the column indexes that are **NOT** searchable using the component search
   - `enumMappings`- KV array, where key is the column name, and value is the Enum class name used for translation. These enums contain the translations for the flag-type values in your table, which you want to be presented in a more human friendly way, i.e. `Active`/`Inactive` instead of 0 / 1.
   - `columns` - array of arrays. Each inner array contains:
-     - `label` - table column header label 
+     - `label` - table column header label
      - `data` - the alias of data in query result, eg. 'owner'
      - `name` - the table column used when searching, eg. 'owner.name'
 
@@ -137,7 +137,7 @@ and more
 - `php artisan vendor:publish --tag=datatable-options` - the json options file
 - `php artisan vendor:publish --tag=datatable-lang` - the default lang files
 - `php artisan vendor:publish --tag=datatable-class` - the abstract TableStructure class that must be extended when creating specific structures
-- `php artisan vendor:publish --tag=enso-update` - a common alias for when wanting to update the VueJS component, 
+- `php artisan vendor:publish --tag=enso-update` - a common alias for when wanting to update the VueJS component,
 once a newer version is released.
 
 <!--h-->
