@@ -40,7 +40,7 @@ class TableBuilder
             'recordsTotal'    => $this->queryBuilder->getTotalRecords(),
             'recordsFiltered' => $this->queryBuilder->getFilteredRecords(),
             'totals'          => $this->queryBuilder->getTotals(),
-            'records'         => $this->prepareExcelData()
+            'records'         => $this->prepareExcelData(),
         ]);
     }
 
@@ -60,7 +60,7 @@ class TableBuilder
 
     private function prepareExcelData()
     {
-        return $this->data->each(function($record) {
+        return $this->data->each(function ($record) {
             $record->append($this->getAppends());
         });
     }
