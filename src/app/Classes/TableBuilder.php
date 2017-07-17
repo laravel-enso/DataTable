@@ -40,14 +40,13 @@ class TableBuilder
             'recordsTotal'    => $this->queryBuilder->getTotalRecords(),
             'recordsFiltered' => $this->queryBuilder->getFilteredRecords(),
             'totals'          => $this->queryBuilder->getTotals(),
-            'records'         => $this->data,
+            'records'         => $this->prepareExcelData()
         ]);
     }
 
     private function setAppends()
     {
-        $appends = isset($this->structure['appends']) ? $this->structure['appends'] : [];
-        $this->data->each->setAppends($appends);
+        $this->data->each->setAppends($this->getAppends());
     }
 
     private function computeEnums()
@@ -57,5 +56,17 @@ class TableBuilder
         }
 
         (new EnumComputor($this->data, $this->structure['enumMappings']))->run();
+    }
+
+    private function prepareExcelData()
+    {
+        return $this->data->each(function($record) {
+            $record->append($this->getAppends());
+        });
+    }
+
+    private function getAppends()
+    {
+        return isset($this->structure['appends']) ? $this->structure['appends'] : [];
     }
 }

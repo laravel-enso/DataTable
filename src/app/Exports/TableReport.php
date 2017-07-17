@@ -37,10 +37,13 @@ class TableReport
         $this->data = [];
 
         $data->records->each(function ($record) {
-            unset($record->DT_RowId);
             $element = [];
 
             foreach ($record->toArray() as $key => $value) {
+                if (!isset($this->header[$key])) {
+                    continue;
+                }
+
                 $element[$this->header[$key]] = $value;
             }
 
