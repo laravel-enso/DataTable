@@ -18,6 +18,7 @@ class TableBuilder
         $this->params = $params;
         $this->queryBuilder = new QueryBuilder($query, $this->params);
         $this->data = $this->queryBuilder->getData();
+        $this->setAppends();
         $this->computeEnums();
     }
 
@@ -41,6 +42,12 @@ class TableBuilder
             'totals'          => $this->queryBuilder->getTotals(),
             'records'         => $this->data,
         ]);
+    }
+
+    private function setAppends()
+    {
+        $appends = isset($this->structure['appends']) ? $this->structure['appends'] : [];
+        $this->data->each->setAppends($appends);
     }
 
     private function computeEnums()
