@@ -24,7 +24,8 @@ Supports:
 - visual aides, directly from the interface, such as displaying a table as compact and adding alternate row coloring
 - custom rendering of data in columns
 - automatic display of show/edit/delete buttons based on available permissions
-- excel exporting of the table data, using current search filtering
+- excel exporting of the table data, using current search filtering, up to a configurable limit
+- permits overriding of the appends attribute for the main query model
 - inline editing of values<sup>1</sup> <sup>2</sup>
 and more
 
@@ -119,12 +120,20 @@ and more
   - `headerAlign` & `bodyAlign` - type of alignment for the text in cells, eg. 'center'
   - `tableClass` - the table classes, eg. 'table display'
   - `notSearchable` - simple array w/ the column indexes that are **NOT** searchable using the component search
-  - `enumMappings`- KV array, where key is the column name, and value is the Enum class name used for translation. These enums contain the translations for the flag-type values in your table, which you want to be presented in a more human friendly way, i.e. `Active`/`Inactive` instead of 0 / 1.
+  - `enumMappings` - KV array, where key is the column name, and value is the Enum class name used for translation. These enums contain the translations for the flag-type values in your table, which you want to be presented in a more human friendly way, i.e. `Active`/`Inactive` instead of 0 / 1.
+  - `appends` - optional array of model attributes, which can be appended before returning the query results <sup>1</sup> <sup>2</sup>  
   - `columns` - array of arrays. Each inner array contains:
      - `label` - table column header label
      - `data` - the alias of data in query result, eg. 'owner'
      - `name` - the table column used when searching, eg. 'owner.name'
 
+<sup>1</sup> If you are appending attributes fetched through a relationship, you'll need to include the model's id attribute in the raw query  
+<sup>2</sup> When using appended attributes, since these do not actually exist in the model's DB table, you need to exclude them using the `notSearchable` option, or you'll get errors when searching 
+
+### Config
+
+  - `excelRowLimit` - the maximum number of exported entries, when using the export function. You may need to adjust this depending on your server's RAM and PHP settings.
+    
 ### Notes
 
 - You may clone and/or install the [Laravel Enso](https://github.com/laravel-enso/Enso) package where you'll find working examples for using the component
