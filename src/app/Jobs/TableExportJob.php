@@ -37,7 +37,7 @@ class TableExportJob implements ShouldQueue
 
     private function sendReport()
     {
-        $this->user->notify(new TableExportNotification(storage_path(DIRECTORY_SEPARATOR.$this->fullPathFile)));
+        $this->user->notify(new TableExportNotification(storage_path('app'.DIRECTORY_SEPARATOR.$this->fullPathFile)));
     }
 
     private function cleanUp()

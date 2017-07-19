@@ -78,7 +78,7 @@ class ${2:Class} extends TableStructure
             ${54:${55:/* array of eloquent model accessors that will be appended
             * Note: if this attribute is missing appends will be set an empty array
              */}
-            'appends' => [ ${56:accessorList} ]},
+            'appends' => [ ${56:accessorList} ],}
             ${57:/* configuration of the columns to be displayed
              */}
             'columns' => [
