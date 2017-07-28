@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TableExportNotification extends Notification
+class TableReportNotification extends Notification
 {
     use Queueable;
 

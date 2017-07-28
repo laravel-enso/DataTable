@@ -5,7 +5,7 @@ namespace LaravelEnso\DataTable\app\Traits;
 use LaravelEnso\DataTable\app\Classes\TableBuilder;
 use LaravelEnso\DataTable\app\Classes\TableInit;
 use LaravelEnso\DataTable\app\Http\ExcelRequestParser;
-use LaravelEnso\DataTable\app\Jobs\TableExportJob;
+use LaravelEnso\DataTable\app\Jobs\TableReportJob;
 
 trait DataTable
 {
@@ -34,7 +34,7 @@ trait DataTable
             (new ExcelRequestParser())->getParams()
         ))->getExcelData();
 
-        $this->dispatch(new TableExportJob(request()->user(), $data));
+        $this->dispatch(new TableReportJob(request()->user(), $data));
 
         return ['message' => __('The requested report was started.  It can take a few minutes before you have it in your inbox')];
     }

@@ -7,11 +7,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use LaravelEnso\Core\app\Models\User;
-use LaravelEnso\DataTable\app\Exports\TableReport;
-use LaravelEnso\DataTable\app\Notifications\TableExportNotification;
+use LaravelEnso\DataTable\app\Exports\TableExport;
+use LaravelEnso\DataTable\app\Notifications\TableReportNotification;
 use LaravelEnso\Helpers\Classes\Object;
 
-class TableExportJob implements ShouldQueue
+class TableReportJob implements ShouldQueue
 {
     use InteractsWithQueue, Queueable, SerializesModels;
 
@@ -30,14 +30,18 @@ class TableExportJob implements ShouldQueue
 
     public function handle()
     {
-        (new TableReport($this->fileName, $this->data))->run();
+        (new TableExport($this->fileName, $this->data))->run();
         $this->sendReport();
         $this->cleanUp();
     }
 
     private function sendReport()
     {
-        $this->user->notify(new TableExportNotification(storage_path('app'.DIRECTORY_SEPARATOR.$this->fullPathFile)));
+        $this->user->notify(
+            new TableReportNotification(
+                storage_path('app'.DIRECTORY_SEPARATOR.$this->fullPathFile)
+            )
+        );
     }
 
     private function cleanUp()

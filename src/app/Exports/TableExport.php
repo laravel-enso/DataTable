@@ -4,7 +4,7 @@ namespace LaravelEnso\DataTable\app\Exports;
 
 use LaravelEnso\Helpers\Classes\Object;
 
-class TableReport
+class TableExport
 {
     private $fileName;
     private $data;
