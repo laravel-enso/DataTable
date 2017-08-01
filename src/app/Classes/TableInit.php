@@ -114,11 +114,11 @@ class TableInit
         }
 
         $this->data['totals'] = collect($this->data['totals'])
-            ->reduce(function($totals, $column) {
+            ->reduce(function ($totals, $column) {
                 $totals[$column] = $this->data['columns'][$column]['name'];
 
                 return $totals;
-        });
+            });
 
         return $this;
     }
@@ -139,7 +139,7 @@ class TableInit
             $this->data['columns'][$column]['editField'] = $this->data['columns'][$column]['name'];
 
             $this->data['editable'][$key] = [
-                'name' => $this->data['columns'][$column]['name']
+                'name' => $this->data['columns'][$column]['name'],
             ];
         }
 

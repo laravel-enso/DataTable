@@ -49,7 +49,7 @@ class ActionButtonBuilder
         $this->data['actionButtons']['label'] = $label;
         $this->data['actionButtons']['standard'] =
             (new ActionButtons($this->route))->getData();
-         $this->data['actionButtons']['custom'] = [];
+        $this->data['actionButtons']['custom'] = [];
 
         return $this;
     }

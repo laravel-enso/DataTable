@@ -33,31 +33,31 @@ class ModelTableStructure extends TableStructure
              * the necessary permission, that specific button is not drawn
              */
             'customActionButtons'     => [
-                [ 'cssClass' => 'btn-success fa fa-info-circle', 'event'=>'custom-event', 'route' => 'route.getData' ]
+                ['cssClass' => 'btn-success fa fa-info-circle', 'event'=>'custom-event', 'route' => 'route.getData'],
             ],
             /* columns where custom rendering is applied
              * Note: a 'customRender' method needs to exist in the parent vue instance
              */
-            'render'        => [ columnIndexArray ],
+            'render'        => [columnIndexArray],
             /* column number where the total value is displayed
              * and the table's column name used in the query, to compute the total
              */
-            'totals'        => [ columnIndexArray ],
+            'totals'        => [columnIndexArray],
             /* computed responsive priority will be 1 for first column
              * and will increment with one for each consecutive column
              */
-            'responsivePriority' => [ columnIndexArray ],
+            'responsivePriority' => [columnIndexArray],
             /* list of columns that are not searchable,
              * such as columns that are translated */
-            'notSearchable' => [ columnIndexArray ],
+            'notSearchable' => [columnIndexArray],
             /* list of columns that you don't want to be sortable */
-            'notSortable' => [ columnIndexArray ],
+            'notSortable' => [columnIndexArray],
             /* list of editable columns
              * Note:  the  parameter is needed, and
              * only attributes of this model are editable i.e. you can't
              * edit attributes of 'joined' models/tables
              */
-            'editable' => [ columnIndexArray ],
+            'editable' => [columnIndexArray],
             /* if none is given, by default, 'Bfrtip' is used.
              * See datatables.net documentation */
             'dom' => 'Bfrtip',
@@ -79,17 +79,17 @@ class ModelTableStructure extends TableStructure
             /* array of eloquent model accessors that will be appended
             * Note: if this attribute is missing appends will be set an empty array
              */
-            'appends' => [ accessorList ],
+            'appends' => [accessorList],
             /* configuration of the columns to be displayed
              */
             'columns' => [
                 0 => [
                     'label' => 'labelName',
-                    'data' => 'attributeName',
-                    'name' => 'attributeSource',
+                    'data'  => 'attributeName',
+                    'name'  => 'attributeSource',
                     'class' => 'className',
                 ],
-            ]
+            ],
         ];
     }
 }
