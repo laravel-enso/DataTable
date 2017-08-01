@@ -34,8 +34,7 @@ class EnumComputor
         $dataFromEnum = [];
 
         foreach ($this->enumMappings as $column => $enumClass) {
-            $enum = new $enumClass();
-            $dataFromEnum[$column] = $enum->getData();
+            $dataFromEnum[$column] = (new $enumClass())->getData();
         }
 
         return $dataFromEnum;

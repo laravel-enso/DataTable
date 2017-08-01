@@ -25,7 +25,8 @@ class TableReportJob implements ShouldQueue
         $this->user = $user;
         $this->data = $data;
         $this->fileName = __('Report');
-        $this->fullPathFile = config('laravel-enso.paths.exports').DIRECTORY_SEPARATOR.$this->fileName.'.xlsx';
+        $this->fullPathFile =
+            config('laravel-enso.paths.exports').DIRECTORY_SEPARATOR.$this->fileName.'.xlsx';
     }
 
     public function handle()

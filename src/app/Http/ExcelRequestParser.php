@@ -37,7 +37,9 @@ class ExcelRequestParser
         $limit = config('datatable.excelRowLimit');
 
         if ($this->params['recordsDisplay'] > $limit) {
-            throw new \EnsoException(__('Limit of rows exceeded by').' '.($this->params['recordsDisplay'] - $limit));
+            throw new \EnsoException(
+                __('Limit of rows exceeded by').' '.($this->params['recordsDisplay'] - $limit)
+            );
         }
 
         return $limit;

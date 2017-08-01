@@ -183,7 +183,8 @@ class QueryBuilder
 
     private function applyLimit()
     {
-        $this->query->skip($this->params['start'])->take($this->params['length']);
+        $this->query->skip($this->params['start'])
+            ->take($this->params['length']);
 
         return $this->query;
     }
@@ -191,7 +192,7 @@ class QueryBuilder
     private function hasFilters()
     {
         return $this->params['search']['value']
-        || $this->params['extraFilters']
-        || $this->params['intervalFilters'];
+            || $this->params['extraFilters']
+            || $this->params['intervalFilters'];
     }
 }

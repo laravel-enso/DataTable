@@ -51,11 +51,9 @@ class TableBuilder
 
     private function computeEnums()
     {
-        if (!isset($this->structure['enumMappings'])) {
-            return false;
+        if (isset($this->structure['enumMappings'])) {
+            (new EnumComputor($this->data, $this->structure['enumMappings']))->run();
         }
-
-        (new EnumComputor($this->data, $this->structure['enumMappings']))->run();
     }
 
     private function prepareExcelData()
@@ -67,6 +65,8 @@ class TableBuilder
 
     private function getAppends()
     {
-        return isset($this->structure['appends']) ? $this->structure['appends'] : [];
+        return isset($this->structure['appends'])
+            ? $this->structure['appends']
+            : [];
     }
 }

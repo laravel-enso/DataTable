@@ -36,6 +36,8 @@ trait DataTable
 
         $this->dispatch(new TableReportJob(request()->user(), $data));
 
-        return ['message' => __('The requested report was started.  It can take a few minutes before you have it in your inbox')];
+        return [
+            'message' => __(config('labels.emailReportRequest'))
+        ];
     }
 }

@@ -40,11 +40,9 @@ class TableExport
             $element = [];
 
             foreach ($record->toArray() as $key => $value) {
-                if (!isset($this->header[$key])) {
-                    continue;
+                if (isset($this->header[$key])) {
+                    $element[$this->header[$key]] = $value;
                 }
-
-                $element[$this->header[$key]] = $value;
             }
 
             $this->data[] = $element;

@@ -14,16 +14,21 @@ class DataTableServiceProvider extends ServiceProvider
         ], 'datatable-component');
 
         $this->publishes([
-            __DIR__.'/config/datatable.php' => config_path('datatable.php'),
+            __DIR__.'/resources/assets/js/modules' => resource_path('assets/js/vendor/laravel-enso/modules'),
+        ], 'datatable-options');
+
+        $this->publishes([
+            __DIR__.'/resources/assets/js/components' => resource_path('assets/js/vendor/laravel-enso/components'),
+            __DIR__.'/resources/assets/js/modules'    => resource_path('assets/js/vendor/laravel-enso/modules'),
+        ], 'enso-update');
+
+        $this->publishes([
+            __DIR__.'/config' => config_path(),
         ], 'datatable-config');
 
         $this->publishes([
-            __DIR__.'/config/datatable.php' => config_path('datatable.php'),
+            __DIR__.'/config' => config_path(),
         ], 'enso-config');
-
-        $this->publishes([
-            __DIR__.'/resources/assets/js/modules' => resource_path('assets/js/vendor/laravel-enso/modules'),
-        ], 'datatable-options');
 
         $this->publishes([
             __DIR__.'/resources/dt-lang' => resource_path('dt-lang'),
@@ -32,11 +37,6 @@ class DataTableServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/resources/DataTable' => app_path('DataTable'),
         ], 'datatable-class');
-
-        $this->publishes([
-            __DIR__.'/resources/assets/js/components' => resource_path('assets/js/vendor/laravel-enso/components'),
-            __DIR__.'/resources/assets/js/modules'    => resource_path('assets/js/vendor/laravel-enso/modules'),
-        ], 'enso-update');
 
         $this->mergeConfigFrom(__DIR__.'/config/datatable.php', 'datatable');
     }

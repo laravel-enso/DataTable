@@ -134,7 +134,7 @@ class TableEditor
     {
         $this->response = [
             'data'    => [$this->property => $this->value],
-            'message' => __('Operation was successful'),
+            'message' => __(config('labels.successfulOperation')),
         ];
     }
 }

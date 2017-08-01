@@ -19,30 +19,30 @@ class CrtNoComputor
 
     private function run()
     {
-        $this->increaseTotalsIndex();
-        $this->increaseRenderIndex();
+        $this->increaseTotalsIndex()
+            ->increaseRenderIndex();
     }
 
     private function increaseTotalsIndex()
     {
-        if (!isset($this->data['totals'])) {
-            return false;
+        if (isset($this->data['totals'])) {
+            $this->data['totals'] = array_flip(
+                $this->increaseColumnIndex(
+                    array_flip($this->data['totals'])
+                )
+            );
         }
-
-        $tmp = array_flip($this->data['totals']);
-        $tmp = $this->increaseColumnIndex($tmp);
-        $this->data['totals'] = array_flip($tmp);
 
         return $this;
     }
 
     private function increaseRenderIndex()
     {
-        if (!isset($this->data['render'])) {
-            return false;
+        if (isset($this->data['render'])) {
+            $this->data['render'] = $this->increaseColumnIndex($this->data['render']);
         }
 
-        $this->data['render'] = $this->increaseColumnIndex($this->data['render']);
+        return $this;
     }
 
     private function increaseColumnIndex($array)

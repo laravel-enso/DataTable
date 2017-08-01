@@ -47,25 +47,22 @@ class ActionButtonBuilder
         $label = $this->data['actionButtons'];
         $this->data['actionButtons'] = [];
         $this->data['actionButtons']['label'] = $label;
-        $this->data['actionButtons']['standard'] = (new ActionButtons($this->route))->getData();
+        $this->data['actionButtons']['standard'] =
+            (new ActionButtons($this->route))->getData();
+         $this->data['actionButtons']['custom'] = [];
 
         return $this;
     }
 
     private function setCustomActionButtons()
     {
-        if (!isset($this->data['actionButtons'])) {
-            return $this;
-        }
-
-        $this->data['actionButtons']['custom'] = [];
-
         if (!isset($this->data['customActionButtons'])) {
             return $this;
         }
 
         foreach ($this->data['customActionButtons'] as $customButton) {
-            if (isset($customButton['route']) && !request()->user()->can('access-route', $customButton['route'])) {
+            if (isset($customButton['route'])
+                && !request()->user()->can('access-route', $customButton['route'])) {
                 continue;
             }
 
@@ -79,7 +76,8 @@ class ActionButtonBuilder
 
     private function setCustomButtons()
     {
-        $this->data['customButtons'] = request()->user()->can('access-route', $this->route.'.exportExcel')
-            ? true : false;
+        $this->data['customButtons'] = request()->user()->can(
+            'access-route', $this->route.'.exportExcel'
+            ) ? true : false;
     }
 }

@@ -39,7 +39,8 @@ class TableInit
         $this->data['header'] = [];
 
         foreach ($this->data['columns'] as &$value) {
-            $this->data['header'][] = array_shift($value);
+            $this->data['header'][] = $value['label'];
+            unset($value['label']);
         }
 
         return $this;
@@ -51,14 +52,14 @@ class TableInit
             return $this;
         }
 
-        $this->setSecondaryPriorityColumns();
-        $this->setPrimaryPriorityColumns();
+        $this->setSecondaryColumns();
+        $this->setPrimaryColumns();
         unset($this->data['responsivePriority']);
 
         return $this;
     }
 
-    private function setSecondaryPriorityColumns()
+    private function setSecondaryColumns()
     {
         $priority = count($this->data['responsivePriority']) + 1;
 
@@ -67,7 +68,7 @@ class TableInit
         }
     }
 
-    private function setPrimaryPriorityColumns()
+    private function setPrimaryColumns()
     {
         $priority = 1;
 
@@ -112,14 +113,12 @@ class TableInit
             return $this;
         }
 
-        $totals = [];
+        $this->data['totals'] = collect($this->data['totals'])
+            ->reduce(function($totals, $column) {
+                $totals[$column] = $this->data['columns'][$column]['name'];
 
-        foreach ($this->data['totals'] as $column) {
-            $field = $this->data['columns'][$column]['name'];
-            $totals[$column] = $field;
-        }
-
-        $this->data['totals'] = $totals;
+                return $totals;
+        });
 
         return $this;
     }
@@ -132,11 +131,16 @@ class TableInit
 
         foreach ($this->data['editable'] as $key => $column) {
             $this->data['columns'][$column]['class'] = trim(
-                (isset($this->data['columns'][$column]['class']) ? $this->data['columns'][$column]['class'] : '').' editable'
+                (isset($this->data['columns'][$column]['class'])
+                    ? $this->data['columns'][$column]['class']
+                    : '').' editable'
             );
 
             $this->data['columns'][$column]['editField'] = $this->data['columns'][$column]['name'];
-            $this->data['editable'][$key] = ['name' => $this->data['columns'][$column]['name']];
+
+            $this->data['editable'][$key] = [
+                'name' => $this->data['columns'][$column]['name']
+            ];
         }
 
         return $this;
@@ -144,11 +148,9 @@ class TableInit
 
     private function computeCrtNo()
     {
-        if (!isset($this->data['crtNo'])) {
-            return $this;
+        if (isset($this->data['crtNo'])) {
+            $this->data = (new CrtNoComputor($this->data))->getData();
         }
-
-        $this->data = (new CrtNoComputor($this->data))->getData();
 
         return $this;
     }
