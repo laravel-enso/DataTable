@@ -1,34 +1,27 @@
 <template>
 
-    <div :class="'box box-' + headerClass">
-        <div class="box-header with-border">
-            <h3 class="box-title">
-                <i class="fa fa-table"></i>
-                <slot name="data-table-title">{{ tableName }}</slot>
-            </h3>
-            <div class="box-tools pull-right">
-                <button class="btn btn-box-tool btn-sm" @click="clearState()">
-                    reset
-                </button>
-                <button class="btn btn-box-tool btn-sm" @click="toggleDisplayClass()">
-                    <i class="fa fa-th-list" v-if="classes.display"></i>
-                    <i class="fa fa-bars" v-else></i>
-                </button>
-                <button class="btn btn-box-tool btn-sm" @click="toggleCompactClass()">
-                    <i class="fa fa-th-large" v-if="classes.compact"></i>
-                    <i class="fa fa-th" v-else></i>
-                </button>
-                <button class="btn btn-box-tool btn-sm"
-                    @click="getData()">
-                    <i class="fa fa-refresh"></i>
-                </button>
-                <button class="btn btn-box-tool btn-sm" data-widget="collapse">
-                    <i class="fa fa-minus">
-                    </i>
-                </button>
-            </div>
-        </div>
-        <div class="box-body table-responsive">
+    <box :theme="theme"
+        collapsible refresh removable
+        :solid="solid"
+        :open="true"
+        @refresh="getData()"
+        icon="fa fa-table"
+        :title="tableName"
+        :overlay="loading">
+        <span slot="btn-box-tool">
+            <button class="btn btn-box-tool btn-sm" @click="clearState()">
+                reset
+            </button>
+            <button class="btn btn-box-tool btn-sm" @click="toggleDisplayClass()">
+                <i class="fa fa-th-list" v-if="classes.display"></i>
+                <i class="fa fa-bars" v-else></i>
+            </button>
+            <button class="btn btn-box-tool btn-sm" @click="toggleCompactClass()">
+                <i class="fa fa-th-large" v-if="classes.compact"></i>
+                <i class="fa fa-th" v-else></i>
+            </button>
+        </span>
+        <div class="table-responsive">
             <table
                 :id="tableId"
                 class="table display"
@@ -51,12 +44,9 @@
                 </tfoot>
             </table>
         </div>
-        <div class="overlay" v-if="loading">
-            <i class="fa fa-spinner fa-spin spinner-custom" ></i>
-        </div>
         <modal :show="showModal" @cancel-action="showModal = false; deleteRoute = null" @commit-action="deleteModel()">
         </modal>
-    </div>
+    </box>
 
 </template>
 
@@ -72,9 +62,13 @@
                 type: String,
                 default: null
             },
-            headerClass: {
+            theme: {
                 type: String,
                 default: 'primary'
+            },
+            solid: {
+                type: Boolean,
+                default: false,
             },
             extraFilters: {
                 type: Object,
