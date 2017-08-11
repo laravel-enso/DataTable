@@ -9,16 +9,19 @@
         :title="tableName"
         :overlay="loading">
         <span slot="btn-box-tool">
-            <button class="btn btn-box-tool btn-sm" @click="clearState()">
+            <button class="btn btn-box-tool btn-sm"
+                @click="clearState()">
                 reset
             </button>
-            <button class="btn btn-box-tool btn-sm" @click="toggleDisplayClass()">
+            <button class="btn btn-box-tool btn-sm"
+                @click="toggleDisplayClass()">
                 <i class="fa fa-th-list" v-if="classes.display"></i>
                 <i class="fa fa-bars" v-else></i>
             </button>
-            <button class="btn btn-box-tool btn-sm" @click="toggleCompactClass()">
-                <i class="fa fa-th-large" v-if="classes.compact"></i>
-                <i class="fa fa-th" v-else></i>
+            <button class="btn btn-box-tool btn-sm"
+                @click="toggleCompactClass()">
+                <i v-if="classes.compact" class="fa fa-th-large"></i>
+                <i v-else class="fa fa-th" ></i>
             </button>
         </span>
         <div class="table-responsive">
@@ -29,7 +32,8 @@
                 width="100%">
                 <thead>
                     <tr>
-                        <th v-for="label in header" :class="'text-' + headerAlign">
+                        <th v-for="label in header"
+                            :class="'text-' + headerAlign">
                             {{ label }}
                         </th>
                     </tr>
@@ -38,13 +42,18 @@
                 <tfoot v-if="hasTotals">
                 <tr>
                     <td v-for="i in header.length" class="text-center">
-                        <span v-if="i == 2" class="totals">{{ labels.totals }}</span>
+                        <span v-if="i == 2"
+                            class="totals">
+                            {{ labels.totals }}
+                        </span>
                     </td>
                 </tr>
                 </tfoot>
             </table>
         </div>
-        <modal :show="showModal" @cancel-action="showModal = false; deleteRoute = null" @commit-action="deleteModel()">
+        <modal :show="showModal"
+            @cancel-action="showModal=false;deleteRoute = null"
+            @commit-action="deleteModel()">
         </modal>
     </box>
 
