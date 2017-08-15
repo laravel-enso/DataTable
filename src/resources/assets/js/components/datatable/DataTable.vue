@@ -270,6 +270,26 @@
                 }
             },
             computeRender(data) {
+                this.computeBoolean(data);
+                this.computeCustomRender(data);
+            },
+            computeBoolean(data) {
+                if (!data.boolean) {
+                    return false;
+                }
+
+                let self = this;
+
+                data.boolean.forEach(index => {
+                    let render = (data, type, row, meta) => {
+                        return data ? '<span class="label bg-green"><i class="fa fa-check"></span>'
+                            : '<span class="label bg-red"><i class="fa fa-times"></span>';
+                    };
+
+                    self.$set(self.tableOptions.columns[index], 'render', render);
+                });
+            },
+            computeCustomRender(data) {
                 if (!data.render) {
                     return false;
                 }
@@ -277,11 +297,13 @@
                 let self = this;
 
                 data.render.forEach(index => {
-                    let renderFunction = (data, type, row, meta) => {
-                        return self.$parent.customRender(self.tableOptions.columns[index].data, data, type, row, meta);
+                    let render = (data, type, row, meta) => {
+                        return self.$parent.customRender(
+                            self.tableOptions.columns[index].data, data, type, row, meta
+                        );
                     };
 
-                    self.$set(self.tableOptions.columns[index], 'render', renderFunction);
+                    self.$set(self.tableOptions.columns[index], 'render', render);
                 });
             },
             computeEditor(data) {
