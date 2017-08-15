@@ -20,6 +20,7 @@ class CrtNoComputor
     private function run()
     {
         $this->increaseTotalsIndex()
+            ->increaseBooleanIndex()
             ->increaseRenderIndex();
     }
 
@@ -31,6 +32,15 @@ class CrtNoComputor
                     array_flip($this->data['totals'])
                 )
             );
+        }
+
+        return $this;
+    }
+
+    private function increaseBooleanIndex()
+    {
+        if (isset($this->data['boolean'])) {
+            $this->data['boolean'] = $this->increaseColumnIndex($this->data['boolean']);
         }
 
         return $this;
