@@ -79,6 +79,16 @@
                 type: Boolean,
                 default: false,
             },
+            customRender: {
+                type: Function,
+                default() {
+                    return (column, data, type, row, meta) => {
+                        toastr.warning('render for column ' + column + ' is not defined.' );
+
+                        return data;
+                    }
+                }
+            },
             extraFilters: {
                 type: Object,
                 default() {
@@ -298,7 +308,7 @@
 
                 data.render.forEach(index => {
                     let render = (data, type, row, meta) => {
-                        return self.$parent.customRender(
+                        return self.customRender(
                             self.tableOptions.columns[index].data, data, type, row, meta
                         );
                     };
