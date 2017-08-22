@@ -82,8 +82,8 @@
             customRender: {
                 type: Function,
                 default() {
-                    return (column, data, type, row, meta) => {
-                        toastr.warning('render for column ' + column + ' is not defined.' );
+                    return (data) => {
+                        toastr.warning('Custom render function is missing');
 
                         return data;
                     }
