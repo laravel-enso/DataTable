@@ -166,13 +166,13 @@ class TableInit
 
     private function setLocales()
     {
-        Language::pluck('name')->each(function($locale) {
+        Language::pluck('name')->each(function ($locale) {
             $langFile = \File::exists(resource_path('dt-lang/'.$locale.'.json'))
                 ? json_decode(\File::get(resource_path('dt-lang/'.$locale.'.json')))
                 : null;
 
             if (!$langFile) {
-                throw new Exception(__("DataTables language file is missing for").": ".$locale);
+                throw new Exception(__('DataTables language file is missing for').': '.$locale);
             }
 
             $this->data['locales'][$locale] = $langFile;
