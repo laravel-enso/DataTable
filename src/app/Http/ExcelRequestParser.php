@@ -34,7 +34,7 @@ class ExcelRequestParser
 
     private function getLength()
     {
-        $limit = config('datatable.excelRowLimit');
+        $limit = config('enso.datatable.excelRowLimit');
 
         if ($this->params['recordsDisplay'] > $limit) {
             throw new \EnsoException(

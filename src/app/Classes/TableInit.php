@@ -2,6 +2,8 @@
 
 namespace LaravelEnso\DataTable\app\Classes;
 
+use LaravelEnso\Localisation\app\Models\Language;
+
 class TableInit
 {
     private $data;
@@ -29,7 +31,7 @@ class TableInit
             ->setEditable()
             ->computeCrtNo()
             ->setActionButtons()
-            ->setLanguage();
+            ->setLocales();
 
         unset($this->data['enumMappings']);
     }
@@ -162,10 +164,18 @@ class TableInit
         return $this;
     }
 
-    private function setLanguage()
+    private function setLocales()
     {
-        $this->data['language'] = \File::exists(resource_path('dt-lang/'.app()->getLocale().'.json'))
-            ? json_decode(\File::get(resource_path('dt-lang/'.app()->getLocale().'.json')))
-            : null;
+        Language::pluck('name')->each(function($locale) {
+            $langFile = \File::exists(resource_path('dt-lang/'.$locale.'.json'))
+                ? json_decode(\File::get(resource_path('dt-lang/'.$locale.'.json')))
+                : null;
+
+            if (!$langFile) {
+                throw new Exception(__("DataTables language file is missing for").": ".$locale);
+            }
+
+            $this->data['locales'][$locale] = $langFile;
+        });
     }
 }

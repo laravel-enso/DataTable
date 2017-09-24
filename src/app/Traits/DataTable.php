@@ -37,7 +37,7 @@ trait DataTable
         $this->dispatch(new TableReportJob(request()->user(), $data));
 
         return [
-            'message' => __(config('labels.emailReportRequest')),
+            'message' => __(config('enso.labels.emailReportRequest')),
         ];
     }
 }

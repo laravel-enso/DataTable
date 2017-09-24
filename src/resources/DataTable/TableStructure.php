@@ -14,17 +14,18 @@ class ModelTableStructure extends TableStructure
             /* The table name that will be shown in front end
              * It will be also used as the file name if the excel export is called
              */
-            'tableName' => '__("Table")',
+            'name' => '__("Table")',
             /* current number for each line, with the header name
              * If given, it will be appended as the first column of the table
              */
             'crtNo'         => '#',
-            /* column for buttons with available actions. Used for both standard
-             * actions - create, view, edit, delete - and custom actions.
-             * Note: the buttons for standard actions are added automatically depending
-             * on permissions and do not need to be specified here or elsewhere.
+            /* actions column label
+            */
+            'actions' => '__("Actions")',
+            /* list of the standard actions - show, edit, download, delete.
+             * Note: the buttons for standard actions are added depending on the users permissions
              */
-            'actionButtons' => '__("Actions")',
+            'actionButtons' => ['show', 'edit', 'download', 'destroy'],
             /* list of action buttons for custom actions
              * cssSelectorClass is used for adding the button event listener
              * cssClass is used for styling the custom button
@@ -35,6 +36,10 @@ class ModelTableStructure extends TableStructure
             'customActionButtons'     => [
                 ['cssClass' => 'btn-success fa fa-info-circle', 'event'=>'custom-event', 'route' => 'route.getData'],
             ],
+            /* list of the header buttons - create, export excel.
+             * Note: the buttons are added depending on the users permissions
+             */
+            'headerButtons' => ['create', 'exportExcel'],
             /* columns where custom rendering is applied
              * Note: a 'customRender' method needs to exist in the parent vue instance
              */

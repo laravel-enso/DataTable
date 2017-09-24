@@ -13,7 +13,7 @@ class ${2:Class} extends TableStructure
             ${3:${4:/* The table name that will be shown in front end
              * It will be also used as the file name if the excel export is called
              */}
-            'tableName' => '${5:__("Table")}',}
+            'name' => '${5:__("Table")}',}
             ${6:${7:/* current number for each line, with the header name
              * If given, it will be appended as the first column of the table
              */}
@@ -23,7 +23,7 @@ class ${2:Class} extends TableStructure
              * Note: the buttons for standard actions are added automatically depending
              * on permissions and do not need to be specified here or elsewhere.
              */}
-            'actionButtons' => '${11:__("Actions")}',}
+            'actions' => '${11:__("Actions")}',}
             ${12:${13:/* list of action buttons for custom actions
              * class is used for styling the custom button
              * event is the event triggered by the button

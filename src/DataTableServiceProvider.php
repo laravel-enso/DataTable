@@ -10,24 +10,11 @@ class DataTableServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/resources/assets/js/components' => resource_path('assets/js/vendor/laravel-enso/components'),
-        ], 'datatable-component');
-
-        $this->publishes([
-            __DIR__.'/resources/assets/js/modules' => resource_path('assets/js/vendor/laravel-enso/modules'),
-        ], 'datatable-options');
-
-        $this->publishes([
-            __DIR__.'/resources/assets/js/components' => resource_path('assets/js/vendor/laravel-enso/components'),
-            __DIR__.'/resources/assets/js/modules'    => resource_path('assets/js/vendor/laravel-enso/modules'),
-        ], 'enso-update');
-
-        $this->publishes([
-            __DIR__.'/config' => config_path(),
+            __DIR__.'/config' => config_path('enso'),
         ], 'datatable-config');
 
         $this->publishes([
-            __DIR__.'/config' => config_path(),
+            __DIR__.'/config' => config_path('enso'),
         ], 'enso-config');
 
         $this->publishes([

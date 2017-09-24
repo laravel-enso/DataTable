@@ -60,7 +60,7 @@ class QueryBuilder
 
     private function applyFilters()
     {
-        if (!$this->params['search']['value']) {
+        if (!isset($this->params['search']) || !$this->params['search']['value']) {
             return $this;
         }
 
@@ -81,6 +81,10 @@ class QueryBuilder
 
     private function applyExtraFilters()
     {
+        if (!isset($this->params['extraFilters'])) {
+            return $this;
+        }
+
         $extraFilters = json_decode($this->params['extraFilters']);
 
         if (empty((array) $extraFilters)) {
@@ -102,6 +106,10 @@ class QueryBuilder
 
     private function applyIntervalFilters()
     {
+        if (!isset($this->params['intervalFilters'])) {
+            return $this;
+        }
+
         $intervalFilters = json_decode($this->params['intervalFilters']);
 
         if (empty((array) $intervalFilters)) {
@@ -166,6 +174,10 @@ class QueryBuilder
 
     private function setTotals()
     {
+        if (!isset($this->params['totals'])) {
+            return $this;
+        }
+
         $totals = json_decode($this->params['totals']);
 
         if (empty((array) $totals)) {
@@ -191,8 +203,8 @@ class QueryBuilder
 
     private function hasFilters()
     {
-        return $this->params['search']['value']
-            || $this->params['extraFilters']
-            || $this->params['intervalFilters'];
+        return (isset($this->params['search']) && $this->params['search']['value'])
+            || (isset($this->params['extraFilters']) && $this->params['extraFilters'])
+            || (isset($this->params['intervalFilters']) && $this->params['intervalFilters']);
     }
 }

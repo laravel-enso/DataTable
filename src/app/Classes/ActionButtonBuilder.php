@@ -2,8 +2,6 @@
 
 namespace LaravelEnso\DataTable\app\Classes;
 
-use LaravelEnso\DataTable\app\Enums\ActionButtons;
-
 class ActionButtonBuilder
 {
     private $route;
@@ -24,7 +22,7 @@ class ActionButtonBuilder
     {
         $this->setStandardActionButtons()
             ->setCustomActionButtons()
-            ->setCustomButtons();
+            ->setHeaderButtons();
 
         unset($this->data['customActionButtons']);
     }
@@ -44,14 +42,23 @@ class ActionButtonBuilder
             return $this;
         }
 
-        $label = $this->data['actionButtons'];
+        $actions = collect($this->data['actionButtons']);
+
         $this->data['actionButtons'] = [];
-        $this->data['actionButtons']['label'] = $label;
-        $this->data['actionButtons']['standard'] =
-            (new ActionButtons($this->route))->getData();
-        $this->data['actionButtons']['custom'] = [];
+
+        $this->data['actionButtons']['label']    = $this->data['actions'] ?: 'Actions';
+        $this->data['actionButtons']['standard'] = $this->filterAllowedActions($actions);
+        $this->data['actionButtons']['custom']   = [];
 
         return $this;
+    }
+
+    private function filterAllowedActions($actions)
+    {
+        return $actions->filter(function ($action) {
+            return request()->user()
+                ->can('access-route', $this->route . '.' . $action);
+        })->values();
     }
 
     private function setCustomActionButtons()
@@ -62,7 +69,8 @@ class ActionButtonBuilder
 
         foreach ($this->data['customActionButtons'] as $customButton) {
             if (isset($customButton['route'])
-                && !request()->user()->can('access-route', $customButton['route'])) {
+                && !request()->user()
+                    ->can('access-route', $customButton['route'])) {
                 continue;
             }
 
@@ -74,10 +82,11 @@ class ActionButtonBuilder
         return $this;
     }
 
-    private function setCustomButtons()
+    private function setHeaderButtons()
     {
-        $this->data['customButtons'] = request()->user()->can(
-            'access-route', $this->route.'.exportExcel'
-            ) ? true : false;
+        $this->data['headerButtons'] = isset($this->data['headerButtons']) ? collect($this->data['headerButtons'])->filter(function($action) {
+            return request()->user()
+                ->can('access-route', $this->route . '.' . $action);
+        }) : [];
     }
 }
