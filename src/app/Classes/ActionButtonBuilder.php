@@ -46,9 +46,9 @@ class ActionButtonBuilder
 
         $this->data['actionButtons'] = [];
 
-        $this->data['actionButtons']['label']    = $this->data['actions'] ?: 'Actions';
+        $this->data['actionButtons']['label'] = $this->data['actions'] ?: 'Actions';
         $this->data['actionButtons']['standard'] = $this->filterAllowedActions($actions);
-        $this->data['actionButtons']['custom']   = [];
+        $this->data['actionButtons']['custom'] = [];
 
         return $this;
     }
@@ -57,7 +57,7 @@ class ActionButtonBuilder
     {
         return $actions->filter(function ($action) {
             return request()->user()
-                ->can('access-route', $this->route . '.' . $action);
+                ->can('access-route', $this->route.'.'.$action);
         })->values();
     }
 
@@ -84,9 +84,9 @@ class ActionButtonBuilder
 
     private function setHeaderButtons()
     {
-        $this->data['headerButtons'] = isset($this->data['headerButtons']) ? collect($this->data['headerButtons'])->filter(function($action) {
+        $this->data['headerButtons'] = isset($this->data['headerButtons']) ? collect($this->data['headerButtons'])->filter(function ($action) {
             return request()->user()
-                ->can('access-route', $this->route . '.' . $action);
+                ->can('access-route', $this->route.'.'.$action);
         }) : [];
     }
 }
