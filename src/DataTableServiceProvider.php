@@ -30,6 +30,6 @@ class DataTableServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->app->register(ExcelServiceProvider::class);
+        //
     }
 }
