@@ -3,7 +3,6 @@
 namespace LaravelEnso\DataTable;
 
 use Illuminate\Support\ServiceProvider;
-use Maatwebsite\Excel\ExcelServiceProvider;
 
 class DataTableServiceProvider extends ServiceProvider
 {
