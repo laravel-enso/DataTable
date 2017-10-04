@@ -172,7 +172,7 @@ class TableInit
                 : null;
 
             if (!$langFile) {
-                throw new Exception(__('DataTables language file is missing for').': '.$locale);
+                throw new \EnsoException(__('DataTables language file is missing for').': '.$locale);
             }
 
             $this->data['locales'][$locale] = $langFile;
