@@ -87,6 +87,6 @@ class ActionButtonBuilder
         $this->data['headerButtons'] = isset($this->data['headerButtons']) ? collect($this->data['headerButtons'])->filter(function ($action) {
             return request()->user()
                 ->can('access-route', $this->route.'.'.$action);
-        }) : [];
+        })->values()->toArray() : [];
     }
 }
