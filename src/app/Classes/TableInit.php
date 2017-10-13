@@ -169,11 +169,7 @@ class TableInit
         Language::pluck('name')->each(function ($locale) {
             $langFile = \File::exists(resource_path('dt-lang/'.$locale.'.json'))
                 ? json_decode(\File::get(resource_path('dt-lang/'.$locale.'.json')))
-                : null;
-
-            if (!$langFile) {
-                throw new \EnsoException(__('DataTables language file is missing for').': '.$locale);
-            }
+                : json_decode(\File::get(resource_path('dt-lang/'.config('app.fallback_locale').'.json')));
 
             $this->data['locales'][$locale] = $langFile;
         });
