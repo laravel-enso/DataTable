@@ -14,51 +14,43 @@ DataTable package for the [DataTables.net](https://datatables.net/) library with
 
 ### Details
 Supports:
-- searching in all the columns of the table (you can also choose to exclude some columns)
-- hiding of columns
+- server side data loading, with multi-argument
+- searching in all the columns of the table (you can also choose to exclude columns)
+- customizable column visibility
+- beautiful tag rendering for boolean flag columns
+- striped rows for a pleasant aspect
+- supports custom rendering of data in columns
+- state save for each table, for certain options and preferences, with the option to reset everything to default
 - reordering of columns
 - sorting on any column (you can also choose to exclude some columns within the configuration)
-- totals
 - user configurable pagination
-- reloading of data
-- visual aides, directly from the interface, such as displaying a table as compact and adding alternate row coloring
-- custom rendering of data in columns
+- reloading of data on demand
 - automatic display of show/edit/delete buttons based on available permissions
-- excel exporting of the table data, using current search filtering, up to a configurable limit
+- server-side excel exporting of the table data, using current search filtering, up to a configurable limit
 - permits overriding of the appends attribute for the main query model
-- inline editing of values<sup>1</sup> <sup>2</sup>
+- sublime snippet for table template
 and more
-
-<sup>1</sup> requires the purchase of the DataTables.net Editor library, as it's a commercial feature
-
-<sup>2</sup> there are some limitations when editing aggregated data
 
 ### Installation
 
-1. Add `LaravelEnso\DataTable\DataTableServiceProvider::class` to `config/app.php`.
-
-2. Publish the vue component with `php artisan vendor:publish --tag=datatable-component`.
-
-3. Publish the sample structure class with `php artisan vendor:publish --tag=datatable-structure`.
-
-4. Include the vue component in your app.js.
-
-5. Run `gulp` / `npm run dev`.
-
-6. In your blade page add:
-
+1. Publish the configuration, VueJS component, and language files    
     ```
-    <data-table source="/myRoute"
-      id="tableId">
-    </data-table>
+    php artisan vendor:publish --tag=datatable-config
+    php artisan vendor:publish --tag=vue-components
+    php artisan vendor:publish --tag=vue-lang
     ```
+    Optionally, you may publish the example table structure class
+    ```
+    php artisan vendor:publish --tag=datatable-class
+    ```
+    
+2. Include the `Datatable.vue` component in your `app.js`
 
-7. In your controller add `use DataTable` to include the trait. This adds to your controller two helper methods that will manage the builder:
+3. In your controller add `use DataTable` to include the trait. This includes two helper methods that will manage the builder:
 	- initTable
 	- getTableData
-
-8. In the controller you must define a method for the query builder, such as:
-
+	
+4. In the controller you must define a method for the query builder, such as:
     ```
     public function getTableQuery()
     {
@@ -68,17 +60,26 @@ and more
 
     Note it should return a QueryBuilder object and not a collection of results.
 
-9. Also in the controller add `protected $tableStructureClass = MyTableStructure::class` which should be the fully qualified class name describing the structure of the table rendered in your page
+5. Also in the controller add `protected $tableStructureClass = MyTableStructure::class` which should be the fully qualified class name describing the structure of the table rendered in your page
 
-10. In your routes files add three routes for the helper methods, and name them `myRoute.initTable`, `myRoute.getTableData` and optionally `myRoute.exportExcel` if you want the results exporting functionality.
+6. In your routes files add three routes for the helper methods, and name them `myRoute.initTable`, `myRoute.getTableData` and, optionally, `myRoute.exportExcel` if you want the results exporting functionality
 
-11. Configure the table from the structure class.
+7. In your page/component add:
+    ```
+    <data-table
+        source="myRoute"
+        id="my-table-id"
+        :custom-render="customRender">
+    </data-table>
+    ```
+8. Run `gulp` / `npm run dev`
+
+9. Configure the table from the structure class
 
 ### Options
 
 - `source` - required, must reference the controllers base route, where both initTable & getTableData endpoints exist
-- `header-class` - header class for the box element: info (default option) / default / primary / warning / danger / default
-- `extra-filters` - reactive option array of the following format:
+- `extra-filters` - reactive object of the following format
     ```
     "extraFilters": {
         "table": {
@@ -87,7 +88,7 @@ and more
         }
     }
     ```
-- `params` -
+- `custom-params` - extra parameters sent to the back-end for custom logic / queries
     ```
     "customParams": {
         "orders": {
@@ -95,7 +96,7 @@ and more
         }
     }
     ```
-- 'interval-filters' - where `dbDateFormat` is REQUIRED if the filter values are dates. The given format has to match the database date format
+- `interval-filters` - where `dbDateFormat` is REQUIRED if the filter values are dates. The given format has to match the database date format
     ```
     "intervalFilters": {
        "table":{
@@ -114,11 +115,15 @@ and more
 
 ### TableStructure
   - `crtNo` - the label for the current number column
-  - `actionButtons` - if it exists, it generates the action buttons column with the proper buttons. The value of the parameter is the column label
+  - `actionButtons` - array of types of custom buttons to render
+  - `headerButtons` - array of types of buttons to render above the table header
+  - `responsePriority` - the priority of columns in responsive mode, i.e. when the content doesn't fit on the screen 
   - `headerAlign` & `bodyAlign` - type of alignment for the text in cells, eg. 'center'
-  - `tableClass` - the table classes, eg. 'table display'
+  - `icon` - the icon to be used for the card containing the datatable
   - `notSearchable` - simple array w/ the column indexes that are **NOT** searchable using the component search
-  - `enumMappings` - KV array, where key is the column name, and value is the Enum class name used for translation. These enums contain the translations for the flag-type values in your table, which you want to be presented in a more human friendly way, i.e. `Active`/`Inactive` instead of 0 / 1.
+  - `notSortable` - simple array w/ the column indexes that are **NOT** sortable
+  - `boolean` - array of column indexes that contain values that should be treated as boolean
+  - `enumMappings` - KV array, where key is the column name, and value is the Enum class name used for translation. These enums contain the translations for the flag-type values in your table, which you want to be presented in a more human friendly way, i.e. `Shipped`/`Delivered` instead of 5 / 6.
   - `appends` - optional array of model attributes, which can be appended before returning the query results <sup>1</sup> <sup>2</sup>
   - `columns` - array of arrays. Each inner array contains:
      - `label` - table column header label
@@ -132,13 +137,6 @@ and more
 
   - `excelRowLimit` - the maximum number of exported entries, when using the export function. You may need to adjust this depending on your server's RAM and PHP settings.
 
-### Notes
-
-- You may clone and/or install the [Laravel Enso](https://github.com/laravel-enso/Enso) package where you'll find working examples for using the component
-- In the snippets folder you'll find a sublime snippet for quickly creating a stub table-structure class
-
-
-
 ### Publishes
 
 - `php artisan vendor:publish --tag=datatable-component` - the VueJS component file
@@ -147,6 +145,19 @@ and more
 - `php artisan vendor:publish --tag=datatable-class` - the abstract TableStructure class that must be extended when creating specific structures
 - `php artisan vendor:publish --tag=enso-update` - a common alias for when wanting to update the VueJS component,
 once a newer version is released.
+
+### Notes
+
+The [Laravel Enso](https://github.com/laravel-enso/Enso) package comes with this package included. There you'll find working examples for using the component
+
+In the snippets folder you'll find a sublime snippet for quickly creating a stub table-structure class
+
+Depends on:
+ - [Core](https://github.com/laravel-enso/Core) for the user model 
+ - [Helpers](https://github.com/laravel-enso/Helpers) for some generic classes
+ - [VueComponents](https://github.com/laravel-enso/VueComponents) for the accompanying VueJS components 
+ - [Laravel-Excel](https://github.com/Maatwebsite/Laravel-Excel) for working the excel files
+
 
 <!--h-->
 ### Contributions

@@ -4,7 +4,7 @@ namespace App\DataTable;
 
 namespace TableStructure;
 
-use App\Utils\DataTable\TableStructure;
+use LaravelEnso\DataTable\app\Classes\TableStructure;
 
 class ModelTableStructure extends TableStructure
 {
