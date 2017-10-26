@@ -33,24 +33,20 @@ and more
 
 ### Installation
 
-1. Publish the configuration, VueJS component, and language files    
-    ```
-    php artisan vendor:publish --tag=datatable-config
-    php artisan vendor:publish --tag=vue-components
-    php artisan vendor:publish --tag=vue-lang
-    ```
-    Optionally, you may publish the example table structure class
+The component is already included in the Enso install and should not require any additional installation steps.
+
+### Use
+
+1. Optionally, you may publish the example table structure class
     ```
     php artisan vendor:publish --tag=datatable-class
-    ```
-    
-2. Include the `Datatable.vue` component in your `app.js`
+    ```    
 
-3. In your controller add `use DataTable` to include the trait. This includes two helper methods that will manage the builder:
+2. In your controller add the `DataTable` trait. This includes two helper methods that will manage the builder:
 	- initTable
 	- getTableData
 	
-4. In the controller you must define a method for the query builder, such as:
+3. In the controller you must define a method for the query builder, such as:
     ```
     public function getTableQuery()
     {
@@ -58,11 +54,13 @@ and more
     }
     ```
 
-    Note it should return a QueryBuilder object and not a collection of results.
+    Note that it should return a QueryBuilder object and not a collection of results.
 
-5. Also in the controller add `protected $tableStructureClass = MyTableStructure::class` which should be the fully qualified class name describing the structure of the table rendered in your page
+4. Also in the controller add `protected $tableStructureClass = MyTableStructure::class` which should be the fully qualified class name describing the structure of the table rendered in your page
 
-6. In your routes files add three routes for the helper methods, and name them `myRoute.initTable`, `myRoute.getTableData` and, optionally, `myRoute.exportExcel` if you want the results exporting functionality
+5. In your routes files add the routes for the helper methods, and name them `myRoute.initTable`, `myRoute.getTableData` and, optionally, `myRoute.exportExcel` if you want the results exporting functionality
+
+6. If you need to, don't forget to add user permissions for the new routes
 
 7. In your page/component add:
     ```
@@ -72,9 +70,8 @@ and more
         :custom-render="customRender">
     </data-table>
     ```
-8. Run `gulp` / `npm run dev`
 
-9. Configure the table from the structure class
+8. Configure the table from the structure class
 
 ### Options
 

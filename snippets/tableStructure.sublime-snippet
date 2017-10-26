@@ -11,81 +11,132 @@ class ${2:Class} extends TableStructure
     {
         \$this->data = [
             ${3:${4:/* The table name that will be shown in front end
-             * It will be also used as the file name if the excel export is called
-             */}
-            'name' => '${5:__("Table")}',}
-            ${6:${7:/* current number for each line, with the header name
-             * If given, it will be appended as the first column of the table
-             */}
-            'crtNo'         => '${8:#}',}
-            ${9:${10:/* column for buttons with available actions. Used for both standard
-             * actions - create, view, edit, delete - and custom actions.
-             * Note: the buttons for standard actions are added automatically depending
-             * on permissions and do not need to be specified here or elsewhere.
-             */}
-            'actions' => '${11:__("Actions")}',}
-            ${12:${13:/* list of action buttons for custom actions
-             * class is used for styling the custom button
-             * event is the event triggered by the button
-             * route is OPTIONAL, and if given, it will be checked for permission i.e. if the user doesn't have
-             * the necessary permission, that specific button is not drawn
-             */}
-            'customActionButtons'     => [
-                [ 'class' => '${14:btn-success fa fa-info-circle}', 'event'=>'${15:custom-event}'${16:, 'route' => '${17:route.getData}'} ]
-            ],}
-            ${18:${19:/* columns where custom rendering is applied
-             * Note: a 'customRender' method needs to exist in the parent vue instance
-             */}
-            'render'        => [ ${20:columnIndexArray} ],}
-            ${21:${22:/* column number where the total value is displayed
-             * and the table's column name used in the query, to compute the total
-             */}
-            'totals'        => [ ${23:columnIndexArray} ],}
-            ${24:${25:/* computed responsive priority will be 1 for first column
-             * and will increment with one for each consecutive column
-             */}
-            'responsivePriority' => [ ${26:columnIndexArray} ],}
-            ${27:${28:/* list of columns that are not searchable,
-             * such as columns that are translated */}
-            'notSearchable' => [ ${29:columnIndexArray} ],}
-            ${30:${31:/* list of columns that you don't want to be sortable */}
-            'notSortable' => [ ${32:columnIndexArray} ],}
-            ${33:${34:/* list of editable columns
-             * Note:  the $editableModel parameter is needed, and
-             * only attributes of this model are editable i.e. you can't
-             * edit attributes of 'joined' models/tables
-             */}
-            'editable' => [ ${35:columnIndexArray} ],}
-            ${36:${37:/* if none is given, by default, 'Bfrtip' is used.
-             * See datatables.net documentation */}
-            'dom' => '${38:Bfrtip}',}
-            ${39:/* table header alignment. The dt-head-* class is used,
-             * i.e. dt-head-center in this example  */}
-            'headerAlign'        => '${40:left} ${41:center} ${42:right}',
-            ${43:/* table body alignment. The dt-body-center class is used in this example
-             */}
-            'bodyAlign'        => '${44:left} ${45:center} ${46:right}',
-            ${47:${48:/* custom css classes for the <table> element
+            * It will be also used as the file name if the excel export is called
+            * Optional.
             */}
-            'tableClass'         => '${49:custom-class}',}
-            ${50:${51:/* array of columns whose values should be displayed translated.
-            * Note: in order to work it needs a ColumnEnum class
+            'name' => '${5:__("Table")}',}
+
+            ${6:${7:/* the icon shown in the title bar, next to the title
+             * Optional.
              */}
-            'enumMappings' => [
-                '${52:status}' => '${53:StatusesEnum}',
+            'icon'          => ${8:'fa fa-list-alt'},}
+
+            ${9:${10:/* current number for each line, with the header name
+              * If given, it will be appended as the first column of the table
+              * Optional.
+              */}
+            'crtNo'         => '${11:#}',}
+
+            ${12:${13:/* actions column label, if you need it
+               * Optional.
+               */}
+            'actions' => '${14:__("Actions")}',}
+
+            ${15:${16:/* list of buttons to display in table header area, next to the default ones
+               * Possible values: create, exportExcel
+               * Optional.
+               * Note: the buttons are added depending on the users permissions
+               */}
+            'headerButtons' => [${17:'create', 'exportExcel'}],}
+
+            ${18:${19:/* list of action buttons for custom actions
+               * icon is used for the button's icon
+               * class is used for styling the custom button
+               * event is the event triggered by the button
+               * route is OPTIONAL, and if given, it will be checked for permission i.e. if the current user doesn't have
+               * the necessary permission, that specific button is not rendered.
+               * Optional.
+               */}
+            'customActionButtons'     => [
+                [ 'icon' => '${20:fa fa-sliders}', 'class' => '${21:is-info}', 'event'=>'${22:custom-event}'${23:, 'route' => '${24:route.getData}'} ]
             ],}
-            ${54:${55:/* array of eloquent model accessors that will be appended
-            * Note: if this attribute is missing appends will be set an empty array
-             */}
-            'appends' => [ ${56:accessorList} ],}
-            ${57:/* configuration of the columns to be displayed
-             */}
+
+            ${25:${26:/* columns where custom rendering is applied
+               * Note: a 'customRender' method needs to exist in the parent vue instance. If you're custom rendering
+               * multiple columns, in your js method you'll have to make the distinction
+               * Optional.
+               */}
+            'render'        => [ ${27:columnIndexArray} ],}
+
+            ${28:${29:/* column number for which the total value is displayed
+               * and, at the same time, the table's column name used in the query that computes the total
+               * Optional.
+               */}
+            'totals'        => [ ${30:columnIndexArray} ],}
+
+            ${31:${32:/* computed responsive priority will be 1 for first column
+               * and will increment with one for each consecutive column
+               * Optional.
+               */}
+            'responsivePriority' => [ ${33:columnIndexArray} ],}
+
+            ${34:${35:/* list of columns that are NOT searchable,
+               * such as columns that are translated, are results of custom attributes, etc.
+               * Optional.
+               */}
+            'notSearchable' => [ ${36:columnIndexArray} ],}
+
+            ${37:${38:/* list of columns that you don't want to be sortable,
+               * such as columns that are translated, are results of custom attributes, etc.
+               * Optional.
+               */}
+            'notSortable' => [ ${39:columnIndexArray} ],}
+
+            ${40:${41:/* list of editable columns
+               * Note:  the  parameter is needed, and
+               * only attributes of this model are editable i.e. you can't
+               * edit attributes of 'joined' models/tables
+               * Optional. Experimental, see README
+               */}
+            'editable' => [ ${42:columnIndexArray} ],}
+
+            ${43:${44:/* if none is given, by default, 'Bfrtip' is used.
+               * See datatables.net documentation.
+               * Optional.
+               */}
+            'dom' => '${45:Bfrtip}',}
+
+            ${46:/* table header alignment. The dt-head-* class is used,
+              * i.e. dt-head-center in this example.
+              * Possible values are: left, center, right
+              * Required.
+              */}
+            'headerAlign'        => '${47:left} ${48:center} ${49:right}',
+
+            ${50:/* table body alignment. The dt-body-center class is used in this example
+              * Possible values are: left, center, right
+              * Required.
+              */}
+            'bodyAlign'        => '${51:left} ${52:center} ${53:right}',
+
+            ${54:${55:/* custom css classes for the <table> element
+              * Optional.
+              */}
+            'tableClass'         => '${56:custom-class}',}
+
+            ${57:${58:/* array of columns whose values should be displayed 'translated'
+               * Note: in order to work it needs an Enum class
+               * Optional.
+               */}
+            'enumMappings' => [
+                '${59:status}' => '${60:StatusesEnum}',
+            ],}
+
+            ${61:${62:/* array of eloquent model accessors that will be appended
+               * Note: if this attribute is missing appends will be set an empty array
+               * Optional.
+               */}
+            'appends' => [ ${63:accessorList} ],}
+
+            ${64:/* configuration of the columns to be displayed
+              * Required.
+              */}
             'columns' => [
                 0 => [
-                    'label' => '${58:labelName}',
-                    'data' => '${59:attributeName}',
-                    'name' => '${60:attributeSource}',
-                    ${61:'class' => '${62:className}',}
+                    'label' => '${65:labelName}',
+                    'data' => '${66:attributeName}',
+                    'name' => '${67:attributeSource}',
+                    ${68:'class' => '${69:className}',}
                 ],
             ]
         ];
