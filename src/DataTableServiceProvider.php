@@ -3,7 +3,6 @@
 namespace LaravelEnso\DataTable;
 
 use Illuminate\Support\ServiceProvider;
-use Maatwebsite\Excel\ExcelServiceProvider;
 
 class DataTableServiceProvider extends ServiceProvider
 {
@@ -18,7 +17,6 @@ class DataTableServiceProvider extends ServiceProvider
         ], 'datatable-options');
 
         $this->publishes([
-            __DIR__.'/resources/assets/js/components' => resource_path('assets/js/vendor/laravel-enso/components'),
             __DIR__.'/resources/assets/js/modules'    => resource_path('assets/js/vendor/laravel-enso/modules'),
         ], 'enso-update');
 
@@ -43,6 +41,6 @@ class DataTableServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->app->register(ExcelServiceProvider::class);
+        //
     }
 }
