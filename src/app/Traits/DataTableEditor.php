@@ -8,9 +8,13 @@ trait DataTableEditor
 {
     public function setTableData()
     {
+    	$validationClass = isset($this->validationClass)
+    		? $this->validationClass
+    		: null;
+
         return (new TableEditor(
             $this->editableModel,
-            $this->validationClass,
+            $validationClass,
             request()->get('data')
         ))->getResponse();
     }

@@ -3,6 +3,7 @@
 namespace LaravelEnso\DataTable\app\Classes;
 
 use Illuminate\Validation\Rules\Unique;
+use Illuminate\Validation\ValidationException;
 
 class TableEditor
 {
@@ -15,7 +16,7 @@ class TableEditor
     private $value;
     private $response;
 
-    public function __construct(string $model, string $validationClass, array $params)
+    public function __construct(string $model, string $validationClass = null, array $params)
     {
         $this->model = $model;
         $this->params = $params;
@@ -45,7 +46,7 @@ class TableEditor
 
         if (!is_array($this->params[$this->modelId][$this->table])) {
             throw new \EnsoException(__("You need to define in the 'TableStructure' class,
-                the 'name' attribute for the editable column with the form of 'table.column'"), 'warning');
+                the 'name' attribute for the editable column with the form of 'table.column'"));
         }
 
         return $this;
@@ -57,7 +58,7 @@ class TableEditor
 
         if (!in_array($this->property, (new $this->model())->getFillable())) {
             throw new \EnsoException(__('Seems like the')." '".$this->property."' ".__("property defined in the 'TableStructure' class under
-                the 'name' attribute for the editable column, does not exist in the fillable array for the")." '".$this->model."' ".__('model'), 'warning');
+                the 'name' attribute for the editable column, does not exist in the fillable array for the")." '".$this->model."' ".__('model'));
         }
 
         return $this;
@@ -87,7 +88,7 @@ class TableEditor
         if ($this->table !== $modelTable) {
             throw new \EnsoException(__('The model')." '".$this->model."' ".__('has')." '".$modelTable
                 ."' ".__('as default table instead of the given')." '".$this->table."' "
-                .__("defined in the 'name' attribute from the 'TableStructure' class"), 'warning');
+                .__("defined in the 'name' attribute from the 'TableStructure' class"));
         }
 
         return $this;
@@ -104,7 +105,7 @@ class TableEditor
         $validator = \Validator::make([$this->property => $this->value], [$this->property => $rules]);
 
         if ($validator->fails()) {
-            throw new \EnsoException($this->getValidatorErrors($validator), 'warning');
+            throw new ValidationException($validator);
         }
     }
 
