@@ -21,13 +21,13 @@ class ModelTableStructure extends TableStructure
             /* the icon shown in the title bar, next to the title
              * Optional.
              */
-            'icon'          => 'fa fa-list-alt',
+            'icon' => 'fa fa-list-alt',
 
             /* current number for each line, with the header name
              * If given, it will be appended as the first column of the table
              * Optional.
              */
-            'crtNo'         => __('#'),
+            'crtNo' => __('#'),
 
             /* actions column label, if you need it
              * Optional.
@@ -55,8 +55,8 @@ class ModelTableStructure extends TableStructure
              * the necessary permission, that specific button is not rendered.
              * Optional.
              */
-            'customActionButtons'     => [
-                ['icon' => 'fa fa-sliders', 'class' => 'is-info', 'event'=>'custom-event', 'route' => 'route.getData'],
+            'customActionButtons' => [
+                ['icon' => 'fa fa-sliders', 'class' => 'is-info', 'event' => 'custom-event', 'route' => 'route.getData'],
             ],
 
             /* columns where custom rendering is applied
@@ -64,13 +64,13 @@ class ModelTableStructure extends TableStructure
              * multiple columns, in your js method you'll have to make the distinction
              * Optional.
              */
-            'render'        => [columnArrayIndex],
+            'render' => [columnArrayIndex],
 
             /* column number for which the total value is displayed
              * and, at the same time, the table's column name used in the query that computes the total
              * Optional.
              */
-            'totals'        => [columnArrayIndex],
+            'totals' => [columnArrayIndex],
 
             /* computed responsive priority will be 1 for first column
              * and will increment with one for each consecutive column
@@ -109,18 +109,18 @@ class ModelTableStructure extends TableStructure
              * Possible values are: left, center, right
              * Required.
              */
-            'headerAlign'        => 'center',
+            'headerAlign' => 'center',
 
             /* table body alignment. The dt-body-center class is used in this example
              * Possible values are: left, center, right
              * Required.
              */
-            'bodyAlign'        => 'center',
+            'bodyAlign' => 'center',
 
             /* custom css classes for the <table> element
              * Optional.
              */
-            'tableClass'         => 'custom-class',
+            'tableClass' => 'custom-class',
 
             /* array of columns whose values should be displayed 'translated'
              * Note: in order to work it needs an Enum class
