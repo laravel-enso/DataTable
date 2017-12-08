@@ -24,7 +24,7 @@ class EnumComputor
     {
         $this->data->each(function ($value) {
             foreach ($this->getDataFromEnums() as $key => $data) {
-                $value->$key = $data[$value->$key];
+                $value->$key = is_null($value->$key) ? null : $data[$value->$key];
             }
         });
     }
