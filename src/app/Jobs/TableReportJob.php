@@ -9,7 +9,7 @@ use Illuminate\Queue\SerializesModels;
 use LaravelEnso\Core\app\Models\User;
 use LaravelEnso\DataTable\app\Exports\TableExport;
 use LaravelEnso\DataTable\app\Notifications\TableReportNotification;
-use LaravelEnso\Helpers\Classes\Object;
+use LaravelEnso\Helpers\Classes\Obj;
 
 class TableReportJob implements ShouldQueue
 {
@@ -20,7 +20,7 @@ class TableReportJob implements ShouldQueue
     private $fileName;
     private $fullPathFile;
 
-    public function __construct(User $user, Object $data)
+    public function __construct(User $user, Obj $data)
     {
         $this->user = $user;
         $this->data = $data;

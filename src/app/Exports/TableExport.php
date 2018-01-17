@@ -2,7 +2,7 @@
 
 namespace LaravelEnso\DataTable\app\Exports;
 
-use LaravelEnso\Helpers\Classes\Object;
+use LaravelEnso\Helpers\Classes\Obj;
 
 class TableExport
 {
@@ -10,7 +10,7 @@ class TableExport
     private $data;
     private $header;
 
-    public function __construct(string $fileName, Object $data)
+    public function __construct(string $fileName, Obj $data)
     {
         $this->fileName = $fileName;
         $this->setHeader($data);
@@ -32,7 +32,7 @@ class TableExport
         })->store('xlsx');
     }
 
-    private function setData(Object $data)
+    private function setData(Obj $data)
     {
         $this->data = [];
 
@@ -49,7 +49,7 @@ class TableExport
         });
     }
 
-    private function setHeader(Object $data)
+    private function setHeader(Obj $data)
     {
         $this->header = collect($data->header)->pluck('label', 'data')->toArray();
     }

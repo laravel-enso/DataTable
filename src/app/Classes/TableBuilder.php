@@ -3,7 +3,7 @@
 namespace LaravelEnso\DataTable\app\Classes;
 
 use Illuminate\Database\Eloquent\Builder;
-use LaravelEnso\Helpers\Classes\Object;
+use LaravelEnso\Helpers\Classes\Obj;
 
 class TableBuilder
 {
@@ -35,7 +35,7 @@ class TableBuilder
 
     public function getExcelData()
     {
-        return new Object([
+        return new Obj([
             'header'          => $this->structure['columns'],
             'recordsTotal'    => $this->queryBuilder->getTotalRecords(),
             'recordsFiltered' => $this->queryBuilder->getFilteredRecords(),
