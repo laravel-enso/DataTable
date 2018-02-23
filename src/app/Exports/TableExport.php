@@ -22,7 +22,7 @@ class TableExport
         \Excel::create($this->fileName, function ($excel) {
             $excel->sheet('Sheet1', function ($sheet) {
                 $sheet->fromArray($this->data)
-                    ->setAutoFilter()
+                    // ->setAutoFilter()
                     ->freezeFirstRowAndColumn()
                     ->setAllBorders('thin')
                     ->row(1, function ($cells) {
