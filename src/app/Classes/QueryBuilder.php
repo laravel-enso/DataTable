@@ -91,7 +91,7 @@ class QueryBuilder
             foreach ($extraFilters as $table => $values) {
                 foreach ($values as $column => $value) {
                     if ($value !== null && $value !== '') {
-                        $query->where($table.'.'.$column, '=', $value);
+                        $query->whereIn($table.'.'.$column, (array) $value);
                     }
                 }
             }
