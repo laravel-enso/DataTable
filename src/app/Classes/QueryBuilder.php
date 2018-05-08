@@ -90,7 +90,7 @@ class QueryBuilder
         $this->query->where(function ($query) use ($extraFilters) {
             foreach ($extraFilters as $table => $values) {
                 foreach ($values as $column => $value) {
-                    if ($value !== null && $value !== '') {
+                    if ($value !== null && $value !== '' && $value !== []) {
                         $query->whereIn($table.'.'.$column, (array) $value);
                     }
                 }
