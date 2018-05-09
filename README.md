@@ -146,7 +146,10 @@ and more
 - `php artisan vendor:publish --tag=datatable-lang` - the default lang files
 - `php artisan vendor:publish --tag=datatable-class` - the abstract TableStructure class that must be extended when creating specific structures
 - `php artisan vendor:publish --tag=enso-update` - a common alias for when wanting to update the VueJS component,
-once a newer version is released.
+once a newer version is released
+- `php artisan vendor:publish --tag=datatable-email-templates` - the notification email templates
+- `php artisan vendor:publish --tag=email-templates` - a common alias for when wanting to update 
+the notification email templates
 
 <!--h-->
 ### Contributions
