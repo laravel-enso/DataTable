@@ -22,9 +22,16 @@ class TableReportNotification extends Notification
 
     public function toMail($notifiable)
     {
+        app()->setLocale($notifiable->preferences->global->lang);
+
         return (new MailMessage())
-            ->line(__('You will find attached the requested report.'))
-            ->line(__('Thank you for using our application!'))
+            ->subject(__('Export Notification'))
+            ->view('laravel-enso/datatable::emails.exportDone', [
+                'lines' => [
+                    __('You will find attached the requested report.'),
+                    __('Thank you for using our application!'),
+                ],
+            ])
             ->attach($this->file);
     }
 
