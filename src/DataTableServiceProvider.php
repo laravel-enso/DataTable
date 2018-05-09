@@ -22,31 +22,31 @@ class DataTableServiceProvider extends ServiceProvider
     private function publishesResources(): void
     {
         $this->publishes([
-            __DIR__ . '/resources/assets/js/components' => resource_path('assets/js/vendor/laravel-enso/components'),
+            __DIR__.'/resources/assets/js/components' => resource_path('assets/js/vendor/laravel-enso/components'),
         ], 'datatable-component');
 
         $this->publishes([
-            __DIR__ . '/resources/assets/js/modules' => resource_path('assets/js/vendor/laravel-enso/modules'),
+            __DIR__.'/resources/assets/js/modules' => resource_path('assets/js/vendor/laravel-enso/modules'),
         ], 'datatable-options');
 
         $this->publishes([
-            __DIR__ . '/resources/assets/js/modules' => resource_path('assets/js/vendor/laravel-enso/modules'),
+            __DIR__.'/resources/assets/js/modules' => resource_path('assets/js/vendor/laravel-enso/modules'),
         ], 'enso-update');
 
         $this->publishes([
-            __DIR__ . '/config' => config_path(),
+            __DIR__.'/config' => config_path(),
         ], 'datatable-config');
 
         $this->publishes([
-            __DIR__ . '/config' => config_path(),
+            __DIR__.'/config' => config_path(),
         ], 'enso-config');
 
         $this->publishes([
-            __DIR__ . '/resources/dt-lang' => resource_path('dt-lang'),
+            __DIR__.'/resources/dt-lang' => resource_path('dt-lang'),
         ], 'datatable-lang');
 
         $this->publishes([
-            __DIR__ . '/resources/DataTable' => app_path('DataTable'),
+            __DIR__.'/resources/DataTable' => app_path('DataTable'),
         ], 'datatable-class');
 
         $this->publishes([
