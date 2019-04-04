@@ -22,6 +22,7 @@ class TableReportJob implements ShouldQueue
 
     public function __construct(User $user, Obj $data)
     {
+        $this->timeout = config('datatable.timeout') ?? 30;
         $this->user = $user;
         $this->data = $data;
         $this->fileName = __('Report');
